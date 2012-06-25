@@ -1,14 +1,13 @@
-class KualiStudent::CurriculumManagement < PageMaker
+class KualiStudent::CurriculumManagement < KualiStudent::BasePage
 
   expected_title "Kuali Student Curriculum Management"
 
-  # Header elements TODO: Move these into a module or other base class
-  element(:select_an_area) { |b| b.div(:id=>"gwt-debug-Application-Header-Select-an-area--label") }
-
-  action(:logout) { |b| b.link(:text=>"Logout").click }
+  header_elements
 
   # Page Elements
-  value(:title) { |b| b.h1(:class=>"KS-Section-Title KS-H1-Section-Title blockLayout-title").text }
+  element(:title_h1) { |b| b.h1(:class=>"KS-Section-Title KS-H1-Section-Title blockLayout-title") }
+
+  value(:title) { |p| p.title_h1.text }
 
   action(:my_action_list) { |b| b.link(:text=>"My Action List").click }
   action(:create_a_course) { |b| b.link(:text=>"Create a Course").click }
