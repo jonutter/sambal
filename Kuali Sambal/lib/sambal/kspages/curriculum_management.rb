@@ -13,5 +13,4 @@ class KualiStudent::CurriculumManagement < KualiStudent::BasePage
   action(:create_a_course) { |b| b.link(:text=>"Create a Course").click }
   action(:browse_course_catalogue) { |b| b.link(:text=>"Browse Course Catalog").click }
 
-
 end

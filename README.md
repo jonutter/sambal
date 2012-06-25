@@ -2,16 +2,15 @@
 
 ## Description:
 
-Note: Currently this project is limited to Sakai. Kuali development is slated for the future.
-
 This repository contains the following projects:
 
 - APIs for the rSmart versions of Sakai's Open Academic Environment (OAE) and Collaborative Learning Environment (CLE)
 - Cucumber features and step definitions for testing OAE and CLE
+- The beginnings of a test API for the Kuali projects. This API is called "Sambal".
 
 ## APIs
 
-The APIs are written in Ruby 1.9.2 using the Watir-webdriver and Page Object gems and can themselves be installed locally as Ruby gems with the command:
+The Sakai APIs are written in Ruby 1.9.2 using the Watir-webdriver and Page Object gems and can themselves be installed locally as Ruby gems with the command:
 
 `gem install sakai-cle-test-api`
 
