@@ -1,0 +1,123 @@
+# When real values are entered below, this file should be renamed to config.yml
+# Note that if you're going to use the rSmart test cases, you should leave the Roles as set.
+# Also make sure the ids are all lowercase.
+# The site data will all get updated automatically, so that section can be left alone.
+admin:
+  username:
+  password:
+person1:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person2:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person3:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Instructor
+person4:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Instructor
+person5:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person6:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person7:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person8:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person9:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person10:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person11:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person12:
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  role: Student
+person13: 
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  type: registered
+person14: 
+  id:
+  firstname:
+  lastname:
+  email:
+  password:
+  type: guest
+site1: 
+  type: course
+  name: zoorVk-g *0JLW*6o lHX*8N-r 201120
+  id: b933c70c-f2c7-402f-8fa9-691ab39a654e
+  assignment1: "!m:]}TE,\\i"
+  assignment2: Cj2byg_1vnhmCct
+  assignment3: "\"><BODY ONLOAD=alert('XSS')>"
+  assignment4: X7>'nmN[QJW{z/KjYs=A"\L-"
+  assignment5: "'%#$US2vX;2WZ/$.WVE#W}cB;o4XdW"
+  quiz1: ucf]h8&BX*
+  quiz2: HG5Qexp8Pw
+  group0: I9/}l,}zO2L"Op/NlpEJZ&R1rj/$hkO|m@2BY1D-?Nn*KQXV4}xR&)NOn&H`wt+Se`KD/zCwE|GV+Uov5hzh - 201206201521
+  group1: u6zFW,M+{I)tY!dzray%I>1:y'R3F@7b4R}yL52k59(n*:,6O"smb9-1m=yh]xQ/JKRuJx@J\6N/"am@0:F. - 201206201521
+  section1: xG":Gr>Pw/
+  section2: "\"<A HREF=\"http://1113982867/\">XSS</A>"
+site2: 
+  type: portfolio
+  name: DhGuJf1AUK
