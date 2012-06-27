@@ -33,7 +33,7 @@ class PageMaker
   end
 
   def self.element element_name
-    raise "This method already exists in the class!" if self.instance_methods.include?(element_name.to_sym)
+    raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
     define_method element_name.to_s do
       yield self
     end

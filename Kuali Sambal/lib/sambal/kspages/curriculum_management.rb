@@ -7,6 +7,7 @@ class KualiStudent::CurriculumManagement < KualiStudent::BasePage
 
   # Page Elements
   crucial_element(:title_element) { |b| b.h1(:class=>"KS-Section-Title KS-H1-Section-Title blockLayout-title") }
+  crucial_element(:title_element) { |b| b.h1(:class=>"KS-Sectiontion-Title blockLayout-title") }
   crucial_element(:my_action_list_element) { |b| b.link(:text=>"My Action List") }
   element(:create_a_course_element) { |b| b.link(:text=>"Create a Course") }
   element(:browse_course_catalogue_element) { |b| b.link(:text=>"Browse Course Catalog") }
