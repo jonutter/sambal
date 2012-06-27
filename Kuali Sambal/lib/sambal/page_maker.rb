@@ -7,7 +7,7 @@ class PageMaker
     has_expected_title? if respond_to? :has_expected_title?
   end
 
-  $smoke_test_elements = {}
+  @@smoke_test_elements = {}
 
   def method_missing sym, *args, &block
     @browser.send sym, *args, &block
@@ -33,20 +33,18 @@ class PageMaker
   end
 
   def self.element element_name
+    raise "This method already exists in the class!" if self.instance_methods.include?(element_name.to_sym)
     define_method element_name.to_s do
       yield self
     end
   end
 
   def self.crucial_element element_name
-    if $smoke_test_elements[self] == nil
-      $smoke_test_elements.store(self, [])
+    if @@smoke_test_elements[self] == nil
+      @@smoke_test_elements.store(self, [])
     end
-    $smoke_test_elements[self] << element_name
-    define_method element_name.to_s do
-      yield self
-    end
-    p $smoke_test_elements
+    @@smoke_test_elements[self] << element_name
+    element element_name
   end
 
   class << self
