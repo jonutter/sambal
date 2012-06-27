@@ -1,6 +1,6 @@
 class KualiStudent::Login < PageMaker
 
-  page_url "http://env1.ks.kuali.org/login.jsp" # TODO: This needs to be defined by a config variable, not hard-coded.
+  page_url "#{TEST_SITE}/login.jsp"
 
   element(:username_field) { |b| b.text_field(:name=>"j_username") }
   element(:password_field) { |b| b.text_field(:name=>"j_password") }

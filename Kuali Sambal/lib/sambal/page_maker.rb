@@ -7,6 +7,8 @@ class PageMaker
     has_expected_title? if respond_to? :has_expected_title?
   end
 
+  $smoke_test_elements = {}
+
   def method_missing sym, *args, &block
     @browser.send sym, *args, &block
   end
@@ -34,6 +36,17 @@ class PageMaker
     define_method element_name.to_s do
       yield self
     end
+  end
+
+  def self.crucial_element element_name
+    if $smoke_test_elements[self] == nil
+      $smoke_test_elements.store(self, [])
+    end
+    $smoke_test_elements[self] << element_name
+    define_method element_name.to_s do
+      yield self
+    end
+    p $smoke_test_elements
   end
 
   class << self
