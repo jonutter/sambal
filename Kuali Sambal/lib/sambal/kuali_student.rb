@@ -26,6 +26,12 @@ module KualiStudent
       element(:acknowledgements_link) { |b| b.link(:text=>"Acknowledgements") }
     end
 
+    def crucial_elements_exist?
+      x = true
+      @@crucial_elements[self.class].each { |page_item| x = false unless self.send(page_item).exists? }
+      return x
+    end
+
   end
 
   def wait_for_ajax(timeout=5)

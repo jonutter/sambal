@@ -7,7 +7,7 @@ class PageMaker
     has_expected_title? if respond_to? :has_expected_title?
   end
 
-  @@smoke_test_elements = {}
+  @@crucial_elements = {}
 
   def method_missing sym, *args, &block
     @browser.send sym, *args, &block
@@ -40,11 +40,15 @@ class PageMaker
   end
 
   def self.crucial_element element_name
-    if @@smoke_test_elements[self] == nil
-      @@smoke_test_elements.store(self, [])
+    if @@crucial_elements[self] == nil
+      @@crucial_elements.store(self, [])
     end
-    @@smoke_test_elements[self] << element_name
-    element element_name
+    @@crucial_elements[self] << element_name
+    # TODO: Figure out why the next four lines can't be reduced to a call to the above 'element' method.
+    raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
+    define_method element_name.to_s do
+      yield self
+    end
   end
 
   class << self
