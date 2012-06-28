@@ -40,9 +40,7 @@ class PageMaker
   end
 
   def self.crucial_element element_name
-    if @@crucial_elements[self] == nil
-      @@crucial_elements.store(self, [])
-    end
+    @@crucial_elements[self] == nil ? @@crucial_elements.store(self, []) :#Do nothing
     @@crucial_elements[self] << element_name
     # TODO: Figure out why the next four lines can't be reduced to a call to the above 'element' method.
     raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
