@@ -58,6 +58,18 @@ class PageMaker
 
     alias :value :element
     alias :action :element
+
+  end
+
+  def crucial_elements_exist?
+    x = true
+    @@crucial_elements[self.class].each do |page_item|
+      unless self.send(page_item).exists?
+        puts "Can't find #{page_item.to_s} element on the page!"
+        x = false
+      end
+    end
+    return x
   end
 
 end
