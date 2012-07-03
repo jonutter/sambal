@@ -26,7 +26,7 @@ module DocumentWidget
   thing(:view_more_widgets) { |b| b.link(:id=>"inserterbar_more_widgets") }
   thing(:carousel_left) { |b| b.div(:id=>"inserterbar_carousel_left") }
   thing(:carousel_right) { |b| b.div(:id=>"inserterbar_carousel_right") }
-  thing(:content_row) { |b| b.div(:id=>"contentauthoring_widget").div(:index=>-1) }
+  thing(:content_row) { |b| b.div(:id=>"contentauthoring_widget").div(:class=>"contentauthoring_cell_container") }
 
   def add_file_list
     insert_file_list.drag_and_drop_on(content_row)
