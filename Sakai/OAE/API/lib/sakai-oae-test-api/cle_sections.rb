@@ -29,7 +29,7 @@ class AddEditSections
   include PageObject
   include SectionsFrame
   include SectionsMenu
-  include AddEditSectionsMethods, :index=>2)
+  include AddEditSectionsMethods
 end
 
 #
@@ -37,7 +37,7 @@ class AssignTeachingAssistants
   include PageObject
   include SectionsFrame
   include SectionsMenu
-  include AssignTeachingAssistantsMethods, :index=>2)
+  include AssignTeachingAssistantsMethods
 end
 
 #
@@ -45,7 +45,7 @@ class AssignStudents
   include PageObject
   include SectionsFrame
   include SectionsMenu
-  include AssignStudentsMethods, :index=>2)
+  include AssignStudentsMethods
 end
 
 # The Options page for Sections.
@@ -53,5 +53,5 @@ class SectionsOptions
   include PageObject
   include SectionsFrame
   include SectionsMenu
-  include AssignStudentsMethods, :index=>2)
+  include AssignStudentsMethods
 end

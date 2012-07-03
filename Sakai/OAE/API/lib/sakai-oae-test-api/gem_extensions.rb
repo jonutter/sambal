@@ -87,23 +87,7 @@ module PageObject
         end
       }
     end
-    
-    # This method is specifically for defining the contents of
-    # the Insert button, found on the Document Edit page. See the module
-    # DocumentWidget
-    def insert_button(name, id, module_name=nil)
-      define_method("insert_#{name}") {
-        self.button(:id=>"sakaidocs_insert_dropdown_button").click
-        sleep 0.1
-        self.button(:id=>id).click
-        unless module_name==nil
-          self.class.class_eval { include eval(module_name) }
-          sleep 0.4
-        end
-        self.wait_for_ajax(2)
-      }
-    end
-    
+
   end 
 end
 

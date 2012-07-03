@@ -32,18 +32,18 @@ describe "Test" do
   end
 
   it "Test" do
-    dash = @sakai.page.login("test_user_1", "password")
+    dash = @sakai.page.login("admin", "admin")
 
     memberships = dash.my_memberships
-    course = memberships.open_course "Test_1_Course"
-    assignments = course.open_assignments "Assignments"
-    puts assignments.assignment_titles
-    assignments.student_view
-    sleep 1
-    assignments.options
-    sleep 1
-    assignments.select_page_size "Show 5 items..."
-    sleep 5
+    course = memberships.open_course "dfhsdtnstn"
+    funk = course.open_document "funk"
+    funk.edit_page
+
+    sleep 4
+
+    funk.add_file_list
+    funk.view_more_widgets
+    funk.insert_video.drag_and_drop_on(funk.content_row)
 
   end
 

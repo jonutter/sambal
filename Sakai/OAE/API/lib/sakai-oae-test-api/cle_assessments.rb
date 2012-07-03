@@ -17,17 +17,17 @@ end
 
 class AssessmentsList
   include AssessmentsFrame
-  include AssessmentsListMethods, :index=>2)
+  include AssessmentsListMethods
 end
 
 class PreviewOverview
   include AssessmentsFrame
-  include PreviewOverviewMethods, :index=>2)
+  include PreviewOverviewMethods
 end
 
 class AssessmentSettings
   include AssessmentsFrame
-  include AssessmentSettingsMethods, :index=>2)
+  include AssessmentSettingsMethods
 end
 
 class AssessmentTotalScores
@@ -37,82 +37,82 @@ end
 
 class EditAssessment
   include AssessmentsFrame
-  include EditAssessmentMethods, :index=>2)
+  include EditAssessmentMethods
 end
 
 class AddEditAssessmentPart
   include AssessmentsFrame
-  include AddEditAssessmentPartMethods, :index=>2)
+  include AddEditAssessmentPartMethods
 end
 
 class PublishAssessment
   include AssessmentsFrame
-  include PublishAssessmentMethods, :index=>2)
+  include PublishAssessmentMethods
 end
 
 class MultipleChoice
   include AssessmentsFrame
-  include MultipleChoiceMethods, :index=>2)
+  include MultipleChoiceMethods
 end
 
 class Survey
   include AssessmentsFrame
-  include SurveyMethods, :index=>2)
+  include SurveyMethods
 end
 
 class ShortAnswer
   include AssessmentsFrame
-  include ShortAnswerMethods, :index=>2)
+  include ShortAnswerMethods
 end
 
 class FillInBlank
   include AssessmentsFrame
-  include FillInBlankMethods, :index=>2)
+  include FillInBlankMethods
 end
 
 class NumericResponse
   include AssessmentsFrame
-  include NumericResponseMethods, :index=>2)
+  include NumericResponseMethods
 end
 
 class Matching
   include AssessmentsFrame
-  include MatchingMethods, :index=>2)
+  include MatchingMethods
 end
 
 class TrueFalse
   include AssessmentsFrame
-  include TrueFalseMethods, :index=>2)
+  include TrueFalseMethods
 end
 
 class AudioRecording
   include AssessmentsFrame
-  include AudioRecordingMethods, :index=>2)
+  include AudioRecordingMethods
 end
 
 class FileUpload
   include AssessmentsFrame
-  include FileUploadMethods, :index=>2)
+  include FileUploadMethods
 end
 
 class EditAssessmentType
   include AssessmentsFrame
-  include EditAssessmentTypeMethods, :index=>2)
+  include EditAssessmentTypeMethods
 end
 
 class AddQuestionPool
   include AssessmentsFrame
-  include AddQuestionPoolMethods, :index=>2)
+  include AddQuestionPoolMethods
 end
 
 class EditQuestionPool
   include AssessmentsFrame
-  include EditQuestionPoolMethods, :index=>2)
+  include EditQuestionPoolMethods
 end
 
 class QuestionPoolsList
   include AssessmentsFrame
-  include QuestionPoolsListMethods, :index=>2)
+  include QuestionPoolsListMethods
 end
 
 class PoolImport
@@ -122,7 +122,7 @@ end
 
 class SelectQuestionType
   include AssessmentsFrame
-  include SelectQuestionTypeMethods, :index=>2)
+  include SelectQuestionTypeMethods
 end
 
 class TakeAssessmentList
@@ -137,10 +137,10 @@ end
 
 class ConfirmSubmission
   include AssessmentsFrame
-  include ConfirmSubmissionMethods, :index=>2)
+  include ConfirmSubmissionMethods
 end
 
 class SubmissionSummary
   include AssessmentsFrame
-  include SubmissionSummaryMethods, :index=>2)
+  include SubmissionSummaryMethods
 end

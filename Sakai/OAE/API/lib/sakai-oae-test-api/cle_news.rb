@@ -15,5 +15,5 @@ end
 class News
   include PageObject
   include NewsFrame
-  include NewsMethods, :index=>2)
+  include NewsMethods
 end

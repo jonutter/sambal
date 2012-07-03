@@ -7,80 +7,30 @@ module CollectorWidget
 
 end
 
-# Methods associated with documents that use the TinyMCE Editor.
+# Methods associated with the editing of Pages/Documents.
 module DocumentWidget
 
   include PageObject
 
-  # Page Objects
-  button(:dont_save, :id=>"sakaidocs_edit_cancel_button")
-  button(:save_button, :id=>"sakaidocs_edit_save_button")
-  button(:insert, :id=>"sakaidocs_insert_dropdown_button")
-  select_list(:format, :id=>/formatselect/)
-  select_list(:font, :id=>/fontselect/)
-  select_list(:font_size, :id=>/fontsizeselect/)
-  link(:bold, :id=>/_bold/)
-  link(:italic, :id=>/_italic/)
-  link(:underline, :id=>/_underline/)
+  thing(:insert_text) { |b| b.link(:title=>"Insert text block") }
+  thing(:insert_title) { |b| b.link(:title=>"Insert title") }
+  thing(:insert_image) { |b| b.link(:title=>"Insert image") }
+  thing(:insert_video) { |b| b.link(:title=>"Insert video") }
+  thing(:insert_file_list) { |b| b.link(:title=>"Insert file list") }
+  thing(:insert_web_page) { |b| b.link(:title=>"Insert web page") }
+  thing(:insert_discussion_forum) { |b| b.link(:title=>"Insert Discussion forum") }
+  thing(:insert_comment_stream) { |b| b.link(:title=>"Insert Comment stream") }
+  thing(:insert_google_map) { |b| b.link(:title=>"Insert Google map") }
+  thing(:cancel_edit) { |b| b.link(:id=>"inserterbar_cancel_edit_page") }
+  thing(:save_changes) { |b| b.link(:id=>"inserterbar_save_edit_page") }
+  thing(:view_more_widgets) { |b| b.link(:id=>"inserterbar_more_widgets") }
+  thing(:carousel_left) { |b| b.div(:id=>"inserterbar_carousel_left") }
+  thing(:carousel_right) { |b| b.div(:id=>"inserterbar_carousel_right") }
+  thing(:content_row) { |b| b.div(:id=>"contentauthoring_widget").div(:index=>-1) }
 
-  # These methods click the Insert button (you must be editing the document first),
-  # then select the specified menu item, to bring up the Widget settings dialog.
-  # The first argument is the method name (which automatically gets pre-pended
-  # with "insert_", the second is the id of the target
-  # button in the Insert menu, and the last argument is the name of the module
-  # to be included in the current Class object. The module name can be nil,
-  # since not every item in the insert button list brings up a Pop Up dialog.
-  insert_button(:files_and_documents, "embedcontent", "FilesAndDocsPopUp")
-  insert_button(:discussion, "discussion", "Discussion")
-  insert_button(:remote_content, "remotecontent", "RemoteContentPopUp" )
-  insert_button(:inline_content, "inlinecontent", "InlineContentPopUp" )
-  insert_button(:google_maps, "googlemaps", "GoogleMapsPopUp" )
-  insert_button(:comments, "comments", "CommentsPopUp" )
-  insert_button(:rss_feed_reader, "rss", "RSSFeedPopUp" )
-  insert_button(:google_gadget, "ggadget", "GoogleGadgetPopUp" )
-  insert_button(:horizontal_line, "hr")
-  insert_button(:tests_and_quizzes, "sakai2samigo")
-  insert_button(:calendar, "sakai2calendar")
-  insert_button(:jisc_content, "jisccontent")
-  insert_button(:assignments, "sakai2assignments")
-  insert_button(:basic_lti, "basiclti")
-  insert_button(:gradebook, "sakai2gradebook")
-
-  # Custom Methods...
-
-  # Clicks the Save button. Waits for Ajax calls to fall off.
-  def save
-    self.save_button
-    sleep 1
-    self.wait_for_ajax
+  def add_file_list
+    insert_file_list.drag_and_drop_on(content_row)
   end
-
-  # Erases the entire contents of the TinyMCE Editor, then
-  # enters the specified string into the Editor.
-  def set_content=(text)
-    self.frame(:id=>"elm1_ifr").body(:id=>"tinymce").fire_event("onclick")
-    self.frame(:id=>"elm1_ifr").send_keys( [:command, 'a'] )
-    self.frame(:id=>"elm1_ifr").send_keys(text)
-  end
-
-  # Appends the specified string to the contents of the TinyMCE Editor.
-  def add_content=(text)
-    self.frame(:id=>"elm1_ifr").body(:id=>"tinymce").fire_event("onclick")
-    self.frame(:id=>"elm1_ifr").send_keys(text)
-  end
-
-  # Selects all the contents of the TinyMCE Editor
-  def select_all
-    self.frame(:id=>"elm1_ifr").send_keys( [:command, 'a'] )
-  end
-
-  # Clicks the Text Box of the TinyMCE Editor so that the edit cursor
-  # will become active in the Editor.
-  def insert_text
-    self.frame(:id=>"elm1_ifr").body(:id=>"tinymce").fire_event("onclick")
-  end
-
-  # Other MCE Objects TBD later, maybe, though we're not in the business of testing TinyMCE...
 
 end
 

@@ -1,6 +1,6 @@
-module KualiStudent
+#module KualiStudent
 
-  extend PageHelper
+  #extend PageHelper
 
   #class << self; attr_accessor :browser end
 
@@ -25,26 +25,31 @@ module KualiStudent
       def open_curriculum_management
         select_an_area
         curriculum_management_el.click
+        #wait_for_page
       end
 
       def open_home
         select_an_area
         home_el.click
+        #wait_for_page
       end
 
       def open_organization_management
         select_an_area
         organization_mgt_el.click
+        #wait_for_page
       end
 
       def open_workflow_doc_search
         select_an_area
         workflow_doc_search_el.click
+        #wait_for_page
       end
 
       def open_rice
         select_an_area
         rice_el.click
+        #wait_for_page
       end
 
     end
@@ -58,14 +63,4 @@ module KualiStudent
 
   end
 
-  def wait_for_ajax(timeout=5)
-    end_time = ::Time.now + timeout
-    while self.execute_script("return jQuery.active") > 0
-      sleep 0.2
-      break if ::Time.now > end_time
-    end
-    self.wait(timeout + 10)
-  end
-
-
-end
+#end

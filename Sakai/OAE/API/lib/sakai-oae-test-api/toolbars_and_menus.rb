@@ -656,9 +656,9 @@ module DocButtons
   include PageObject
 
   # Page Objects
-  button(:edit_page_button, :id=>"sakaidocs_editpage")
-  button(:add_page_button, :id=>"sakaidocs_addpage_top")
-  button(:page_revisions_button, :id=>"sakaidocs_revisions")
+  link(:edit_page_button, :id=>"inserterbar_action_edit_page")
+  link(:add_page_button, :id=>"inserterbar_action_add_page")
+  link(:page_revisions_button, :id=>"sakaidocs_revisions")
 
   # Custom Methods...
 
@@ -685,61 +685,6 @@ module DocButtons
     page_revisions_button
     self.wait_for_ajax
 
-  end
-
-  # Private methods...
-  private
-
-  # The generic method for editing widget settings. DO NOT USE!
-  def widget_settings
-    # jQuery
-    click_settings=%|$("#context_settings").trigger("mousedown");|
-
-    # watir-webdriver
-    edit_page
-    open_widget_menu
-    self.execute_script(click_settings)
-    self.wait_for_ajax
-  end
-
-  # The generic method for removing widgets. DO NOT USE!
-  def remove_widget
-    # JQuery
-    jq_remove = %|$("#context_remove").trigger("mousedown");|
-
-    # watir-webdriver
-    self.edit_page
-    self.open_widget_menu
-    self.execute_script(jq_remove)
-    self.wait_for_ajax
-  end
-
-  # The generic method for editing widget wrappings. DO NOT USE!
-  def widget_wrapping
-
-    #jQuery
-    jq_wrapping = %|$("#context_appearance_trigger").trigger("mousedown");|
-
-    #watir-webdriver
-    edit_page
-    open_widget_menu
-    self.execute_script(jq_wrapping)
-    self.wait_for_ajax
-    self.class.class_eval { include AppearancePopUp }
-  end
-
-  # The generic method for opening the widget menu. DO NOT USE!
-  def open_widget_menu(number=0)
-    # jQuery commands
-    click_widget=%|tinyMCE.get("elm1").selection.select(tinyMCE.get("elm1").dom.select('.widget_inline')[#{number}]);|
-    node_change=%|tinyMCE.get("elm1").nodeChanged();|
-
-    # watir-webdriver
-    self.wait_for_ajax
-    self.execute_script(click_widget)
-    self.wait_for_ajax
-    self.execute_script(node_change)
-    self.wait_for_ajax
   end
 
 end

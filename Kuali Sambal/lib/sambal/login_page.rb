@@ -1,4 +1,4 @@
-class KualiStudent::Login < PageMaker
+class Login < PageMaker
 
   page_url "#{TEST_SITE}/login.jsp"
 
@@ -10,6 +10,7 @@ class KualiStudent::Login < PageMaker
     username_field.set username
     password_field.set password
     login_button.click
+    #wait_for_page
   end
 
 end

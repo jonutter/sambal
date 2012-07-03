@@ -72,4 +72,13 @@ class PageMaker
     return x
   end
 
+  def wait_for_page(timeout=5)
+    end_time = ::Time.now + timeout
+    while self.execute_script("return jQuery.active") > 0
+      sleep 0.2
+      break if ::Time.now > end_time
+    end
+    self.wait(timeout + 10)
+  end
+
 end
