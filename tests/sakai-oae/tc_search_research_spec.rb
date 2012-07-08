@@ -37,9 +37,7 @@ describe "Research Project/Group Membership" do
     @participant_name = "#{@directory['person5']['firstname']} #{@directory['person5']['lastname']}"
     @non_participant = @directory['person6']['id']
     @non_participant_pw = @directory['person6']['password']
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
     # Test case variables...
     @public_res1 = { # Research Project
       :title=>random_alphanums, 

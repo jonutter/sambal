@@ -42,9 +42,7 @@ describe "My Messages" do
     @name4 = "#{@directory['person6']['firstname']} #{@directory['person6']['lastname']}"
     @user5 = @directory['person11']['id']
     @pass5 = @directory['person11']['password']
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
     # Test case variables...
     @my_inbox_url = "#{@config.url}/me#l=messages/inbox"
     @message1 = {:subject=>"message1"+random_alphanums,

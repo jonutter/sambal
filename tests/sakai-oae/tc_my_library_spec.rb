@@ -37,8 +37,7 @@ describe "My Library" do
     @user2 = @directory['person2']['id']
     @pass2 = @directory['person2']['password']
     @name2 = "#{@directory['person2']['firstname']} #{@directory['person2']['lastname']}"
-    
-    @sakai = SakaiOAE.new(@browser)
+
     dash = @sakai.page.login(@user1, @pass1)
     dash.my_library
     
@@ -76,8 +75,8 @@ describe "My Library" do
 
   it "shows content user has uploaded" do
     library.add_content
-    library.upload_file=@file
-    library.who_can_see_file="Only me"
+    library.upload_file(@file, @config['data_directory'])
+    library.who_can_see_file="Private to library"
     library.file_description=@file_description
     library.tags_and_categories=@file_tag
     library.add
@@ -201,7 +200,7 @@ describe "My Library" do
   it "Sorting by 'A-Z' returns expected results" do
     @more_files.each do |file|
       library.add_content
-      library.upload_file=file
+      library.upload_file(file, @config['data_directory'])
       library.add
       library.done_add_collected
     end

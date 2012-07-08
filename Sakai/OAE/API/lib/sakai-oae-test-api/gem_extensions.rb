@@ -12,9 +12,14 @@ module PageObject
   end
 
   # Monkey patch helper method for li elements referring to
-  # named items...
+  # named items--within the Explore pages. This will not work
+  # for items listed in libraries...
   def name_li(name)
-    self.li(:text=>/#{Regexp.escape(name)}/i)
+    self.link(:title=>name).parent
+  end
+
+  def library_li(name)
+    self.link(:text=>/#{Regexp.escape(name)}/).parent.parent.parent
   end
 
   def method_missing(sym, *args, &block)
@@ -31,6 +36,7 @@ module PageObject
         self.back_to_top
         self.link(:text=>menu_text).fire_event("onmouseover")
         self.link(:text=>/#{link_text}/).click
+        sleep 2
         self.linger_for_ajax(10)
         eval(target_class).new @browser
       }
@@ -39,6 +45,8 @@ module PageObject
     def open_link(name, klass)
       define_method("open_#{name}") do |value|
         self.back_to_top
+        sleep 0.5
+        self.linger_for_ajax(6)
         self.link(:text=>/#{value}/).click
         sleep 2
         self.linger_for_ajax(6)

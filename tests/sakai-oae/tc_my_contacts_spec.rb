@@ -42,14 +42,12 @@ describe "My Contacts" do
     @pass5 = @directory['person7']['password']
     @user5_name = "#{@directory['person7']['firstname']} #{@directory['person7']['lastname']}"
     
-    @sakai = SakaiOAE.new(@browser)
-    
     # Test case variables...
     @invite_subject = "#{@user1_name} has invited you to become a connection"
     
   end
 
-  it "'Find and add people' is present when expected" do
+  xit "'Find and add people' is present when expected" do
     dash = @sakai.page.login(@user1, @pass1)
     my_contacts = dash.my_contacts
     search = my_contacts.find_and_add_people
@@ -66,7 +64,7 @@ describe "My Contacts" do
     search.invite
   end
 
-  it "'Add' button changes to 'invitation sent'" do
+  xit "'Add' button changes to 'invitation sent'" do
     dash = @sakai.page.login(@user1, @pass1)
     my_contacts = dash.my_contacts
     search = my_contacts.find_and_add_people
@@ -192,7 +190,7 @@ describe "My Contacts" do
   end
   
   after :each do
-    @sakai.logout
+    @sakai.page.logout
   end
   
   after :all do

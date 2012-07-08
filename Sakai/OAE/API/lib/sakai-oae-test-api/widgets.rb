@@ -14,6 +14,9 @@ module DocumentWidget
 
   thing(:insert_text) { |b| b.link(:title=>"Insert text block") }
   thing(:insert_title) { |b| b.link(:title=>"Insert title") }
+  thing(:title_container) { |b| b.div(:class=>"pagetitle_widget") }
+  thing(:title_field) { |b| b.text_field(:title=>"Title") }
+  thing(:rich_text_editor) { |b| b.frame(:id=>/mce_\d+_ifr/).body(:id=>"tinymce")}
   thing(:insert_image) { |b| b.link(:title=>"Insert image") }
   thing(:insert_video) { |b| b.link(:title=>"Insert video") }
   thing(:insert_file_list) { |b| b.link(:title=>"Insert file list") }
@@ -26,10 +29,45 @@ module DocumentWidget
   thing(:view_more_widgets) { |b| b.link(:id=>"inserterbar_more_widgets") }
   thing(:carousel_left) { |b| b.div(:id=>"inserterbar_carousel_left") }
   thing(:carousel_right) { |b| b.div(:id=>"inserterbar_carousel_right") }
-  thing(:content_row) { |b| b.div(:id=>"contentauthoring_widget").div(:class=>"contentauthoring_cell_container") }
+  thing(:container) { |b| b.div(:id=>"contentauthoring_widget").div(:id=>/-id\d+/, :index=>-1).div(:class=>"contentauthoring_table_row") }
+  thing(:edit_box_element) { |b| b.div(:class=>"contentauthoring_dummy_element") }
 
-  def add_file_list
-    insert_file_list.drag_and_drop_on(content_row)
+
+  def add_text text
+    if edit_box_element.present?
+      edit_box_element.double_click
+    else
+      insert_video.drag_and_drop_by 0,90
+      insert_image.drag_and_drop_by 0,85
+      insert_google_map.drag_and_drop_by 0,83
+      insert_text.drag_and_drop_by 0,81
+      rich_text_editor.send_keys text
+    end
+  end
+
+  def add_title title
+    insert_text.drag_and_drop_by 0,85
+    insert_video.drag_and_drop_by 0,85
+    insert_google_map.drag_and_drop_by 0,83
+    insert_title.drag_and_drop_by 0,80
+    title_field.wait_until_present
+    title_field.set(title)
+  end
+
+  def add_google_map
+    insert_web_page.drag_and_drop_by 0,85
+    insert_video.drag_and_drop_by 0,81
+    insert_image.drag_and_drop_by 0,82
+    insert_google_map.drag_and_drop_by 0,81
+    self.class.class_eval { include GoogleMapsPopUp }
+  end
+
+  def add_comment_stream
+    insert_video.drag_and_drop_by 0,85
+    insert_image.drag_and_drop_by 0,82
+    insert_google_map.drag_and_drop_by 0,83
+    insert_comment_stream.drag_and_drop_by 0,81
+    self.class.class_eval { include CommentStreamPopUp }
   end
 
 end
@@ -112,6 +150,9 @@ module ListWidget
   select_list(:filter_by, :id=>"facted_select")
 
   # Custom Methods...
+  def item_li(item_name)
+    self.link(:title=>item_name).parent.parent.parent
+  end
 
   # Returns an array containing the text of the links (for Groups, Courses, etc.) listed
   def results_list
@@ -142,21 +183,21 @@ module ListWidget
   def last_updated(name)
     # Get the target class...
     klass = case
-              when name_li(name).div(:class=>"searchgroups_result_usedin").present?
+              when item_li(name).div(:class=>"searchgroups_result_usedin").present?
                 "searchgroups_result_usedin"
-              when name_li(name).div(:class=>"searchcontent_result_by").present?
+              when item_li(name).div(:class=>"searchcontent_result_by").present?
                 "searchcontent_result_by"
-              when name_li(name).div(:class=>"mymemberships_item_usedin").present?
+              when item_li(name).div(:class=>"mymemberships_item_usedin").present?
                 "mymemberships_item_usedin"
-              when name_li(name).div(:class=>"mylibrary_item_by").present?
+              when item_li(name).div(:class=>"mylibrary_item_by").present?
                 "mylibrary_item_by"
               else
                 puts "Didn't find any expected DIVs. Please investigate and add missing class value"
                 puts
-                puts name_li(name).html
+                puts item_li(name).html
             end
     # Grab the text now that we know the class of the div...
-    div_text = name_li(name).div(:class=>klass).text
+    div_text = item_li(name).div(:class=>klass).text
     case(klass)
       when "mylibrary_item_by"
         return div_text[/(?<=\|.).+/]
@@ -201,7 +242,7 @@ module ListContent
 
   # Adds the specified (listed) content to the library.
   def add_to_library(name)
-    name_li(name).button(:title=>/^Save /).click
+    self.button(:title=>"Save #{name}").click
     self.wait_until { self.div(:id=>"savecontent_widget").visible? }
     self.class.class_eval { include SaveContentPopUp }
   end
@@ -326,7 +367,8 @@ module ListGroups
 
   # Clicks on the plus sign image for the specified group in the list.
   def add_group(name)
-    name_li(name).div(:class=>/searchgroups_result_left_filler/).fire_event("onclick")
+    join_button_for(name).fire_event("onclick")
+    self.linger_for_ajax(1)
   end
   alias add_course add_group
   alias add_research add_group
@@ -346,12 +388,12 @@ module ListGroups
   # for interacting directly with the element instead of
   # simply clicking on it.
   def remove_membership_button(name)
-    name_li(name).button(:title=>/Remove membership from/)
+    self.button(:title=>"Remove membership from #{name}")
   end
 
-  # Checks the checkbox for the specified group                                           _
+  # Checks the checkbox for the specified group
   def check_group(name)
-    name_li(name).checkbox(:title=>/Select/).set
+    self.checkbox(:title=>"Select #{name}").set
   end
   alias select_group check_group
 
@@ -377,7 +419,7 @@ module ListGroups
   end
 
   def view_group_participants(name)
-    name_li(name).link(:title=>/\d+.participant/i).click
+    library_li(name).link(:title=>/\d+.participant/i).click
     self.linger_for_ajax(2)
     Participants.new @browser
   end
@@ -396,7 +438,7 @@ module ListGroups
 
   # Returns the message button element itself.
   def message_button(name)
-    name_li(name).button(:class=>/sakai_sendmessage_overlay/)
+    library_li(name).button(:class=>/sakai_sendmessage_overlay/)
   end
 
 end

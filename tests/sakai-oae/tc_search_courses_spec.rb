@@ -36,9 +36,7 @@ describe "Course Memberships" do
     @participant_name = "#{@directory['person1']['firstname']} #{@directory['person1']['lastname']}"
     @non_participant = @directory['person2']['id']
     @non_participant_pw = @directory['person2']['password']
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
     # Test case variables...
     @public_course = {
       :title=>random_alphanums, #

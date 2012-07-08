@@ -228,11 +228,6 @@ module HeaderBar
 
   # Custom Methods
 
-  # Returns the text contents of the page title div
-  def page_title
-    self.div(:id=>"s3d-page-container").div(:class=>"s3d-contentpage-title").text
-  end
-
   # Clicks the "Join group" button.
   def join_group
     self.join_group_button

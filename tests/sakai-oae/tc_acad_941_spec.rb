@@ -48,7 +48,6 @@ describe "Name Field Tests" do
     @first = "#{@directory['person17']['firstname']}"
     @last = "#{@directory['person17']['lastname']}"
 
-    
     dash = @sakai.page.login(@user1, @pass1)
     @offset1 = dash.user_options_name_element.attribute_value("offsetTop")
     @offset2 = dash.help_element.attribute_value("offsetTop")

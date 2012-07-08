@@ -37,9 +37,7 @@ describe "Research Project/Group Memberships" do
     @user2 = @directory['person2']['id']
     @u2password = @directory['person2']['password']
     @student_name = "#{@directory['person2']['firstname']} #{@directory['person2']['lastname']}"
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
     # Test case variables...
     @auto_res1 = {
       :title=>random_alphanums, #

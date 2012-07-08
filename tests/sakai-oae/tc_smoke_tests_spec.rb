@@ -42,9 +42,7 @@ describe "Smoke Tests" do
     @user5 = @directory['person5']['id']
     @pass5 = @directory['person5']['password']
     @user5_name = "#{@directory['person5']['firstname']} #{@directory['person5']['lastname']}"
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
     # Test case variables...
     @message_subject = random_alphanums(32) + " " + random_alphanums(32)
     @message_body = random_multiline(250, 20, :string)
