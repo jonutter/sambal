@@ -23,7 +23,6 @@ class BasePage < PageMaker
     end
 
     def common_elements
-      action(:cancel) { |b| b.frame_el.link(text: "Cancel") }
       element(:loading) { |b| b.div(id: "blockUI blockMsg blockPage") }
     end
 
