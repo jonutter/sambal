@@ -1,8 +1,6 @@
 class CreateNewAcadCalendar < BasePage
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
 
   element(:start_blank_calendar) { |b| b.frame_el.link(text: "Start a blank calendar instead?") }

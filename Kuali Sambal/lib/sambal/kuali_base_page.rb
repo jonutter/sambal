@@ -2,7 +2,7 @@ class BasePage < PageMaker
 
   class << self
 
-    def header_elements
+    def wrapper_elements
       crucial_element(:main_menu_el) { |b| b.link(title: "Main Menu") }
       crucial_element(:logout_el) { |b| b.button(value: "Logout") }
       crucial_element(:administration_el) { |b| b.link(title: "Administration") }
@@ -15,14 +15,10 @@ class BasePage < PageMaker
 
       value(:build) { |b| b.div(id: "build").text }
       value(:logged_in_user) { |b| b.div(id: "login-info").text }
-    end
 
-    def footer_elements
       value(:copyright) { |b| b.div(id: "footer-copyright").text }
       action(:acknowledgements) { |b| b.link(href: "acknowledgments.jsp").click }
-    end
 
-    def common_elements
       element(:loading) { |b| b.div(id: "blockUI blockMsg blockPage") }
     end
 

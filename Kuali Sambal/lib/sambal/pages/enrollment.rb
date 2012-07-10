@@ -1,7 +1,6 @@
 class Enrollment < BasePage
 
-  header_elements
-  footer_elements
+  wrapper_elements
   frame_element
 
   action(:home) { |p| p.frame_el.link(text: "Home").click }

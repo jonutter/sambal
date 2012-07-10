@@ -1,8 +1,6 @@
 class RolloverDetails
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
   
   crucial_element(:term) { |b| b.frame_el.text_field(name: "rolloverTargetTermCode") }

@@ -1,8 +1,6 @@
 class DeleteTargetTerm < BasePage
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
 
   element(:term) { |b| b.frame_el.text_field(name: "targetTermCode") }

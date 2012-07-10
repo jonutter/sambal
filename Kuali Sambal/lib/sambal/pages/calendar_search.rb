@@ -1,8 +1,6 @@
 class CalendarSearch < BasePage
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
 
   element(:search_for)  { |b| b.frame_el.select(name: "calendarType") }

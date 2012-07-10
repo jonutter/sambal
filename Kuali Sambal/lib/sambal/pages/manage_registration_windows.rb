@@ -1,8 +1,6 @@
 class ManageRegistrationWindows < BasePage
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
 
   element(:term_type) { |b| b.frame_el.select(name: "termType") }

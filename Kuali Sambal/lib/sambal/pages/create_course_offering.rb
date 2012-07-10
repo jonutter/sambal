@@ -1,8 +1,6 @@
 class CreateCourseOffering < BasePage
 
-  header_elements
-  footer_elements
-  common_elements
+  wrapper_elements
   frame_element
 
   crucial_element(:target_term) { |b| b.frame_el.text_field(id: "u115_control") }
