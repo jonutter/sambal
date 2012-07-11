@@ -23,7 +23,7 @@ class BasePage < PageMaker
     end
 
     def frame_element
-      crucial_element(:frame_el) { |b| b.frame(id: "iframeportlet") }
+      crucial_element(:frm) { |b| b.frame(id: "iframeportlet") }
     end
 
   end

@@ -72,6 +72,7 @@ class PageMaker
     return x
   end
 
+  # TODO - I don't think this method belongs here. Should be moved. Not sure where, yet. (Maybe to PageHelper?)
   def wait_for_page(timeout=5)
     end_time = ::Time.now + timeout
     while self.execute_script("return jQuery.active") > 0

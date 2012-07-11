@@ -3,12 +3,12 @@ class CalendarSearch < BasePage
   wrapper_elements
   frame_element
 
-  element(:search_for)  { |b| b.frame_el.select(name: "calendarType") }
-  element(:name) { |b| b.frame_el.text_field(name: "name") }
-  element(:year) { |b| b.frame_el.text_field(name: "year") }
+  element(:search_for)  { |b| b.frm.select(name: "calendarType") }
+  element(:name) { |b| b.frm.text_field(name: "name") }
+  element(:year) { |b| b.frm.text_field(name: "year") }
   element(:search_results) { |b| b.table(class: "uif-tableCollectionLayout") }
 
-  action(:search) { |b| b.frame_el.button(text: "Search") }
+  action(:search) { |b| b.frm.button(text: "Search") }
 
   def search_for_academic_calendar nm, yr
     search_for.set "Academic Calendar"
