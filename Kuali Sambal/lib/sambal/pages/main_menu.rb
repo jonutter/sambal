@@ -5,7 +5,7 @@ class MainMenu < BasePage
 
   wrapper_elements
 
-  action(:enrollment) { |b| b.link(title: "Enrollment (in progress)").click }
+  action(:enrollment) { |b| b.link(title: "Enrollment Home").click }
   action(:kuali_student_home) { |b| b.link(text: "Kuali Student Home").click }
   action(:curriculum_management) { |b| b.link(text: "Curriculum Management").click }
   action(:organization_management) { |b| b.link(text: "Organization Management").click }

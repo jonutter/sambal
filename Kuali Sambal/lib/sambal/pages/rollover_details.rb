@@ -1,4 +1,4 @@
-class RolloverDetails
+class RolloverDetails < BasePage
 
   wrapper_elements
   frame_element
