@@ -29,12 +29,13 @@ When /^I search for the Academic Calendar$/ do
   end
   on CalendarSearch do |page|
     page.search_for_academic_calendar "Test Name", "2013"
-    page.search_results.row(text: "Test Name").should exist
   end
 end
 
 Then /^it should appear in search results$/ do
-  pending # express the regexp above with the code you wish you had
+  on CalendarSearch do |page|
+    page.search_results.row(text: "Test Name").should exist
+  end
 end
 
 
