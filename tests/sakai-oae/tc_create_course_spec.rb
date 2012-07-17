@@ -31,7 +31,6 @@ describe "Create Course" do
     @browser = @sakai.browser
     @instructor = @directory['admin']['username']
     @ipassword = @directory['admin']['password']
-    @sakai = SakaiOAE.new(@browser)
     
     # Test case variables...
     @course_info = {
@@ -84,7 +83,7 @@ describe "Create Course" do
     
     new_course_info.title=@existing_course_title
     new_course_info.create_basic_course
-    
+
     # TEST CASE: Verify creation of duplicate title not allowed
     new_course_info.url_error.should == @url_error_text
   end

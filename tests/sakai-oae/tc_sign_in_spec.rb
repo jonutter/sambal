@@ -32,8 +32,6 @@ describe "Signing In" do
     @username = @directory['person1']['id']
     @password = @directory['person1']['password']
     
-    @sakai = SakaiOAE.new(@browser)
-    
     # Test case variables...
     @login_error = "Invalid username or password"
   end

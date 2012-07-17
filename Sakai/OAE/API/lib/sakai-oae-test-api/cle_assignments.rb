@@ -17,37 +17,37 @@ end
 #
 class AssignmentsList
   include AssignmentsFrame
-  include  AssignmentsListMethods, :index=>2)
+  include  AssignmentsListMethods
 end
 
 #
 class AssignmentAdd
   include AssignmentsFrame
-  include  AssignmentAddMethods, :index=>2)
+  include  AssignmentAddMethods
 end
 
 #
 class AssignmentsPermissions
   include AssignmentsFrame
-  include  AssignmentsPermissionsMethods, :index=>2)
+  include  AssignmentsPermissionsMethods
 end
 
 #
 class AssignmentsPreview
   include AssignmentsFrame
-  include  AssignmentsPreviewMethods, :index=>2)
+  include  AssignmentsPreviewMethods
 end
 
 #
 class AssignmentsReorder
   include AssignmentsFrame
-  include  AssignmentsReorderMethods, :index=>2)
+  include  AssignmentsReorderMethods
 end
 
 #
 class AssignmentStudent
   include AssignmentsFrame
-  include  AssignmentStudentMethods, :index=>2)
+  include  AssignmentStudentMethods
 end
 
 #
@@ -65,13 +65,13 @@ end
 #
 class AssignmentSubmissionList
   include AssignmentsFrame
-  include  AssignmentSubmissionListMethods, :index=>2)
+  include  AssignmentSubmissionListMethods
 end
 
 #
 class AssignmentSubmission
   include AssignmentsFrame
-  include  AssignmentSubmissionMethods, :index=>2)
+  include  AssignmentSubmissionMethods
 end
 
 #
@@ -83,5 +83,5 @@ end
 #
 class StudentView
   include AssignmentsFrame
-  include  StudentViewMethods, :index=>2)
+  include  StudentViewMethods
 end

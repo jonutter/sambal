@@ -33,8 +33,6 @@ describe "Course Membership Rules" do
     @u2password = @directory['person1']['password']
     @student_name = "#{@directory['person1']['firstname']} #{@directory['person1']['lastname']}"
     
-    @sakai = SakaiOAE.new(@browser)
-    
     # Test case variables...
     @auto_course = {
       :title=>random_alphanums, #

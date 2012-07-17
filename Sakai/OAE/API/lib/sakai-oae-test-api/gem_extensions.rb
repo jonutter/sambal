@@ -12,9 +12,14 @@ module PageObject
   end
 
   # Monkey patch helper method for li elements referring to
-  # named items...
+  # named items--within the Explore pages. This will not work
+  # for items listed in libraries...
   def name_li(name)
-    self.li(:text=>/#{Regexp.escape(name)}/i)
+    self.link(:title=>name).parent
+  end
+
+  def library_li(name)
+    self.link(:text=>/#{Regexp.escape(name)}/).parent.parent.parent
   end
 
   def method_missing(sym, *args, &block)
@@ -31,6 +36,7 @@ module PageObject
         self.back_to_top
         self.link(:text=>menu_text).fire_event("onmouseover")
         self.link(:text=>/#{link_text}/).click
+        sleep 2
         self.linger_for_ajax(10)
         eval(target_class).new @browser
       }
@@ -39,6 +45,8 @@ module PageObject
     def open_link(name, klass)
       define_method("open_#{name}") do |value|
         self.back_to_top
+        sleep 0.5
+        self.linger_for_ajax(6)
         self.link(:text=>/#{value}/).click
         sleep 2
         self.linger_for_ajax(6)
@@ -87,23 +95,7 @@ module PageObject
         end
       }
     end
-    
-    # This method is specifically for defining the contents of
-    # the Insert button, found on the Document Edit page. See the module
-    # DocumentWidget
-    def insert_button(name, id, module_name=nil)
-      define_method("insert_#{name}") {
-        self.button(:id=>"sakaidocs_insert_dropdown_button").click
-        sleep 0.1
-        self.button(:id=>id).click
-        unless module_name==nil
-          self.class.class_eval { include eval(module_name) }
-          sleep 0.4
-        end
-        self.wait_for_ajax(2)
-      }
-    end
-    
+
   end 
 end
 

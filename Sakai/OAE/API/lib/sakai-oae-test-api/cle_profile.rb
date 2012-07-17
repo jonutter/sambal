@@ -23,5 +23,5 @@ end
 class EditProfile
   include PageObject
   include ProfileFrame
-  include EditProfileMethods, :index=>2)
+  include EditProfileMethods
 end

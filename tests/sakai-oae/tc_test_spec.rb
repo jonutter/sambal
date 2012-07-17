@@ -27,24 +27,40 @@ describe "Test" do
     @directory = YAML.load_file("directory.yml")
     @browser = @sakai.browser
     # Test user information from directory.yml...
+    @last_manager_error = "Group membership\nYou are unable to remove your membership from Another Group UY0H8Y67mn because you are the only manager"
 
 
   end
 
   it "Test" do
-    dash = @sakai.page.login("test_user_1", "password")
+    dash = @sakai.page.login("student01", "password")
+    bla = dash.my_memberships
 
-    memberships = dash.my_memberships
-    course = memberships.open_course "Test_1_Course"
-    assignments = course.open_assignments "Assignments"
-    puts assignments.assignment_titles
-    assignments.student_view
-    sleep 1
-    assignments.options
-    sleep 1
-    assignments.select_page_size "Show 5 items..."
-    sleep 5
+  end
 
+  xit "'Leave group' button removes user from the given group" do
+    memberships.leave_group "Group P9J0Vd0RXX"
+    memberships.yes_apply
+    memberships.close_notification
+    memberships.memberships.should_not include "Another Group UY0H8Y67mn"
+  end
+
+  xit "The last manager of a group is not allowed to leave it" do
+    memberships.leave_group "Another Group UY0H8Y67mn"
+    memberships.notification.should == @last_manager_error
+  end
+
+  xit "'Add to' button is disabled when no items are selected" do
+    memberships.add_selected_button_element.should be_disabled
+  end
+
+  xit "'Message' button is disabled when no items are selected" do
+    memberships.message_selected_button_element.should be_disabled
+  end
+
+  it "Clicking the 'X participants' link navigates to Group's Participants page" do
+    participants = memberships.view_group_participants "Another Group UY0H8Y67mn"
+    participants.search_participants_element.should be_visible
   end
 
 end

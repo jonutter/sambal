@@ -319,10 +319,12 @@ module AddContentContainer
 
   button(:list_categories, :text=>"List categories")
 
-  button(:done_add_collected_button, :text=>"Done, add collected")
+  thing(:done_button) { |b| b.button(:text=>"Done, add collected") }
 
   # Progress Indicator that appears while files are uploading
-  div(:progress_indicator, :id=>"sakai_progressindicator")
+  thing(:progress_indicator) { |b| b.div(:id=>"sakai_progressindicator") }
+
+  thing(:filedata_field) { |b| b.file_field(:name=>"fileData") }
 
   # Custom Methods...
 
@@ -331,7 +333,7 @@ module AddContentContainer
   def add
     active_content_div.button(:text=>"Add").click
     sleep 0.1
-    self.wait_until { self.done_add_collected_button_element.enabled? }
+    self.wait_until { done_button.enabled? }
   end
 
   # Works to enter text into any of the "Tags and Categories"
@@ -368,16 +370,16 @@ module AddContentContainer
   # The method takes an optional file_path parameter.
   # This allows the file_name parameter to be a variable
   # distinct from the path containing the file.
-  def upload_file=(file_name, file_path="")
-    self.file_field(:name=>"fileData").wait_until_present
-    self.file_field(:name=>"fileData").set(file_path + file_name)
+  def upload_file(file_name, file_path="")
+    filedata_field.wait_until_present
+    filedata_field.set(file_path + file_name)
   end
 
   # Clicks the "Done, add collected" button, then waits for
   # the page to refresh and any ajax calls to complete.
   def done_add_collected
-    self.done_add_collected_button
-    self.progress_indicator_element.wait_while_present
+    done_button.click
+    progress_indicator.wait_while_present
   end
 
   # Private methods...
@@ -582,7 +584,7 @@ module ChangePicturePopUp
 end
 
 #
-module CommentsPopUp
+module CommentStreamPopUp
 
   include PageObject
 

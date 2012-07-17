@@ -17,7 +17,7 @@ end
 class EmailArchive
   include PageObject
   include EmailArchiveFrame
-  include EmailArchiveMethods, :index=>2)
+  include EmailArchiveMethods
 end
 
 class EmailArchiveOptions

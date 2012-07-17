@@ -1,0 +1,53 @@
+class NewAcademicCalendar < BasePage
+
+  wrapper_elements
+  frame_element
+
+  action(:information_tab) { |b| b.frm.link(text: "Information").click }
+  action(:terms_tab) { |b| b.frm.link(text: "Terms").click }
+  
+  element(:academic_calendar_name) { |b| b.frm.text_field(name: "academicCalendarInfo.name") }
+  element(:organization) { |b| b.frm.select(name: "academicCalendarInfo.adminOrgId") }
+  element(:calendar_start_date) { |b| b.frm.text_field(name: "academicCalendarInfo.startDate") }
+  element(:calendar_end_date) { |b| b.frm.text_field(name: "academicCalendarInfo.endDate") }
+
+  action(:event_toggle) { |b| b.frm.link(id: "acal-info-event_toggle").click; sleep 1 }
+
+  element(:event_type) { |b| b.frm.select(name: "newCollectionLines['events'].eventTypeKey") }
+  element(:event_start_date) { |b| b.frm.text_field(name: "newCollectionLines['events'].startDate") }
+  element(:event_end_date) { |b| b.frm.text_field(name: "newCollectionLines['events'].endDate") }
+  element(:event_start_time) { |b| b.frm.text_field(name: "newCollectionLines['events'].startTime") }
+  element(:event_end_time) { |b| b.frm.text_field(name: "newCollectionLines['events'].endTime") }
+  element(:event_start_ampm) { |b| b.frm.select(name: "newCollectionLines['events'].startTimeAmPm") }
+  element(:event_end_ampm) { |b| b.frm.select(name: "newCollectionLines['events'].endTimeAmPm") }
+  element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['events'].allDay") }
+  element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['events'].dateRange") }
+  element(:add_event) { |b| b.frm.button(id: "u295_add") }
+
+  action(:make_official) { |b| b.frm.button(name: "u49").click; loading.wait_while_present }
+  action(:save) { |b| b.frm.button(name: "u50").click; loading.wait_while_present }
+
+  element(:term_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList'].termType") }
+  element(:term_start_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].startDate") }
+  element(:term_end_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].endDate") }
+  
+  action(:add_term) { |b| b.frm.button(name: "u964_add").click; loading.wait_while_present }
+
+  element(:term_info_name) { |b| b.frm.text_field(name: "termWrapperList[0].name") }
+  element(:term_info_start_date) { |b| b.frm.text_field(name: "termWrapperList[0].startDate") }
+  element(:term_info_end_date) { |b| b.frm.text_field(name: "termWrapperList[0].instructionalDays") }
+  
+  element(:key_date_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].keyDateType") }
+  element(:key_date_start_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].startDate") }
+  element(:key_date_start_time) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].startTime") }
+  element(:key_date_start_ampm) { |b| b.frm.select(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].startTimeAmPm") }
+  element(:key_date_end_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].endDate") }
+  element(:key_date_end_time) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].endTime") }
+  element(:key_date_end_ampm) { |b| b.frm.select(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].endTimeAmPm") }
+  element(:key_date_all_day) { |b| b.frm.checkbox(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].allDay") }
+  element(:key_date_date_range) { |b| b.frm.checkbox(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].dateRange") }
+
+  action(:key_date_add) { |b| b.frm.button(id: "u1326_line0_line0_add").click }
+  action(:delete_keydate_group) { |b| b.frm.button(text: "delete keydate group").click }
+
+end

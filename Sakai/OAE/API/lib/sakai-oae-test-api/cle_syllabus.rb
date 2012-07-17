@@ -27,19 +27,19 @@ end
 class AddEditSyllabusItem
   include PageObject
   include SyllabusFrame
-  include AddEditSyllabusItemMethods, :index=>2)
+  include AddEditSyllabusItemMethods
 end
 
 class SyllabusPreview
   include PageObject
   include SyllabusFrame
-  include SyllabusPreviewMethods, :index=>2)
+  include SyllabusPreviewMethods
 end
 
 class SyllabusRedirect
   include PageObject
   include SyllabusFrame
-  include SyllabusRedirectMethods, :index=>2)
+  include SyllabusRedirectMethods
 end
 
 class DeleteSyllabusItems

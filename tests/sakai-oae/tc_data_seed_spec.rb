@@ -60,7 +60,7 @@ describe "Data Seeding" do
     @files.each do |file|
       dashboard = MyDashboard.new @browser
       dashboard.add_content
-      dashboard.upload_file=file[:filename]
+      dashboard.upload_file file[:filename]
       dashboard.file_title=file[:title]
       dashboard.file_description=file[:description]
       dashboard.tags_and_categories=file[:tag]

@@ -29,12 +29,11 @@ describe "Page Footer" do
     @browser = @sakai.browser
     @username = @directory['person1']['id']
     @password = @directory['person1']['password']
-    
-    @sakai = SakaiOAE.new(@browser)
+
   end
 
   it "Footer present on top-level public page" do  
-    @browser.wait_for_ajax
+    @browser.linger_for_ajax
     # TEST CASE: Footer present on top-level public page
     home.footer_element.should be_visible
     # TEST CASE: All expected elements are present in footer
@@ -51,7 +50,7 @@ describe "Page Footer" do
   it "Clicking the logo displays DEBUG info" do
     # Click the Sakai logo
     home.sakai_OAE_logo
-    @browser.wait_for_ajax
+    @browser.linger_for_ajax
     
     # TEST CASE: 
     home.debug_info_element.should be_visible
@@ -128,7 +127,7 @@ describe "Page Footer" do
   it "Clicking the logo displays debug info" do
     # Click the Sakai logo
     dashboard.sakai_OAE_logo
-    @browser.wait_for_ajax
+    @browser.linger_for_ajax
     
     # TEST CASE: Clicking the logo displays DEBUG info
     dashboard.debug_info_element.should be_visible

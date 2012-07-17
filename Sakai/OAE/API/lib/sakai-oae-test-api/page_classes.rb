@@ -44,7 +44,7 @@ class AllCategoriesPage
   include GlobalMethods
 
   # Page Objects
-  div(:page_title, :class=>"s3d-contentpage-title")
+  value(:page_title) { |b| b.h1(:class=>"s3d-contentpage-title").text }
   
   # Custom Methods...
   
@@ -629,17 +629,16 @@ class MyDashboard
   
   # Returns an array object containing a list of all selected widgets.
   def displayed_widgets
+    self.linger_for_ajax(2)
     list = []
-    self.div(:class=>"fl-container-flex widget-content").divs(:class=>"s3d-contentpage-title").each do |div|
+    self.div(:class=>"fl-container-flex widget-content").h2s(:class=>"s3d-contentpage-title").each do |div|
       list << div.text
     end
     return list
   end
 
   # Returns the name of the recent membership item displayed.
-  def recent_membership_item
-    self.div(:class=>"recentmemberships_widget").link(:class=>/recentmemberships_item_link/).text
-  end
+  value(:recent_membership_item) { |b| b.div(:class=>"recentmemberships_widget").p(:class=>"recentmemberships_item_title").text }
   
   # Clicks on the membership item displayed in the Recent Memberships widget.
   # Then returns the Library class object.
@@ -1185,29 +1184,14 @@ class MyLibrary
   include LeftMenuBarYou
   include LibraryWidget
 
-  # Page Objects
   button(:empty_library_add_content_button, :id=>"mylibrary_addcontent")
 
-  # Custom Methods and Page Objects...
-  
   # Defines the div that displays when the library has no contents.
   # Useful for testing whether the library is empty or not.
-  def empty_library
-    active_div.div(:id=>"mylibrary_empty")
-  end
-  
-  # Returns the text of the Page Title.
-  def page_title
-    active_div.div(:class=>"s3d-contentpage-title").text
-  end
+  thing(:empty_library) { |b| b.div(:id=>"mylibrary_empty") }
 
-  # Private methods...
-  private
-  
-  def active_div
-    id = self.div(:id=>/mylibrarycontainer/).parent.id
-    return self.div(:id=>id)
-  end
+  # Returns the text of the Page Title.
+  value(:page_title) { |b| b.div(:id=>"mylibrary_title_container").text }
   
 end
 
@@ -1221,9 +1205,8 @@ class MyMemberships
   include ListGroups
   include LeftMenuBarYou
 
-  # Page Objects
   text_field(:search_memberships_field, :id=>"mymemberships_livefilter")
-  select_list(:sort_by_list, :id=>"mymemberships_sortby")
+  thing(:sort_by_list) { |b| b.select_list(:id=>"mymemberships_sortby") }
   div(:gridview_button, :class=>/search-results-gridview/)
   div(:listview_button, :class=>/search-results-listview/)
   checkbox(:select_all, :id=>"mymemberships_select_checkbox")
@@ -1231,18 +1214,12 @@ class MyMemberships
   button(:message_selected_button, :id=>"mymemberships_message_button") # Don't use this method. Use the custom one defined below
   link(:create_a_new_group_button, :text=>"Create a new group") # Don't use this method. Use the custom one defined below
 
-  # Custom methods...
-
   # Returns the text of the Page Title.
-  def page_title
-    active_div.div(:class=>"s3d-contentpage-title").text
-  end
+  value(:page_title) { |b| b.div(:id=>"mymemberships_title_container").text }
 
   # Returns the div object for the blue quote bubble that
   # appears when the page is empty of memberships.
-  def quote_bubble
-    active_div.div(:class=>"s3d-no-results-container")
-  end
+  thing(:quote_bubble) { |b| b.p(:id=>"mymemberships_nogroups").div(:class=>"s3d-no-results-container") }
 
   # Clicks the "Create one" link in the quote_bubble
   # div and then returns the CreateGroups class object.
@@ -1254,16 +1231,8 @@ class MyMemberships
 
   # Sorts the list of memberships according to the specified value
   def sort_by=(type)
-    self.sort_by_list=type
+    sort_by_list.select type
     self.wait_for_ajax
-  end
-
-  # Private methods...
-  private
-  
-  def active_div
-    id = self.div(:id=>/mymembershipscontainer/).parent.id
-    return self.div(:id=>id)
   end
 
 end
@@ -1551,7 +1520,10 @@ class Library
   def empty_library_element
     self.div(:id=>data_sakai_ref).div(:id=>"mylibrary_empty")
   end
-  
+
+  # Returns the text contents of the page title div
+  value(:page_title) { |b| b.div(:id=>"mylibrary_title_container").text }
+
 end
 
 # 
@@ -1841,7 +1813,7 @@ class Acknowledgements
   include HeaderFooterBar
   
   # Page Objects
-  div(:page_title, :class=>"s3d-bold entity_plaintitle")
+  value(:page_title) { |b| b.h1(:class=>"s3d-bold entity_plaintitle").text }
   link(:featured, :text=>"Featured")
   link(:ui_technologies, :text=>"UI Technologies")
   link(:back_end_technologies, :text=>"Back-end Technologies")

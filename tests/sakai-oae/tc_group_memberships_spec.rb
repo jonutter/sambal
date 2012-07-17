@@ -31,8 +31,6 @@ describe "Group Memberships" do
     @u2password = @directory['person1']['password']
     @student_name = "#{@directory['person1']['firstname']} #{@directory['person1']['lastname']}"
     
-    @sakai = SakaiOAE.new(@browser)
-    
     # Test case variables...
     @auto_group = {
       :title=>random_alphanums, #

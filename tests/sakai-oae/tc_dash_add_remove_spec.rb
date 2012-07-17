@@ -22,7 +22,6 @@ describe "Add/Remove Dashboard Widgets" do
     @sakai = SakaiOAE.new(@config['browser'], @config['url'])
     @directory = YAML.load_file("directory.yml")
     @browser = @sakai.browser
-    @sakai = SakaiOAE.new(@browser)
     
     # Test case variables...
     @widgets = ["My recent memberships", "My content", "Most active groups",

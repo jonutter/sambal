@@ -2,12 +2,20 @@
 module PageObject
   module Elements
     class Element
-
       def disabled?
         @element.disabled?
       end
-
     end
+  end
+  module Accessors
+    def thing element_name
+      define_method element_name.to_s do
+        yield self
+      end
+    end
+    alias item thing
+    alias value thing
+    alias action thing
   end
 end
 

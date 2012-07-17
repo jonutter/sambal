@@ -40,8 +40,7 @@ describe "My Profile" do
     @user2 = @directory['person2']['id']
     @pass2 = @directory['person2']['password']
     @user2_name = "#{@directory['person2']['firstname']} #{@directory['person2']['lastname']}"
-    
-    @sakai = SakaiOAE.new(@browser)
+
     dash = @sakai.page.login(@user1, @pass1)
     dash.my_profile
     

@@ -36,8 +36,6 @@ describe "My Memberships" do
     @user3 = @directory['person5']['id']
     @pass3 = @directory['person5']['password']
     
-    @sakai = SakaiOAE.new(@browser)
-    
     # Test case variables...
     @group1_name = random_alphanums(10, "Group ")
     @group1_description = "This is radio clash on pirate satellite\n" + random_multiline
@@ -57,7 +55,7 @@ describe "My Memberships" do
   end
 
   it "Sorting options not present when no memberships are present" do
-    memberships.sort_by_list_element.should_not be_visible
+    memberships.sort_by_list.should_not be_visible
   end
 
   it "'Create one' link opens the Create Group page" do
@@ -69,7 +67,7 @@ describe "My Memberships" do
   end
 
   it "Sorting membership list works as expected" do
-    @sakai.log_out
+    memberships.log_out
     dash = @sakai.page.login(@user2, @pass2)
     explore = dash.explore_groups
     explore.join_group @group1_name
@@ -128,20 +126,21 @@ describe "My Memberships" do
     memberships.content_item_count(@group1_name).should == count
   end
   
-  it "Group listing displays the number of participants in the group" do
+  xit "Group listing displays the number of participants in the group" do
+    # TODO - To be fixed when the count bug (ACAD number unknown) is fixed...
     memberships.participants_count(@group1_name).should == 2
   end
   
   xit "Group listing displays the group's description" do
-    # TODO: Fix when https://jira.rsmart.com/browse/ACAD-991 is closed
+    # TODO: Code this and the next two
   end
   
   xit "Group listing displays the group's tags" do
-    # TODO: Fix when https://jira.rsmart.com/browse/ACAD-991 is closed
+
   end
 
   xit "Clicking on a group's tag searches by that tag" do
-    # TODO: Fix when https://jira.rsmart.com/browse/ACAD-991 is closed
+
   end
   
   it "'Leave group' button removes user from the given group" do

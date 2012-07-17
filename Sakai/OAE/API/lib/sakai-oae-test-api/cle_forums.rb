@@ -34,7 +34,7 @@ end
 class ComposeForumMessage
   include PageObject
   include ForumFrame
-  include ComposeForumMessageMethods, :index=>2)
+  include ComposeForumMessageMethods
 end
 
 class ForumTemplateSettings
@@ -52,11 +52,11 @@ end
 class EditForum
   include PageObject
   include ForumFrame
-  include EditForumMethods, :index=>2)
+  include EditForumMethods
 end
 
 class AddEditTopic
   include PageObject
   include ForumFrame
-  include AddEditTopicMethods, :index=>2)
+  include AddEditTopicMethods
 end

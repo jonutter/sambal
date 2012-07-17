@@ -34,9 +34,7 @@ describe "Header Menu Navigation" do
     @browser = @sakai.browser
     @instructor = @directory['admin']['username']
     @ipassword = @directory['admin']['password']
-    
-    @sakai = SakaiOAE.new(@browser)
-    
+
   end
  
   it "Explore menu present when logged out" do
