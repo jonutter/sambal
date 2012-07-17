@@ -19,7 +19,7 @@ class BasePage < PageMaker
       value(:copyright) { |b| b.div(id: "footer-copyright").text }
       action(:acknowledgements) { |b| b.link(href: "acknowledgments.jsp").click }
 
-      element(:loading) { |b| b.div(id: "blockUI blockMsg blockPage") }
+      element(:loading) { |b| b.div(class: "blockUI blockMsg blockPage") }
     end
 
     def frame_element

@@ -1,3 +1,13 @@
-$: << File.dirname(__FILE__)+'/../lib'
+$: << File.dirname(__FILE__)+'/../../lib'
 
-# Stuff goes here
+require 'sambal'
+
+World PageHelper
+
+browser = Watir::Browser.new
+
+Before do
+  @browser = browser
+end
+
+at_exit { browser.close }

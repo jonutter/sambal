@@ -23,15 +23,16 @@ class NewAcademicCalendar < BasePage
   element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['events'].allDay") }
   element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['events'].dateRange") }
   element(:add_event) { |b| b.frm.button(id: "u295_add") }
+  element(:make_official_button) { |b| b.frm.button(id: "u49") }
 
-  action(:make_official) { |b| b.frm.button(name: "u49").click; loading.wait_while_present }
-  action(:save) { |b| b.frm.button(name: "u50").click; loading.wait_while_present }
+  action(:make_official) { |p| p.make_official_button.click; b.loading.wait_while_present }
+  action(:save) { |b| b.frm.button(id: "u50").click; b.loading.wait_while_present }
 
   element(:term_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList'].termType") }
   element(:term_start_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].startDate") }
   element(:term_end_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].endDate") }
   
-  action(:add_term) { |b| b.frm.button(name: "u964_add").click; loading.wait_while_present }
+  action(:add_term) { |b| b.frm.button(id: "u964_add").click; loading.wait_while_present }
 
   element(:term_info_name) { |b| b.frm.text_field(name: "termWrapperList[0].name") }
   element(:term_info_start_date) { |b| b.frm.text_field(name: "termWrapperList[0].startDate") }

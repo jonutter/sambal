@@ -1,6 +1,6 @@
 class MainMenu < BasePage
 
-  page_url "#{TEST_SITE}/portal.do"
+  page_url "#{TEST_SITE}/portal.do?selectedTab=main"
   expected_title "Kuali Portal Index"
 
   wrapper_elements
