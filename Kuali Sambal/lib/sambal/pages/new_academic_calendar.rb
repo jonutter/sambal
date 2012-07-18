@@ -25,7 +25,7 @@ class NewAcademicCalendar < BasePage
   element(:add_event) { |b| b.frm.button(id: "u295_add") }
   element(:make_official_button) { |b| b.frm.button(id: "u49") }
 
-  action(:make_official) { |p| p.make_official_button.click; b.loading.wait_while_present }
+  action(:make_official) { |p| p.make_official_button.click; p.loading.wait_while_present }
   action(:save) { |b| b.frm.button(id: "u50").click; b.loading.wait_while_present }
 
   element(:term_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList'].termType") }

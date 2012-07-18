@@ -5,6 +5,6 @@ class UnknownTermCourseOfferings < BasePage
 
   element(:i_understand) { |b| b.frm.checkbox(name: "acceptIndicator") }
 
-  action(:release_to_departments) { |b| b.frm.button(id: "u109").click; loading.wait_while_present }
+  action(:release_to_departments) { |b| b.frm.button(id: "u109").click; b.loading.wait_while_present }
 
 end

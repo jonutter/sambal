@@ -7,6 +7,6 @@ class CopyAcademicCalendar < BasePage
   element(:copy_to_start_date) { |b| b.frm.text_field(name: "academicCalendarInfo.startDate") }
   element(:copy_to_end_date) { |b| b.frm.text_field(name: "academicCalendarInfo.endDate") }
 
-  action(:copy_academic_calendar) { |b| b.frm.button(id: "u53").click; loading.wait_while_present }
+  action(:copy_academic_calendar) { |b| b.frm.button(id: "u53").click; b.loading.wait_while_present }
 
 end

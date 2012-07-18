@@ -5,7 +5,7 @@ class DeleteTargetTerm < BasePage
 
   element(:term) { |b| b.frm.text_field(name: "targetTermCode") }
 
-  action(:go) { |b| b.frm.button(text: "Go").click; loading.wait_while_present }
-  action(:delete_target_term) { |b| b.frm.button(text: "Delete Target Term").click; loading.wait_while_present }
+  action(:go) { |b| b.frm.button(text: "Go").click; b.loading.wait_while_present }
+  action(:delete_target_term) { |b| b.frm.button(text: "Delete Target Term").click; b.loading.wait_while_present }
 
 end

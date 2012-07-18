@@ -13,6 +13,10 @@ class RolloverManagement < BasePage
   action(:target_term_go) { |b| b.frm.button(id: "u130").click }
   action(:source_term_go) { |b| b.frm.button(id: "u263").click }
 
+  element(:rollover_button) { |b| b.frm.button(id: "u46") }
+
+  action(:rollover_course_offerings) { |b| b.rollover_button.click; b.loading.wait_while_present }
+
   def select_target_term term
     target_term.set term
     target_term_go
