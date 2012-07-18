@@ -8,20 +8,20 @@ class CalendarSearch < BasePage
   element(:year) { |b| b.frm.text_field(name: "year") }
   element(:search_results) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
 
-  action(:search) { |b| b.frm.button(text: "Search") }
+  action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
 
-  def search_for_academic_calendar nm, yr
-    search_for.set "Academic Calendar"
+  def search_for_academic_calendar nm, yr=""
+    search_for.select "Academic Calendar"
     setnameyear nm, yr
   end
 
-  def search_for_holiday_calendar nm, yr
-    search_for.set "Holiday Calendar"
+  def search_for_holiday_calendar nm, yr=""
+    search_for.select "Holiday Calendar"
     setnameyear nm, yr
   end
 
-  def search_for_academic_term nm, yr
-    search_for.set "Academic Term"
+  def search_for_academic_term nm, yr=""
+    search_for.select "Academic Term"
     setnameyear nm, yr
   end
 
@@ -53,7 +53,6 @@ class CalendarSearch < BasePage
     name.set nm
     year.set yr
     search
-    loading.wait_while_present
   end
 
 end

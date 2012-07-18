@@ -17,7 +17,6 @@ module Utilities
     block.call @current_page if block
     @current_page
   end
-  alias on on_page
 
   # Strips the file name away from the path information.
   #

@@ -6,5 +6,6 @@ Feature: Create ACal
 
   Scenario: Search for newly created academic calendar
     Given I create a new Academic Calendar
+    And I save the new calendar
     When I search for the Academic Calendar
     Then it should appear in search results
