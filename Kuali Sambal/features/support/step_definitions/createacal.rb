@@ -45,4 +45,26 @@ Then /^it should appear in search results$/ do
   end
 end
 
+Given /^I have created and saved a new Academic Calendar$/ do
+  pending # express the regexp above with the code you wish you had
+end
 
+When /^I click Make Official$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^my new calendar should be set to Official$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Given /^I have created and saved a new Academic Calendar$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+When /^I copy it$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^my newly copied calendar should save, and the Make Official button should become active$/ do
+  pending # express the regexp above with the code you wish you had
+end

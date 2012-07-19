@@ -9,3 +9,13 @@ Feature: Create ACal
     And I save the new calendar
     When I search for the Academic Calendar
     Then it should appear in search results
+
+  Scenario: Make Academic Calendar Official
+    Given I have created and saved a new Academic Calendar
+    When I click Make Official
+    Then my new calendar should be set to Official
+
+  Scenario: Create acal from copy
+    Given I have created and saved a new Academic Calendar
+    When I copy it
+    Then my newly copied calendar should save, and the Make Official button should become active
