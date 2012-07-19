@@ -16,12 +16,13 @@ When /^I create a new Academic Calendar$/ do
     page.name.set @calendar_name
     page.start_date.set "01/01/2013"
     page.end_date.set "12/31/2013"
+    page.copy_academic_calendar
   end
 end
 
-When /^I copy the new calendar$/ do
-  on CreateNewAcadCalendar do |page|
-    page.copy_academic_calendar
+When /^I save the new academic calendar$/ do
+  on NewAcademicCalendar do |page|
+    page.save
   end
 end
 
