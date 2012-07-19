@@ -26,6 +26,19 @@ class BasePage < PageMaker
       crucial_element(:frm) { |b| b.frame(id: "iframeportlet") }
     end
 
+    def doc_info_elements
+      value(:document_number) { |b| b.frm.span(id: "u11").text }
+      value(:document_status) { |b| b.frm.span(id: "u28").text }
+      value(:initiator_network_id) { |b| b.frm.span(id: "u45").text }
+      value(:creation_timestamp) { |b| b.frm.span(id: "u62").text }
+    end
+
+    def green_search_buttons
+      action(:search) { |b| b.frm.button(id: "u57").click; b.loading.wait_while_present }
+      action(:clear_values) { |b| b.frm.button(id: "u58").click; b.loading.wait_while_present }
+      action(:cancel) { |b| b.frm.button(id: "u59").click; b.loading.wait_while_present }
+    end
+
   end
 
 
