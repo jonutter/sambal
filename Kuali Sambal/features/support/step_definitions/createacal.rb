@@ -45,26 +45,25 @@ Then /^it should appear in search results$/ do
   end
 end
 
-Given /^I have created and saved a new Academic Calendar$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 When /^I click Make Official$/ do
-  pending # express the regexp above with the code you wish you had
+  on NewAcademicCalendar do |page|
+    page.make_official
+  end
 end
 
 Then /^my new calendar should be set to Official$/ do
-  pending # express the regexp above with the code you wish you had
+  on CalendarSearch do |page|
+    page.calendar_status(@calendar_name).should == "Official"
+  end
 end
 
-Given /^I have created and saved a new Academic Calendar$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I copy it$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^my newly copied calendar should save, and the Make Official button should become active$/ do
-  pending # express the regexp above with the code you wish you had
+When /^I copy the calendar$/ do
+  on CalendarSearch do |page|
+    page.copy @calendar_name
+  end
+  on NewAcademicCalendar do |page|
+    page.academic_calendar_name.set random_alphanums
+    page.calendar_start_date.set "01/01/2013"
+    page.calendar_end_date.set "12/31/2013"
+  end
 end
