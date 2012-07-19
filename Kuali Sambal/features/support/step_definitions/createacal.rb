@@ -7,18 +7,21 @@ end
 When /^I create a new Academic Calendar$/ do
   @calendar_name = random_alphanums
   visit MainMenu do |page|
-    page.create_academic_calendar
+    page.enrollment_home
   end
-  on NewAcademicCalendar do |page|
-    page.academic_calendar_name.set @calendar_name
-    page.calendar_start_date.set "01/01/2013"
-    page.calendar_end_date.set "12/31/2013"
+  on Enrollment do |page|
+    page.create_new_calendar
+  end
+  on CreateNewAcadCalendar do |page|
+    page.name.set @calendar_name
+    page.start_date.set "01/01/2013"
+    page.end_date.set "12/31/2013"
   end
 end
 
-When /^I save the new calendar$/ do
-  on NewAcademicCalendar do |page|
-    page.save
+When /^I copy the new calendar$/ do
+  on CreateNewAcadCalendar do |page|
+    page.copy_academic_calendar
   end
 end
 
@@ -32,7 +35,10 @@ end
 
 When /^I search for the Academic Calendar$/ do
   visit MainMenu do |page|
-    page.calendar_search
+    page.enrollment_home
+  end
+  on Enrollment do |page|
+    page.search_for_calendar_or_term
   end
   on CalendarSearch do |page|
     page.search_for_academic_calendar @calendar_name
@@ -61,9 +67,9 @@ When /^I copy the calendar$/ do
   on CalendarSearch do |page|
     page.copy @calendar_name
   end
-  on NewAcademicCalendar do |page|
-    page.academic_calendar_name.set random_alphanums
-    page.calendar_start_date.set "01/01/2013"
-    page.calendar_end_date.set "12/31/2013"
+  on CreateNewAcadCalendar do |page|
+    page.name.set random_alphanums
+    page.start_date.set "01/01/2013"
+    page.end_date.set "12/31/2013"
   end
 end
