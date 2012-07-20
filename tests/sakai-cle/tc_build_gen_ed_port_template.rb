@@ -1202,7 +1202,7 @@ class TestBuildPortfolioTemplate < Test::Unit::TestCase
     assert_not_equal false, assignments.status_of(@assignments[0][:title])=~/Submitted/
     
     assignment3 = assignments.open_assignment @assignments[2][:title]
-    assignment3.select_file=@assignments[2][:student_file]
+    assignment3.select_file @assignments[2][:student_file], @file_path
     
     confirm = assignment3.submit
 

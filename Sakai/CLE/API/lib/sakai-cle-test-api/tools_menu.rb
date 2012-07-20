@@ -404,8 +404,6 @@ module ToolsMenu
   alias log_out logout
   alias sign_out logout
 
-  private
-
   # Shortcut method so we can put all the
   # elements into the Common gem...
   def frm

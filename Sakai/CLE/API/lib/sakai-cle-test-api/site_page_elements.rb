@@ -1684,10 +1684,13 @@ class EditCell
   include PageObject
   include ToolsMenu
 
+  thing(:select_evaluators_link) { |b| b.frm.link(:text=>"Select Evaluators") }
+
   # Clicks the "Select Evaluators" link
   # and instantiates the SelectEvaluators Class.
   def select_evaluators
-    frm.link(:text=>"Select Evaluators").click
+    select_evaluators_link.wait_until_present
+    select_evaluators_link.click
     SelectEvaluators.new(@browser)
   end
 
