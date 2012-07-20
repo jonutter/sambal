@@ -61,7 +61,7 @@ class TestCreatingCourseSite < Test::Unit::TestCase
     
     # Log in to Sakai
     workspace = @sakai.page.login(@user_name, @password)
-    
+
     #Go to Site Setup page
     site_setup = workspace.site_setup
     

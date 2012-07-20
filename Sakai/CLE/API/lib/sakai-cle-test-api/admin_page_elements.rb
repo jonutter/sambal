@@ -104,7 +104,7 @@ class Login
     frame.text_field(:id, "eid").set username
     frame.text_field(:id, "pw").set password
     frame.form(:method, "post").submit
-    MyWorkspace.new(@browser)
+    return MyWorkspace.new(@browser)
   end
   alias log_in login
   alias sign_in login
