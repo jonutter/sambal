@@ -22,10 +22,11 @@ class UserAccountUpdate < Test::Unit::TestCase
     @browser = @sakai.browser
     @login_page = @sakai.page
     # This test case requires logging in as a student
-    @user_name = @directory['person7']['id']
-    @user_first = @directory['person7']['firstname']
-    @user_last = @directory['person7']['lastname']
-    @password = @directory['person7']['password']
+    per = @directory['person9']
+    @user_name = per['id']
+    @user_first = per['firstname']
+    @user_last = per['lastname']
+    @password = per['password']
     
     # Test case data
     @first_name = random_nicelink(99)
@@ -37,7 +38,7 @@ class UserAccountUpdate < Test::Unit::TestCase
     # test asserts.
     @invalid_email_alert = "Alert: The email address is invalid"
     @unmatched_passwords = "Alert: Please enter the password the same in both fields."
-    @need_orig_pw = "Alert: Please your correct current password." # Note that this text is obviously bad. Needs a JIRA.
+    @need_orig_pw = "Alert: Please enter your correct current password." # Note that this text is obviously bad. Needs a JIRA.
     
   end
   
@@ -85,7 +86,6 @@ class UserAccountUpdate < Test::Unit::TestCase
     edit_account.create_new_password="aBcd1234$"
     edit_account.verify_new_password="aBcd1234$"
     edit_account = edit_account.update_details
-    
     # TEST CASE: Verify original password must be added
     assert @browser.text.include?(@need_orig_pw), "No warning about needing current password"
     

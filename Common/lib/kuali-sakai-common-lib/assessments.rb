@@ -566,8 +566,6 @@ module MultipleChoiceMethods
     radio_button(:require_rationale_no) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:_id166", :frame=>frame) }
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-    text_area(:feedback_for_correct, :id=>"itemForm:_id186_textinput", :frame=>frame)
-    text_area(:feedback_for_incorrect, :id=>"itemForm:_id190_textinput", :frame=>frame)
 
   end
 end
@@ -588,7 +586,6 @@ module SurveyMethods
     radio_button(:unacceptable_excellent) {|page| page.radio_button_element(:index=>5, :name=>"itemForm:selectscale", :frame=>frame)}
     radio_button(:one_to_five) {|page| page.radio_button_element(:index=>6, :name=>"itemForm:selectscale", :frame=>frame)}
     radio_button(:one_to_ten) {|page| page.radio_button_element(:index=>7, :name=>"itemForm:selectscale", :frame=>frame)}
-    text_area(:feedback, :id=>"itemForm:_id140_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
   end
@@ -604,7 +601,6 @@ module ShortAnswerMethods
     text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
     button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
     text_area(:model_short_answer, :id=>"itemForm:_id129_textinput", :frame=>frame)
-    text_area(:feedback, :id=>"itemForm:_id133_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
   end
@@ -636,8 +632,6 @@ module NumericResponseMethods
     text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
     text_area(:question_text, :id=>"itemForm:_id73_textinput", :frame=>frame)
     button(:add_attachments, :id=>"itemForm:_id117", :frame=>frame)
-    text_area(:feedback_for_correct, :id=>"itemForm:_id133_textinput", :frame=>frame)
-    text_area(:feedback_for_incorrect, :id=>"itemForm:_id135_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
 
@@ -656,8 +650,6 @@ module MatchingMethods
     text_area(:choice, :id=>"itemForm:_id147_textinput", :frame=>frame)
     text_area(:match, :id=>"itemForm:_id151_textinput", :frame=>frame)
     button(:save_pairing, :name=>"itemForm:_id164", :frame=>frame)
-    text_area(:feedback_for_correct, :id=>"itemForm:_id184_textinput", :frame=>frame)
-    text_area(:feedback_for_incorrect, :id=>"itemForm:_id189_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
 
@@ -678,8 +670,6 @@ module TrueFalseMethods
     radio_button(:answer_false) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:TF", :frame=>frame)}
     radio_button(:required_rationale_yes) {|page| page.radio_button_element(:index=>0, :name=>"itemForm:rational", :frame=>frame)}
     radio_button(:required_rationale_no) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:rational", :frame=>frame)}
-    text_area(:feedback_for_correct, :id=>"itemForm:_id148_textinput", :frame=>frame)
-    text_area(:feedback_for_incorrect, :id=>"itemForm:_id152_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
 
@@ -697,7 +687,6 @@ module AudioRecordingMethods
     button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
     text_field(:time_allowed, :id=>"itemForm:timeallowed", :frame=>frame)
     select_list(:number_of_attempts, :id=>"itemForm:noattempts", :frame=>frame)
-    text_field(:feedback, :id=>"itemForm:_id146_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
 
@@ -714,7 +703,6 @@ module FileUploadMethods
     text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
     text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
     button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
-    text_field(:feedback, :id=>"itemForm:_id130_textinput", :frame=>frame)
     select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
     select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
 

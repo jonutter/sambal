@@ -37,3 +37,7 @@ class AddEditTopic
   include ToolsMenu
   include AddEditTopicMethods
 end
+
+class ForumsAddAttachments
+  include ToolsMenu
+end

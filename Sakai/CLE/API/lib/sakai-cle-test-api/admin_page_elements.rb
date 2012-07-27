@@ -744,7 +744,12 @@ class EditUser
   
   include PageObject
   include ToolsMenu
-  
+
+  def update_details
+    frm.button(:name=>"eventSubmit_doSave").click
+    sleep 1
+  end
+
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:remove_user, :text=>"Remove User", :frame=>frame)
     text_field(:first_name, :id=>"first-name", :frame=>frame)
@@ -752,7 +757,6 @@ class EditUser
     text_field(:email, :id=>"email", :frame=>frame)
     text_field(:create_new_password, :id=>"pw", :frame=>frame)
     text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
-    button(:update_details, :name=>"eventSubmit_doSave", :frame=>frame)
     button(:cancel_changes, :name=>"eventSubmit_doCancel", :frame=>frame)
   end
   

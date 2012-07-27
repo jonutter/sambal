@@ -146,9 +146,7 @@ module SyllabusPreviewMethods
     AddEditSyllabusItem.new(@browser)
   end
 
-  def self.page_elements(identifier)
-    in_frame(identifier) do |frame|
-    end
+  in_frame(:class=>"portletMainIframe") do |frame|
   end
 end
 
@@ -159,10 +157,8 @@ module SyllabusRedirectMethods
     SyllabusEdit.new(@browser)
   end
 
-  def self.page_elements(identifier)
-    in_frame(identifier) do |frame|
-      text_field(:url, :id=>"redirectForm:urlValue", :frame=>frame)
-    end
+  in_frame(:class=>"portletMainIframe") do |frame|
+    text_field(:url, :id=>"redirectForm:urlValue", :frame=>frame)
   end
 end
 

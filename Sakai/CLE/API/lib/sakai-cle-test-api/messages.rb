@@ -13,7 +13,7 @@ end
 class MessagesReceivedList
   include PageObject
   include ToolsMenu
-  include MessagesSentListMethods
+  include MessagesReceivedListMethods
 end
 
 # Page for the Contents of a Custom Folder for Messages
