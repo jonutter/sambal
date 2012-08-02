@@ -63,5 +63,7 @@ class MainMenu < BasePage
   action(:term_lookup) { |b| b.link(title: "Term Lookup").click }
   action(:term_specification_lookup) { |b| b.link(title: "Term Specification Lookup").click }
   action(:category_lookup) { |b| b.link(title: "Category Lookup").click }
+  action(:manage_population) { |b| b.link(title: "Manage Population (Lookup)").click }
+  action(:population_maintenance_edoc) { |b| b.link(title: "Population Maintenance eDoc (New)").click }
 
 end
