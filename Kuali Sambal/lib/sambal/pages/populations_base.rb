@@ -69,6 +69,7 @@ module PopulationsSearch
   # Returns an array containing the names of the items returned in the search
   def results_list
     names = []
+    results_table.wait_until_present
     results_table.rows.each { |row| names << row[POPULATION_NAME].text }
     names.delete_if { |name| name == "" }
     names
