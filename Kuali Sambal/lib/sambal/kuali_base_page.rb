@@ -37,6 +37,7 @@ class BasePage < PageMaker
       action(:search) { |b| b.frm.button(id: "u57").click; b.loading.wait_while_present }
       action(:clear_values) { |b| b.frm.button(id: "u58").click; b.loading.wait_while_present }
       action(:cancel) { |b| b.frm.button(id: "u59").click; b.loading.wait_while_present }
+      action(:close) { |b| b.frm.button(id: "u62").click; b.loading.wait_while_present }
     end
 
   end

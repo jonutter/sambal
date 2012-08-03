@@ -1,8 +1,6 @@
 When /^I create a population that is (.*)$/ do |type|
   # navigate to page...
-  visit MainMenu do |page|
-    page.population_maintenance_edoc
-  end
+  go_to_create_population
   # Enter a random name, description, and rule...
   @pop_name = random_alphanums
   @pop_desc = random_multiline(15, 3)
@@ -13,10 +11,7 @@ When /^I create a population that is (.*)$/ do |type|
     case(type)
       when 'rule-based'
         # Select a random rule...
-        rules = []
-        page.rule.options.to_a.each { |item| rules << item.text }
-        rules.shuffle!
-        @rule = rules[0]
+        @rule = page.random_rule
         page.rule.select @rule
       when 'union-based'
         # Select union...
@@ -27,10 +22,14 @@ When /^I create a population that is (.*)$/ do |type|
       when 'exclusion-based'
         # Select exclusion...
         page.exclusion
+        @ref_pop = add_random_ref_pop
     end
   end
   # Add two random populations...
-  2.times { add_random_population } unless type=='rule-based'
+  unless type=='rule-based'
+    @pop1 = add_random_population
+    @pop2 = add_random_population unless type == 'exclusion-based'
+  end
 
   on CreatePopulation do |page|
     # Click the create population button...
@@ -40,9 +39,7 @@ end
 
 When /^I create another population with the same name$/ do
   # navigate to page...
-  visit MainMenu do |page|
-    page.population_maintenance_edoc
-  end
+  go_to_create_population
   on CreatePopulation do |page|
     page.name.set @pop_name
     page.description.set random_alphanums
@@ -52,14 +49,12 @@ end
 
 Then /^an error message appears indicating that the Population Name is NOT unique$/ do
   on CreatePopulation do |page|
-    page.error_message.should == "Name: Population Name set is already in use. Please enter a different, unique population name."
+    page.error_message.should == "Name: Population Name #{@pop_name} is already in use. Please enter a different, unique population name."
   end
 end
 
 Then /^there is no new population created$/ do
-  visit MainMenu do |page|
-    page.manage_population
-  end
+  go_to_manage_population
   on ManagePopulations do |page|
     page.keyword.set @pop_name
     page.search
@@ -68,9 +63,7 @@ Then /^there is no new population created$/ do
 end
 
 Then /^the population exists with a state of "(.*?)"$/ do |state|
-  visit MainMenu do |page|
-    page.manage_population
-  end
+  go_to_manage_population
   on ManagePopulations do |page|
     page.keyword.set @pop_name
     page.search

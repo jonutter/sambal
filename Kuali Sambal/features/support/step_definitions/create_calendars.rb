@@ -1,7 +1,7 @@
 Given /^I am logged in as admin$/ do
-    visit Login do |page|
-      page.login_with "admin", "admin"
-    end
+  visit Login do |page|
+    page.login_with "admin", "admin"
+  end
 end
 
 When /^I create a new Academic Calendar$/ do
@@ -10,7 +10,7 @@ When /^I create a new Academic Calendar$/ do
     page.enrollment_home
   end
   on Enrollment do |page|
-    page.create_new_calendar
+    page.create_academic_calendar
   end
   on CreateNewAcadCalendar do |page|
     page.name.set @calendar_name

@@ -10,4 +10,8 @@ module PageHelper
     @current_page
   end
 
+  def wait_until(timeout=30, message=nil, &block)
+    self.wait_until(timeout, message, &block)
+  end
+
 end
