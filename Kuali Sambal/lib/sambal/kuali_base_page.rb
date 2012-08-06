@@ -34,10 +34,10 @@ class BasePage < PageMaker
     end
 
     def green_search_buttons
-      action(:search) { |b| b.frm.button(id: "u57").click; b.loading.wait_while_present }
-      action(:clear_values) { |b| b.frm.button(id: "u58").click; b.loading.wait_while_present }
-      action(:cancel) { |b| b.frm.button(id: "u59").click; b.loading.wait_while_present }
-      action(:close) { |b| b.frm.button(id: "u62").click; b.loading.wait_while_present }
+      action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
+      action(:clear_values) { |b| b.frm.button(text: "Clear Values").click; b.loading.wait_while_present }
+      action(:cancel) { |b| b.frm.button(text: "Cancel").click; b.loading.wait_while_present }
+      action(:close) { |b| b.frm.button(text: "Close").click; b.loading.wait_while_present }
     end
 
   end

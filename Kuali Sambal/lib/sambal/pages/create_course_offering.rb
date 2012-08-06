@@ -4,10 +4,10 @@ class CreateCourseOffering < BasePage
   frame_element
   doc_info_elements
 
-  crucial_element(:target_term) { |b| b.frm.text_field(id: "u115_control") }
-  crucial_element(:catalogue_course_code) { |b| b.frm.text_field(id: "u133_control") }
+  crucial_element(:target_term) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.targetTermCode") }
+  crucial_element(:catalogue_course_code) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.catalogCourseCode") }
 
-  action(:show) { |b| b.frm.button(id: "u150").click; b.loading.wait_while_present }
+  action(:show) { |b| b.frm.button(text: "Show").click; b.loading.wait_while_present }
   action(:create_offering) { |b| b.frm.button(id: "createOfferingButton").click; b.loading.wait_while_present }
   action(:search) { |b| b.frm.link(text: "Search").click; b.loading.wait_while_present }
 

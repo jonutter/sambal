@@ -1,10 +1,10 @@
-class RolloverManagement < BasePage
+class PerformRollover < BasePage
 
   wrapper_elements
   frame_element
 
   element(:target_term) { |b| b.frm.text_field(name: "targetTermCode") }
-  element(:source_term) { |b| b.frm.text_field() }
+  element(:source_term) { |b| b.frm.text_field(name: "sourceTermCode") }
 
   value(:target_term_code) { |b| b.frm.span(id: "u155").text }
   value(:target_term_start_date) { |b| b.frm.span(id: "u166").text }
