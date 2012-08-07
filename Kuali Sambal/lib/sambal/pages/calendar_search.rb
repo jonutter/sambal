@@ -3,10 +3,15 @@ class CalendarSearch < BasePage
   wrapper_elements
   frame_element
 
+  CALENDAR_NAME = 0
+  CALENDAR_START_DATE = 1
+  CALENDAR_END_DATE = 2
+  CALENDAR_STATUS = 3
+
   element(:search_for)  { |b| b.frm.select(name: "calendarType") }
   element(:name) { |b| b.frm.text_field(name: "name") }
   element(:year) { |b| b.frm.text_field(name: "year") }
-  element(:search_results) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
+  element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
 
   action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
 
@@ -26,27 +31,35 @@ class CalendarSearch < BasePage
   end
 
   def view calendar
-    search_results.row(text: /#{calendar}/).link(text: "View").click
+    results_table.row(text: /#{calendar}/).link(text: "View").click
     loading.wait_while_present
   end
 
   def edit calendar
-    search_results.row(text: /#{calendar}/).link(text: "Edit").click
+    results_table.row(text: /#{calendar}/).link(text: "Edit").click
     loading.wait_while_present
   end
 
   def copy calendar
-    search_results.row(text: /#{calendar}/).link(text: "Copy").click
+    results_table.row(text: /#{calendar}/).link(text: "Copy").click
     loading.wait_while_present
   end
 
   def delete calendar
-    search_results.row(text: /#{calendar}/).link(text: "Delete").click
+    results_table.row(text: /#{calendar}/).link(text: "Delete").click
     loading.wait_while_present
   end
 
   def calendar_status calendar
-    search_results.row(text: /#{calendar}/).div(id: /u315/).text
+    results_table.row(text: /#{calendar}/)[CALENDAR_STATUS].text
+  end
+
+  def results_list
+    list = []
+    results_table.rows.each do |row|
+      list << row[CALENDAR_NAME].text
+    end
+    list
   end
 
   private

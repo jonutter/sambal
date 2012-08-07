@@ -1,7 +1,7 @@
 class ActivePopulationLookup < PopulationsBase
 
   def frm
-    self.frame(id: "fancybox-frame")
+    self.frame(class: "fancybox-iframe")
   end
 
   include PopulationsSearch

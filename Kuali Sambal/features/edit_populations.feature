@@ -44,6 +44,6 @@ Then a read-only view of the population information is displayed
 And the population exists with a state of "inactive"
 
 Scenario: Try to edit a population using a name that has already been associated with a population
-When I rename a population named "Freshman" to "Sophomore"
+When I rename a population with an existing name
 Then an error message appears indicating that the Population Name is NOT unique
-And the population name "Freshman" is not changed
+And the population name is not changed

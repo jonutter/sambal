@@ -5,7 +5,7 @@ class PopulationsBase < BasePage
   class << self
 
     def population_lookup_elements
-      element(:keyword) { |b| b.frm.text_field(name: "criteriaFields[keyword]") }
+      element(:keyword) { |b| b.frm.text_field(name: "lookupCriteria[keyword]") }
       element(:results_table) { |b| b.frm.table(index: 1) }
 
       element(:active) { |b| b.frm.radio(value: "kuali.population.population.state.active") }

@@ -25,15 +25,15 @@ When /^I edit the (.*) of the population$/ do |attrib|
       when 'rule'
         @old_rule = @rule
         # Select a random rule...
-        def new_random_rule
+        def new_random_rule(pg)
           new_rule = page.random_rule
           if new_rule == @old_rule
-            new_random_rule
+            new_random_rule(pg)
           else
             new_rule
           end
         end
-        @rule = new_random_rule
+        @rule = new_random_rule(page)
         page.rule.select @rule
       when 'populations'
         @old_pop1 = @pop1
@@ -54,4 +54,13 @@ Then /^a read-only view of the population information is displayed$/ do
     page.populations.should include @pop1
     page.populations.should include @pop2
   end
+end
+
+When /^I rename a population with an existing name$/ do
+
+
+end
+
+Then /^the population name is not changed$/ do
+
 end

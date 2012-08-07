@@ -1,4 +1,4 @@
-class NewAcademicCalendar < BasePage
+class AcademicCalendar < BasePage
 
   wrapper_elements
   frame_element
@@ -27,6 +27,7 @@ class NewAcademicCalendar < BasePage
 
   action(:make_official) { |p| p.make_official_button.click; p.loading.wait_while_present }
   action(:save) { |b| b.frm.button(text: "Save").click; b.loading.wait_while_present }
+  action(:delete_draft) { |b| b.frm.link(text: "Delete Draft").click }
 
   element(:term_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList'].termType") }
   element(:term_start_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].startDate") }
