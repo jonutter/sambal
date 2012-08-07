@@ -26,20 +26,19 @@ class BasePage < PageMaker
       crucial_element(:frm) { |b| b.frame(id: "iframeportlet") }
     end
 
-    def doc_info_elements
-      value(:document_number) { |b| b.frm.span(id: "u11").text }
-      value(:document_status) { |b| b.frm.span(id: "u28").text }
-      value(:initiator_network_id) { |b| b.frm.span(id: "u45").text }
-      value(:creation_timestamp) { |b| b.frm.span(id: "u62").text }
-    end
-
     def green_search_buttons
-      action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
-      action(:clear_values) { |b| b.frm.button(text: "Clear Values").click; b.loading.wait_while_present }
-      action(:cancel) { |b| b.frm.button(text: "Cancel").click; b.loading.wait_while_present }
-      action(:close) { |b| b.frm.button(text: "Close").click; b.loading.wait_while_present }
+      action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present } # Persistent ID needed!
+      action(:clear_values) { |b| b.frm.button(text: "Clear Values").click; b.loading.wait_while_present } # Persistent ID needed!
+      action(:cancel) { |b| b.frm.button(text: "Cancel").click; b.loading.wait_while_present } # Persistent ID needed!
+      action(:close) { |b| b.frm.button(text: "Close").click; b.loading.wait_while_present } # Persistent ID needed!
     end
 
+    def validation_elements
+      value(:error_header) { |b| b.frm.h3(id: "pageValidationHeader").text }
+      alias_method info_header, error_header
+      value(:error_list) { |b| b.frm.ul(id: "pageValidationList") }
+      alias_method info_list, error_list
+    end
   end
 
 

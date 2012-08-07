@@ -1,7 +1,7 @@
 class ActivePopulationLookup < PopulationsBase
 
   def frm
-    self.frame(class: "fancybox-iframe")
+    self.frame(class: "fancybox-iframe") # Persistent ID needed!
   end
 
   include PopulationsSearch

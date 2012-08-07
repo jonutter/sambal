@@ -6,14 +6,14 @@ class PerformRollover < BasePage
   element(:target_term) { |b| b.frm.text_field(name: "targetTermCode") }
   element(:source_term) { |b| b.frm.text_field(name: "sourceTermCode") }
 
-  value(:target_term_code) { |b| b.frm.span(id: "u155").text }
-  value(:target_term_start_date) { |b| b.frm.span(id: "u166").text }
-  value(:target_term_end_date) { |b| b.frm.span(id: "u177").text }
+  value(:target_term_code) { |b| b.frm.span(id: "u155").text } # Persistent ID needed!
+  value(:target_term_start_date) { |b| b.frm.span(id: "u166").text } # Persistent ID needed!
+  value(:target_term_end_date) { |b| b.frm.span(id: "u177").text } # Persistent ID needed!
 
-  action(:target_term_go) { |b| b.frm.button(id: "u130").click }
-  action(:source_term_go) { |b| b.frm.button(id: "u263").click }
+  action(:target_term_go) { |b| b.frm.button(id: "u130").click } # Persistent ID needed!
+  action(:source_term_go) { |b| b.frm.button(id: "u263").click } # Persistent ID needed!
 
-  element(:rollover_button) { |b| b.frm.button(id: "u46") }
+  element(:rollover_button) { |b| b.frm.button(id: "u46") } # Persistent ID needed!
 
   action(:rollover_course_offerings) { |b| b.rollover_button.click; b.loading.wait_while_present }
 

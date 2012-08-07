@@ -22,18 +22,18 @@ class AcademicCalendar < BasePage
   element(:event_end_ampm) { |b| b.frm.select(name: "newCollectionLines['events'].endTimeAmPm") }
   element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['events'].allDay") }
   element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['events'].dateRange") }
-  element(:add_event) { |b| b.frm.button(id: "u177_add") }
-  element(:make_official_button) { |b| b.frm.button(text: "Make Official") }
+  element(:add_event) { |b| b.frm.button(id: "u177_add") } # Persistent ID needed! Note that there can be multiple Adds on the page. Element identifiers for all need to be helpful
+  element(:make_official_button) { |b| b.frm.button(text: "Make Official") } # Persistent ID needed!
 
   action(:make_official) { |p| p.make_official_button.click; p.loading.wait_while_present }
-  action(:save) { |b| b.frm.button(text: "Save").click; b.loading.wait_while_present }
-  action(:delete_draft) { |b| b.frm.link(text: "Delete Draft").click }
+  action(:save) { |b| b.frm.button(text: "Save").click; b.loading.wait_while_present } # Persistent ID needed!
+  action(:delete_draft) { |b| b.frm.link(text: "Delete Draft").click } # Persistent ID needed!
 
   element(:term_type) { |b| b.frm.select(name: "newCollectionLines['termWrapperList'].termType") }
   element(:term_start_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].startDate") }
   element(:term_end_date) { |b| b.frm.text_field(name: "newCollectionLines['termWrapperList'].endDate") }
   
-  action(:add_term) { |b| b.frm.button(id: "u666_add").click; loading.wait_while_present }
+  action(:add_term) { |b| b.frm.button(id: "u666_add").click; loading.wait_while_present } # Persistent ID needed!
 
   element(:term_info_name) { |b| b.frm.text_field(name: "termWrapperList[0].name") }
   element(:term_info_start_date) { |b| b.frm.text_field(name: "termWrapperList[0].startDate") }
@@ -49,7 +49,7 @@ class AcademicCalendar < BasePage
   element(:key_date_all_day) { |b| b.frm.checkbox(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].allDay") }
   element(:key_date_date_range) { |b| b.frm.checkbox(name: "newCollectionLines['termWrapperList_0_.keyDatesGroupWrappers_0_.keydates'].dateRange") }
 
-  action(:key_date_add) { |b| b.frm.button(id: "u1326_line0_line0_add").click }
-  action(:delete_keydate_group) { |b| b.frm.button(text: "delete keydate group").click }
+  action(:key_date_add) { |b| b.frm.button(id: "u1326_line0_line0_add").click } # Persistent ID needed!
+  action(:delete_keydate_group) { |b| b.frm.button(text: "delete keydate group").click } # Persistent ID needed!
 
 end

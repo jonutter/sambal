@@ -6,7 +6,7 @@ class PopulationsBase < BasePage
 
     def population_lookup_elements
       element(:keyword) { |b| b.frm.text_field(name: "lookupCriteria[keyword]") }
-      element(:results_table) { |b| b.frm.table(index: 1) }
+      element(:results_table) { |b| b.frm.table(index: 1) }  # Persistent ID needed!
 
       element(:active) { |b| b.frm.radio(value: "kuali.population.population.state.active") }
       element(:inactive) { |b| b.frm.radio(value: "kuali.population.population.state.inactive") }
@@ -20,11 +20,9 @@ class PopulationsBase < BasePage
       element(:population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
 
-      action(:lookup_population) { |b| b.frm.button(id: "u275_add").click; b.loading.wait_while_present }
-      action(:lookup_ref_population) { |b| b.frm.button(id: "u194").click; b.loading.wait_while_present }
-      action(:add) { |b| b.frm.button(text: "add").click; b.loading.wait_while_present; sleep 1.5 }
-
-      value(:error_message) { |b| b.frm.li(class: "uif-errorMessageItem", index: 1).text }
+      action(:lookup_population) { |b| b.frm.button(id: "u275_add").click; b.loading.wait_while_present } # Persistent ID needed!
+      action(:lookup_ref_population) { |b| b.frm.button(id: "u194").click; b.loading.wait_while_present } # Persistent ID needed!
+      action(:add) { |b| b.frm.button(text: "add").click; b.loading.wait_while_present; sleep 1.5 } # Persistent ID needed! Note that there can be multiple "adds" on the screen. We need helpful ids for all.
     end
 
   end

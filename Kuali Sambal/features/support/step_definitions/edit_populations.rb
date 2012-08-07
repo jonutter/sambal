@@ -25,10 +25,10 @@ When /^I edit the (.*) of the population$/ do |attrib|
       when 'rule'
         @old_rule = @rule
         # Select a random rule...
-        def new_random_rule(pg)
+        def new_random_rule(page)
           new_rule = page.random_rule
           if new_rule == @old_rule
-            new_random_rule(pg)
+            new_random_rule(page)
           else
             new_rule
           end

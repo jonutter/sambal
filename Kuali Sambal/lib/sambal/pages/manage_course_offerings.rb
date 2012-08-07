@@ -8,6 +8,6 @@ class ManageCourseOfferings < BasePage
   element(:subject_code) { |b| b.frm.radio(value: "subjectCode") }
   element(:input_code) { |b| b.frm.text_field(name: "inputCode") }
 
-  action(:show) { |b| b.frm.button(text: "Show").click; b.loading.wait_while_present }
+  action(:show) { |b| b.frm.button(text: "Show").click; b.loading.wait_while_present } # Persistent ID needed!
 
 end

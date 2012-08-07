@@ -33,7 +33,7 @@ And I edit the populations of the population
 Then a read-only view of the population information is displayed
 And the population exists with a state of "inactive"
 
-Scenario: Create a population using Intersection operation
+Scenario: Edit a population that uses Intersection
 When I create a population that is intersection-based
 And I edit the name of the population
 And I edit the description of the population
