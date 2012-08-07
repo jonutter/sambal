@@ -2,7 +2,6 @@ class CreateCourseOffering < BasePage
 
   wrapper_elements
   frame_element
-  doc_info_elements
 
   crucial_element(:target_term) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.targetTermCode") }
   crucial_element(:catalogue_course_code) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.catalogCourseCode") }

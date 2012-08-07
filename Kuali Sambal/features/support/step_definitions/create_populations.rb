@@ -5,6 +5,7 @@ When /^I create a population that is (.*)$/ do |type|
   @pop_name = random_alphanums
   @pop_desc = random_multiline(15, 3)
   on CreatePopulation do |page|
+    page.name.wait_until_present(3)
     page.name.set @pop_name
     page.description.set @pop_desc
     page.by_using_populations unless type == 'rule-based'
