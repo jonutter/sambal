@@ -1,5 +1,7 @@
 class DeleteTargetTerm < BasePage
 
+  expected_element :text_field, {name: "targetTermCode"}, 1
+
   wrapper_elements
   frame_element
 

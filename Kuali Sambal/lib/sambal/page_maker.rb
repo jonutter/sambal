@@ -3,7 +3,6 @@ class PageMaker
   def initialize browser, visit = false
     @browser = browser
     goto if visit
-
     expected_element if respond_to? :expected_element
     has_expected_title? if respond_to? :has_expected_title?
   end
@@ -27,9 +26,16 @@ class PageMaker
       end
     end
 
-    def expected_element type, identifier, timeout=30
+    def expected_element type, identifier, kase=0, timeout=30
       define_method 'expected_element' do
-        @browser.send("#{type.to_s}", identifier).wait_until_present timeout
+        case(kase)
+          when 0
+            @browser.send("#{type.to_s}", identifier).wait_until_present timeout
+          when 1
+            @browser.frame(id: "iframeportlet").send("#{type.to_s}", identifier).wait_until_present timeout
+          when 2
+            @browser.frame(class: "fancybox-iframe").send("#{type.to_s}", identifier).wait_until_present timeout
+        end
       end
     end
 
@@ -71,16 +77,6 @@ class PageMaker
       end
     end
     return x
-  end
-
-  # TODO - I don't think this method belongs here. Should be moved. Not sure where, yet. (Maybe to PageHelper?)
-  def wait_for_page(timeout=5)
-    end_time = ::Time.now + timeout
-    while self.execute_script("return jQuery.active") > 0
-      sleep 0.2
-      break if ::Time.now > end_time
-    end
-    self.wait(timeout + 10)
   end
 
 end

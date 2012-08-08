@@ -1,5 +1,7 @@
 class Enrollment < BasePage
 
+  expected_element :link, {text: "Search for Calendar or Term"}, 1
+
   wrapper_elements
   frame_element
 

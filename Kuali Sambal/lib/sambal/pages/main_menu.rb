@@ -2,6 +2,7 @@ class MainMenu < BasePage
 
   page_url "#{TEST_SITE}/portal.do?selectedTab=main"
   expected_title /Kuali Portal Index/
+  expected_element :link, {title: "Enrollment Home"}
 
   wrapper_elements
 

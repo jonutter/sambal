@@ -1,5 +1,7 @@
 class AddHold < HoldBase
 
+  expected_element :button, {text: "Save"}, 1
+
   frame_element
   wrapper_elements
   hold_elements

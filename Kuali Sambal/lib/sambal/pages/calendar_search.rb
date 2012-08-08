@@ -1,5 +1,7 @@
 class CalendarSearch < BasePage
 
+  expected_element :text_field, {name: "name"}, 1
+
   wrapper_elements
   frame_element
 

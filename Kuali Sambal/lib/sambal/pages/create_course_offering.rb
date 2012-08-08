@@ -1,5 +1,7 @@
 class CreateCourseOffering < BasePage
 
+  expected_element :text_field, {name: "document.newMaintainableObject.dataObject.targetTermCode"}, 1
+
   wrapper_elements
   frame_element
 

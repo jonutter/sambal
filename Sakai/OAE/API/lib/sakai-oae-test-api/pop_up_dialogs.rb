@@ -18,9 +18,7 @@ module AccountPreferencesPopUp
   text_field(:new_password, :id=>"new_pass")
   text_field(:retype_password, :id=>"retype_pass")
 
-  button(:save_new_password, :text=>"Save new password")
-  button(:save_preferences, :text=>"Save preferences")
-  button(:save_privacy_settings, :text=>"Save privacy settings")
+  button(:save_changes, :id=>"accountpreferences_submit")
 
   span(:new_password_error, :id=>"new_pass_error")
   span(:retype_password_error, :id=>"retype_pass_error")
@@ -31,16 +29,8 @@ module AccountPreferencesPopUp
   # cancel buttons on this pop-up. This method will find the one that works
   # and click on it.
   def cancel
-    case
-      when self.div(:id=>"accountpreferences_preferContainer").visible?
-        self.div(:id=>"accountpreferences_preferContainer").button(:class=>"s3d-link-button s3d-bold accountpreferences_cancel").click
-      when self.div(:id=>"accountpreferences_changePrivacyContainer").visible?
-        self.div(:id=>"accountpreferences_changePrivacyContainer").button(:class=>"s3d-link-button s3d-bold accountpreferences_cancel").click
-      when self.div(:id=>"accountpreferences_changePassContainer").visible?
-        self.div(:id=>"accountpreferences_changePassContainer").button(:class=>"s3d-link-button s3d-bold accountpreferences_cancel").click
-      else
-        puts "\nCouldn't find the cancel button!\n"
-    end
+    self.div(:class=>"save-preferences").button(:text=>"Cancel").click
+    self.wait_for_ajax
   end
 
 end # AccountPreferencesPopUp
