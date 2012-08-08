@@ -1,5 +1,7 @@
 class CalendarSearch < BasePage
 
+  expected_element :name
+
   wrapper_elements
   frame_element
 

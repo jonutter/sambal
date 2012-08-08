@@ -10,7 +10,6 @@ class Login < PageMaker
     username_field.set username
     password_field.set password
     login_button.click
-    #wait_for_page
   end
 
 end

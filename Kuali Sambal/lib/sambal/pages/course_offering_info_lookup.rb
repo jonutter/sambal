@@ -1,5 +1,7 @@
 class CourseOfferingInfoLookup < BasePage
 
+  expected_element :term_id
+
   wrapper_elements
   frame_element
   green_search_buttons

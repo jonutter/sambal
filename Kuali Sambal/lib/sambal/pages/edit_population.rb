@@ -1,5 +1,7 @@
 class EditPopulation < PopulationsBase
 
+  expected_element :active
+
   frame_element
   population_attribute_elements
   include PopulationEdit

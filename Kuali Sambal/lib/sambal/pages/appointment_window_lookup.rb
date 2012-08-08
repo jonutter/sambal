@@ -1,5 +1,7 @@
 class AppointmentWindowLookup < BasePage
 
+  expected_element :year
+
   wrapper_elements
   frame_element
   green_search_buttons

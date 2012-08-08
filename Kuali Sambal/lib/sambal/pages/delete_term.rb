@@ -1,5 +1,7 @@
 class DeleteTargetTerm < BasePage
 
+  expected_element :term
+
   wrapper_elements
   frame_element
 

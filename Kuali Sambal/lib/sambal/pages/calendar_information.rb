@@ -1,9 +1,13 @@
 class CalendarInformation < BasePage
 
+  expected_element :last_saved_element
+
   frame_element
   wrapper_elements
 
-  value(:last_saved) { |b| b.frm.span(id: "u35_span").text } # Persistent ID needed!
+  element(:last_saved_element) { |b| b.frm.span(id: "u35_span") }
+
+  value(:last_saved) { |b| b.last_saved_element.text } # Persistent ID needed!
   value(:calendar_name) { |b| b.frm.span(id: "u40").text } # Persistent ID needed!
   value(:organization) { |b| b.frm.span(id: "u57").text } # Persistent ID needed!
 

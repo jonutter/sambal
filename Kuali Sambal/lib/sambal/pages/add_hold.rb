@@ -1,5 +1,7 @@
 class AddHold < HoldBase
 
+  expected_element :hold_name
+
   frame_element
   wrapper_elements
   hold_elements

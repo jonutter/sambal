@@ -1,5 +1,7 @@
 class AcademicCalendar < BasePage
 
+  expected_element :academic_calendar_name
+
   wrapper_elements
   frame_element
 
