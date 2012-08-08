@@ -3,6 +3,7 @@ class PageMaker
   def initialize browser, visit = false
     @browser = browser
     goto if visit
+    wait_for_page # TODO: Make sure this isn't useless here.
     expected_element if respond_to? :expected_element
     has_expected_title? if respond_to? :has_expected_title?
   end

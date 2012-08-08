@@ -9,4 +9,5 @@ require 'page_maker'
 require 'workflows'
 require 'kuali_base_page'
 require 'pages/populations_base'
+require 'pages/hold_base'
 Dir["#{File.dirname(__FILE__)}/sambal/pages/*.rb"].each {|f| require f }

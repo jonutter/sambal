@@ -2,6 +2,7 @@ class CreatePopulation < PopulationsBase
 
   frame_element
   population_attribute_elements
+  validation_elements
   include PopulationEdit
 
   action(:by_using_populations) { |b| b.frm.link(text: "By Using Populations").click; b.loading.wait_while_present } # Persistent ID needed!
