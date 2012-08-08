@@ -1,7 +1,5 @@
 class AcademicCalendar < BasePage
 
-  expected_element :text_field, {name: "academicCalendarInfo.name"}, 1
-
   wrapper_elements
   frame_element
 

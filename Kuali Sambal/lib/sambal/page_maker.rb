@@ -26,16 +26,9 @@ class PageMaker
       end
     end
 
-    def expected_element type, identifier, kase=0, timeout=30
+    def expected_element thingy, timeout=30
       define_method 'expected_element' do
-        case(kase)
-          when 0
-            @browser.send("#{type.to_s}", identifier).wait_until_present timeout
-          when 1
-            @browser.frame(id: "iframeportlet").send("#{type.to_s}", identifier).wait_until_present timeout
-          when 2
-            @browser.frame(class: "fancybox-iframe").send("#{type.to_s}", identifier).wait_until_present timeout
-        end
+        self.send(thingy).wait_until_present timeout
       end
     end
 

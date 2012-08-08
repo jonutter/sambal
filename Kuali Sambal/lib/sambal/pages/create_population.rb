@@ -1,7 +1,5 @@
 class CreatePopulation < PopulationsBase
 
-  expected_element :text_field, {name: "document.newMaintainableObject.dataObject.populationInfo.name"}, 1
-
   frame_element
   population_attribute_elements
   validation_elements

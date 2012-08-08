@@ -1,11 +1,13 @@
 class Enrollment < BasePage
 
-  expected_element :link, {text: "Search for Calendar or Term"}, 1
+  expected_element :home_link
 
   wrapper_elements
   frame_element
 
-  action(:home) { |p| p.frm.link(text: "Home").click }
+  element(:home_link) { |b| b.frm.link(text: "Home") }
+
+  action(:home) { |p| p.home_link.click }
   action(:search_for_calendar_or_term) { |p| p.frm.link(text: "Search for Calendar or Term").click }
   action(:create_academic_calendar) { |p| p.frm.link(text: "Create New Calendar (Academic Year)").click }
   action(:create_holiday_calendar) { |p| p.frm.link(text: "Create Holiday Calendar").click }

@@ -1,7 +1,5 @@
 class CalendarInformation < BasePage
 
-  expected_element :h3, {class: "uif-headerText"}, 1
-
   frame_element
   wrapper_elements
 
