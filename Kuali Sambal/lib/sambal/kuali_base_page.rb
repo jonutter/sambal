@@ -36,8 +36,9 @@ class BasePage < PageMaker
     def validation_elements
       value(:error_header) { |b| b.frm.h3(id: "pageValidationHeader").text }
       value(:info_header) { |b| b.frm.h3(id: "pageValidationHeader").text }
-      value(:error_list) { |b| b.frm.ul(id: "pageValidationList") }
-      value(:info_list) { |b| b.frm.ul(id: "pageValidationList") }
+      element(:error_list) { |b| b.frm.ul(id: "pageValidationList") }
+      element(:info_list) { |b| b.frm.ul(id: "pageValidationList") }
+      value(:first_error) { |b| b.error_list.link.text }
     end
   end
 

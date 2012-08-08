@@ -50,7 +50,7 @@ end
 
 Then /^an error message appears indicating that the Population Name is NOT unique$/ do
   on CreatePopulation do |page|
-    page.error_message.should == "Name: Population Name #{@pop_name} is already in use. Please enter a different, unique population name."
+    page.first_error.should == "Name: Population Name #{@pop_name} is already in use. Please enter a different, unique population name."
   end
 end
 
