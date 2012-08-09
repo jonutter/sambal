@@ -26,9 +26,9 @@ class PageMaker
       end
     end
 
-    def expected_element thingy, timeout=30
+    def expected_element element_name, timeout=30
       define_method 'expected_element' do
-        self.send(thingy).wait_until_present timeout
+        self.send(element_name).wait_until_present timeout
       end
     end
 

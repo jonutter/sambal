@@ -8,6 +8,5 @@ require 'page_helper' # TODO - These will need to be updated when this get gemmi
 require 'page_maker'
 require 'workflows'
 require 'kuali_base_page'
-require 'pages/populations_base'
-require 'pages/hold_base'
+require 'pages/base_page_classes'
 Dir["#{File.dirname(__FILE__)}/sambal/pages/*.rb"].each {|f| require f }
