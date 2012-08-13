@@ -40,6 +40,7 @@ module PopulationsSearch
   # Clicks the 'return value' link for the named row
   def return_value(name)
     target_row(name).wait_until_present
+    target_row(name).link(text: "return value").wait_until_present
     target_row(name).link(text: "return value").click
     loading.wait_while_present
   end

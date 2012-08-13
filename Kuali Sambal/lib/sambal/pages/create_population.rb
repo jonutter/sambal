@@ -1,6 +1,6 @@
 class CreatePopulation < PopulationsBase
 
-  expected_element :union_radio
+  expected_element :name
 
   frame_element
   population_attribute_elements
