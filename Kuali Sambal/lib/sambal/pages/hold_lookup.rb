@@ -1,4 +1,4 @@
-class HoldIssueLookup < HoldBase
+class HoldLookup < HoldBase
   
   frame_element
   wrapper_elements

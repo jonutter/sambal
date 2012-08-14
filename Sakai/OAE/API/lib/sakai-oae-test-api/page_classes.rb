@@ -1299,7 +1299,7 @@ class MyContacts
   # This method is a helper method for other objects
   # defined on the page.
   def active_div
-    self.div(:id=>/^contactscontainer\d+/)
+    self.div(:id=>"contacts_container")
   end
   
 end
