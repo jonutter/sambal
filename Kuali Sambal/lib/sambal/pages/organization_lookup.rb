@@ -10,7 +10,7 @@ class OrganizationLookup < OrganizationBase
 
 end
 
-class OrgLookupPopUp < OrganzationBase
+class OrgLookupPopUp < OrganizationBase
 
   expected_element :short_name
 

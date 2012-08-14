@@ -16,6 +16,12 @@ module Workflows
     end
   end
 
+  def go_to_manage_course_offerings
+    visit MainMenu do |page|
+      page.manage_course_offerings
+    end
+  end
+
   # Larger flows...
 
   def add_random_population
