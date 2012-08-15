@@ -1,4 +1,6 @@
-class CalendarInformation < BasePage
+class HolidayCalendarInformation < HolidayBase
+
+  include Holidays
 
   expected_element :last_saved_element
 
@@ -11,7 +13,7 @@ class CalendarInformation < BasePage
   value(:calendar_name) { |b| b.frm.span(id: "u40").text } # Persistent ID needed!
   value(:organization) { |b| b.frm.span(id: "u57").text } # Persistent ID needed!
 
-  element(:events_table) { |b| b.frm.table(id: "u104") } # Persistent ID needed!
+  element(:holiday_table) { |b| b.frm.table(id: "u104") } # Persistent ID needed!
 
   value(:holiday_calendar_name) { |b| b.frm.span(id: "u404_line0").text } # Persistent ID needed!
   value(:holiday_calendar_org) { |b| b.frm.span(id: "u419_line0").text } # Persistent ID needed!

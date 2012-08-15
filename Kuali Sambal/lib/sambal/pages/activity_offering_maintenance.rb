@@ -4,7 +4,7 @@ class ActivityOfferingMaintenance < BasePage
   frame_element
 
   expected_element :activity_code
-  
+
   action(:submit) { |b| b.frm.button(text: "submit").click; b.loading.wait_while_present }
   
   element(:activity_code) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.aoInfo.activityCode") }
