@@ -14,7 +14,7 @@ When /^I create a new Academic Calendar$/ do
   on Enrollment do |page|
     page.create_academic_calendar
   end
-  on CreateNewAcadCalendar do |page|
+  on CreateAcadCalendar do |page|
     page.name.set @calendar_name
     page.start_date.set @start_date
     page.end_date.set @end_date
@@ -78,7 +78,7 @@ When /^I copy the calendar$/ do
   on CalendarSearch do |page|
     page.copy @calendar_name
   end
-  on CreateNewAcadCalendar do |page|
+  on CreateAcadCalendar do |page|
     page.name.set random_alphanums
     page.start_date.set "01/02/#{next_year}"
     page.end_date.set "12/31/#{next_year}"

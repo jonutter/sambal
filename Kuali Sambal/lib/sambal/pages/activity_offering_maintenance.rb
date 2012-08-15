@@ -20,10 +20,6 @@ class ActivityOfferingMaintenance < BasePage
   
   action(:add_personnel) { |b| b.frm.button(id: "u180_add").click; b.loading.wait_while_present } # Needs persistent ID value
 
-  def target_person_row(id)
-    personnel_table.row(text: /#{Regexp.escape(id)}/)
-  end
-
   def update_affiliation(id, affiliation)
     target_person_row(id).select affiliation
   end
@@ -48,10 +44,6 @@ class ActivityOfferingMaintenance < BasePage
   element(:add_pool_expiration_milestone) { |b| b.frm.select(name: "newCollectionLines['document.newMaintainableObject.dataObject.seatpools'].seatPool.expirationMilestoneTypeKey") }
 
   action(:add_seat_pool) { |b| b.frm.button(id: "u360_add").click; b.loading.wait_while_present }
-
-  def target_pool_row(pop_name)
-    seat_pools_table.row(text: /#{Regexp.escape(pop_name)}/)
-  end
 
   def remove(pop_name)
     target_pool_row(pop_name).button(text: "remove")
@@ -82,5 +74,15 @@ class ActivityOfferingMaintenance < BasePage
   element(:course_url) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.aoInfo.activityOfferingURL") }
   element(:requires_evaluation) { |b| b.frm.checkbox(name: "document.newMaintainableObject.dataObject.aoInfo.isEvaluated") }
   element(:honors_flag) { |b| b.frm.checkbox(name: "document.newMaintainableObject.dataObject.aoInfo.isHonorsOffering") }
+
+  private
+
+  def target_pool_row(pop_name)
+    seat_pools_table.row(text: /#{Regexp.escape(pop_name)}/)
+  end
+
+  def target_person_row(id)
+    personnel_table.row(text: /#{Regexp.escape(id)}/)
+  end
 
 end

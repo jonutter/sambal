@@ -1,4 +1,4 @@
-class CreateNewAcadCalendar < BasePage
+class CreateAcadCalendar < BasePage
 
   expected_element :name
 

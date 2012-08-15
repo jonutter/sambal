@@ -1,7 +1,7 @@
 class ActivityOfferingInquiry < BasePage
 
   def frm
-    self.frame(class: "fancybox-iframe") # Persistent ID needed!
+    self.frame(class: "fancybox-iframe")
   end
 
   action(:close) { |b| b.frm.button(text: "Close").click; b.loading.wait_while_present }

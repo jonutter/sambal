@@ -29,18 +29,18 @@ class ManageCourseOfferings < BasePage
   AO_INSTRUCTOR = 5
   AO_MAX_ENR = 6
 
-  element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout dataTable") }
+  element(:activity_offering_results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout dataTable") } # Persistent ID needed!
   element(:selected_offering_actions) { |b| b.frm.select(name: "selectedOfferingAction") }
 
   action(:go) { |b| b.frm.button(text: "Go").click; b.loading.wait_while_present }
 
   def view_activity_offering(code)
-    results_table.link(text: code).click
+    activity_offering_results_table.link(text: code).click
     loading.wait_while_present
   end
 
   def target_row(code)
-    results_table.row(text: /#{Regexp.escape(code)}/)
+    activity_offering_results_table.row(text: /#{Regexp.escape(code)}/)
   end
 
   def copy(code)
@@ -60,7 +60,7 @@ class ManageCourseOfferings < BasePage
 
   def codes_list
     codes = []
-    results_table.rows.each { |row| codes << row[AO_CODE].text }
+    activity_offering_results_table.rows.each { |row| codes << row[AO_CODE].text }
     codes.delete_if { |code| code == "CODE" }
     codes
   end

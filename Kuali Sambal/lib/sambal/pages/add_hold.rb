@@ -8,5 +8,4 @@ class AddHold < HoldBase
   
   action(:save) { |b| b.frm.button(text: "Save").click; b.loading.wait_while_present } # Needs persistent ID
 
-
 end

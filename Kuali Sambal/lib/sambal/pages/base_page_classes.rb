@@ -77,6 +77,8 @@ module PopulationsSearch
     names
   end
 
+  private
+
   def target_row(name)
     results_table.row(text: /#{name}/)
   end
