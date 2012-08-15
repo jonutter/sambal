@@ -1,11 +1,14 @@
 class MainMenu < BasePage
 
   page_url "#{TEST_SITE}/portal.do?selectedTab=main"
-  expected_title "Kuali Portal Index"
+  expected_title /Kuali Portal Index/
+  expected_element :enrollment_home_link
 
   wrapper_elements
 
-  action(:enrollment_home) { |b| b.link(title: "Enrollment Home").click }
+  element(:enrollment_home_link) { |b| b.link(title: "Enrollment Home") }
+
+  action(:enrollment_home) { |b| b.enrollment_home_link.click }
   action(:kuali_student_home) { |b| b.link(text: "Kuali Student Home").click }
   action(:curriculum_management) { |b| b.link(text: "Curriculum Management").click }
   action(:organization_management) { |b| b.link(text: "Organization Management").click }
@@ -63,5 +66,7 @@ class MainMenu < BasePage
   action(:term_lookup) { |b| b.link(title: "Term Lookup").click }
   action(:term_specification_lookup) { |b| b.link(title: "Term Specification Lookup").click }
   action(:category_lookup) { |b| b.link(title: "Category Lookup").click }
+  action(:manage_population) { |b| b.link(title: "Manage Population (Lookup)").click }
+  action(:population_maintenance_edoc) { |b| b.link(title: "Population Maintenance eDoc (New)").click }
 
 end

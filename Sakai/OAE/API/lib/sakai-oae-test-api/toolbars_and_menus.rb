@@ -159,8 +159,7 @@ module HeaderFooterBar
     self.linger_for_ajax(2)
     MyDashboard.new @browser
   end
-  alias sign_in login
-  alias log_in login
+  alias log_in login # Can't use alias of "sign_in" because of method collision
 
   # Clicks the Sign out command in the user menu in the header bar.
   # returns the LoginPage class object.

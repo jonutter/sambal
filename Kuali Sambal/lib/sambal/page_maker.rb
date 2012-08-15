@@ -26,9 +26,9 @@ class PageMaker
       end
     end
 
-    def expected_element type, identifier, timeout=30
+    def expected_element element_name, timeout=30
       define_method 'expected_element' do
-        @browser.send("#{type.to_s}", identifier).wait_until_present timeout
+        self.send(element_name).wait_until_present timeout
       end
     end
 
@@ -70,16 +70,6 @@ class PageMaker
       end
     end
     return x
-  end
-
-  # TODO - I don't think this method belongs here. Should be moved. Not sure where, yet. (Maybe to PageHelper?)
-  def wait_for_page(timeout=5)
-    end_time = ::Time.now + timeout
-    while self.execute_script("return jQuery.active") > 0
-      sleep 0.2
-      break if ::Time.now > end_time
-    end
-    self.wait(timeout + 10)
   end
 
 end

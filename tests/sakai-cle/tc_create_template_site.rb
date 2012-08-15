@@ -44,6 +44,7 @@ class CreateSiteTemplate < Test::Unit::TestCase
     @syllabus_content = "Syllabus Content"
     
     @files = ["documents/resources.doc", "documents/sample.pdf" ]
+    @file_path = @config['data_directory']
     
     @question_type = "Multiple Choice"
     @point_value = "5"
@@ -52,8 +53,6 @@ class CreateSiteTemplate < Test::Unit::TestCase
     @b = "Lincoln"
     @c = "Grant"
     @d = "Washington"
-    @correct = "Good!"
-    @incorrect = "Bad!"
     
   end
   
@@ -106,9 +105,9 @@ class CreateSiteTemplate < Test::Unit::TestCase
     # Add Resources
     resources = assignments_page.resources
     upload = resources.upload_files_to_folder(@template_site_name + " Resources")
-    upload.file_to_upload=@files[0]
+    upload.file_to_upload @files[0], @file_path
     upload.add_another_file
-    upload.file_to_upload=@files[1]
+    upload.file_to_upload @files[1], @file_path
     resources = upload.upload_files_now
     
     add_test = resources.tests_and_quizzes
@@ -126,8 +125,6 @@ class CreateSiteTemplate < Test::Unit::TestCase
     question1.answer_c=@c
     question1.answer_d=@d
     question1.select_d_correct
-    question1.feedback_for_correct=@correct
-    question1.feedback_for_incorrect=@incorrect
     
     # Save the question
     quiz = question1.save

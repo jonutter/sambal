@@ -29,14 +29,14 @@ describe "Updating the user password" do
     @browser = @sakai.browser
     
     # Test case variables...
-    @user = @directory['person1']['id']
-    @password = @directory['person1']['password']
+    @user = @directory['person2']['id']
+    @password = @directory['person2']['password']
     
-    @new_password = random_string(30)
+    @new_password = random_string(120)
     puts @new_password
     @short = random_string(3)
     
-    @wrong_password_message = "Changing password failed.\nA problem occured when trying to change your password. Please make sure that you have entered the correct password." 
+    @wrong_password_message = "Changing password failed.\nA problem occurred when trying to change your password. Please make sure that you have entered the correct password."
     @blank_error = "This field is required."
     @not_equal_error = "Please enter the same password twice."
     @new_is_old = "The new and old passwords are the same. Please enter something different for the new password."
@@ -47,16 +47,12 @@ describe "Updating the user password" do
     @changed = 0
     
   end
-  
-  before :each do
-    dashboard.class.class_eval { include AccountPreferencesPopUp }
-  end
 
   it "Cancel prevents change to password" do
     dashboard = @sakai.page.login(@user, @password)
-    
+    dashboard.class.class_eval { include AccountPreferencesPopUp }
     dashboard.my_account
-    dashboard.password
+    dashboard.password_tab
     
     dashboard.current_password=@password
     dashboard.new_password=@new_password
@@ -64,19 +60,20 @@ describe "Updating the user password" do
     
     # TEST CASE: Cancel prevents change to password
     dashboard.cancel
-    @sakai.logout
+    @sakai.page.logout
   end
   
   it "rejects bad current password for change" do
     dashboard = @sakai.page.login(@user, @password)
+    dashboard.class.class_eval { include AccountPreferencesPopUp }
     dashboard.my_account
-    dashboard.password
+    dashboard.password_tab
     
     # current password not correct
     dashboard.current_password=random_alphanums
     dashboard.new_password=@new_password
     dashboard.retype_password=@new_password
-    dashboard.save_new_password
+    dashboard.save_changes
     
     # TEST CASE: Notified that entered current password was not correct
     sleep 0.2 #FIXME
@@ -89,7 +86,7 @@ describe "Updating the user password" do
     dashboard.current_password=@password
     dashboard.retype_password=@new_password
     dashboard.new_password=random_string
-    dashboard.save_new_password
+    dashboard.save_changes
     
     # TEST CASE: Warning about unequal passwords appears
     sleep 0.2
@@ -109,7 +106,7 @@ describe "Updating the user password" do
   it "disallows new password the same as old" do
     dashboard.new_password=@password
     dashboard.retype_password=@password
-    dashboard.save_new_password
+    dashboard.save_changes
     
     # TEST CASE: Warning about new and old passwords appears
     sleep 0.2
@@ -120,7 +117,7 @@ describe "Updating the user password" do
     # new pass too short
     dashboard.new_password=@short
     dashboard.retype_password=@short
-    dashboard.save_new_password
+    dashboard.save_changes
 
     # TEST CASE: New password too short
     sleep 0.2
@@ -130,7 +127,7 @@ describe "Updating the user password" do
   it "Allows change when all requirements met" do
     dashboard.new_password=@new_password
     dashboard.retype_password=@new_password
-    dashboard.save_new_password
+    dashboard.save_changes
     
     @changed = 1
     
@@ -140,7 +137,7 @@ describe "Updating the user password" do
   end
   
   it "Old password fails for logging in" do
-    login_page = @sakai.logout
+    login_page = @sakai.page.logout
     login_page.sign_in_menu
     login_page.username=@user
     login_page.password=@password
@@ -167,7 +164,7 @@ describe "Updating the user password" do
       dashboard.current_password=@new_password
       dashboard.new_password=@password
       dashboard.retype_password=@password
-      dashboard.save_new_password
+      dashboard.save_changes
     end
     # Close the browser window
     @browser.close

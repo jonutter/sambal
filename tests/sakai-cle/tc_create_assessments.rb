@@ -33,18 +33,18 @@ class TestCreateNewAssessments < Test::Unit::TestCase
     ]
 
     @questions = [
-        {:type=>"Multiple Choice", :point_value=>"5", :question_text=>"Who was the first US president?", :a=>"Jefferson", :b=>"Lincoln", :c=>"Grant", :d=>"Washington", :feedback_correct=>"Good!", :feedback_incorrect=>"Bad!" },
+        {:type=>"Multiple Choice", :point_value=>"5", :question_text=>"Who was the first US president?", :a=>"Jefferson", :b=>"Lincoln", :c=>"Grant", :d=>"Washington" },
         {:type=>"True False", :point_value=>"5", :question_text=>"The sky is blue."},
         {:type=>"Fill in the Blank", :point_value=>"5", :question_text=>"The largest state in the US according to land mass is {Alaska}." },
-        {:type=>"Survey", :question_text=>"Do you find this CLE instance usable?", :feedback=>"Thanks!" },
+        {:type=>"Survey", :question_text=>"Do you find this CLE instance usable?" },
         {:type=>"Short Answer/Essay", :point_value=>"5", :question_text=>"Write an essay about something." },
         {:type=>"Fill in the Blank", :point_value=>"5", :question_text=>"After Queen Anne's War, French residents of Acadia were given one year to declare allegiance to {Britain} or leave {Nova Scotia}." },
         {:type=>"Matching", :point_value=>"5", :question_text=>"This is a matching question", :choice_one=>"1", :match_one=>"one", :choice_two=>"2", :match_two=>"two" },
-        {:type=>"True False", :point_value=>"5", :question_text=>"Epistemology is the study of rocks.", :feedback=>"Fantastic work!" },
+        {:type=>"True False", :point_value=>"5", :question_text=>"Epistemology is the study of rocks." },
         {:type=>"File Upload", :point_value=>"5", :question_text=>"Upload a file..." },
         {:type=>"Fill in the Blank", :point_value=>"5", :question_text=>"Roses are {red} and violets are {blue}." },
         {:type=>"Multiple Choice", :point_value=>"5", :question_text=>"How many licks does it take to get to the center of a Tootsie Roll Pop?", :a=>"3", :b=>"20", :c=>"500", :d=>"10,000" },
-        {:type=>"True False", :point_value=>"10", :question_text=>"The United States of America is in the Northern hemisphere.", :feedback=>"Good!" },
+        {:type=>"True False", :point_value=>"10", :question_text=>"The United States of America is in the Northern hemisphere." },
         {:type=>"True False", :question_text=>"Birds can fly." }
     ]
 
@@ -110,8 +110,6 @@ class TestCreateNewAssessments < Test::Unit::TestCase
     question1.answer_c=@questions[0][:c]
     question1.answer_d=@questions[0][:d]
     question1.select_d_correct
-    question1.feedback_for_correct=@questions[0][:feedback_correct]
-    question1.feedback_for_incorrect=@questions[0][:feedback_incorrect]
 
     # Save the question
     quiz = question1.save
@@ -154,7 +152,6 @@ class TestCreateNewAssessments < Test::Unit::TestCase
 
     question4.question_text=@questions[3][:question_text]
     question4.select_below_above
-    question4.feedback=@questions[3][:feedback]
     quiz = question4.save
 
     # Select Short Answer question type
@@ -191,7 +188,6 @@ class TestCreateNewAssessments < Test::Unit::TestCase
     question8.question_text=@questions[7][:question_text]
     question8.select_answer_false
     question8.select_required_rationale_yes
-    question8.feedback_for_correct=@questions[7][:feedback]
     quiz = question8.save
 
     # Add a File Upload question
@@ -295,7 +291,6 @@ class TestCreateNewAssessments < Test::Unit::TestCase
     tfq.question_text=@questions[11][:question_text]
     tfq.select_answer_true
     tfq.select_required_rationale_yes
-    tfq.feedback_for_correct=@questions[11][:feedback]
     pool = tfq.save
 
     pools_list = pool.question_pools

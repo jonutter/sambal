@@ -67,6 +67,7 @@ class TestCreateAndSubmitEvaluation < Test::Unit::TestCase
     settings = new_eval.continue_to_settings
     
     assign_courses = settings.continue_to_assign_to_courses
+    assign_courses.assign_to_evaluation_groups
     assign_courses.check_group @site_name
     
     confirm = assign_courses.save_assigned_groups

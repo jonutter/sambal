@@ -5,6 +5,7 @@ require 'sambal'
 
 World PageHelper
 World Utilities
+World Workflows
 
 browser = Watir::Browser.new
 

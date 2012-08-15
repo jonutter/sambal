@@ -5,9 +5,13 @@ module PageHelper
   end
 
   def on page_class, visit=false, &block
-    page = page_class.new @browser, visit
-    block.call page if block
-    page
+    @current_page = page_class.new @browser, visit
+    block.call @current_page if block
+    @current_page
+  end
+
+  def wait_until(timeout=30, message=nil, &block)
+    self.wait_until(timeout, message, &block)
   end
 
 end

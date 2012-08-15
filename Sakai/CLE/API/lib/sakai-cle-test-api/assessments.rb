@@ -61,6 +61,7 @@ class MultipleChoice
   include PageObject
   include ToolsMenu
   include MultipleChoiceMethods
+  include QuestionHelpers
 end
 
 # The page for setting up a Survey question
@@ -68,6 +69,7 @@ class Survey
   include PageObject
   include ToolsMenu
   include SurveyMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a Short Answer/Essay question
@@ -75,6 +77,7 @@ class ShortAnswer
   include PageObject
   include ToolsMenu
   include ShortAnswerMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a Fill-in-the-blank question
@@ -82,6 +85,7 @@ class FillInBlank
   include PageObject
   include ToolsMenu
   include FillInBlankMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a numeric response question
@@ -89,6 +93,7 @@ class NumericResponse
   include PageObject
   include ToolsMenu
   include NumericResponseMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a matching question
@@ -96,6 +101,7 @@ class Matching
   include PageObject
   include ToolsMenu
   include MatchingMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a True/False question
@@ -103,6 +109,7 @@ class TrueFalse
   include PageObject
   include ToolsMenu
   include TrueFalseMethods
+  include QuestionHelpers
 end
 
 #  The page for setting up a question that requires an audio response
@@ -110,6 +117,7 @@ class AudioRecording
   include PageObject
   include ToolsMenu
   include AudioRecordingMethods
+  include QuestionHelpers
 end
 
 # The page for setting up a question that requires
@@ -118,6 +126,7 @@ class FileUpload
   include PageObject
   include ToolsMenu
   include FileUploadMethods
+  include QuestionHelpers
 end
 
 # The page that appears when you are editing a type of assessment

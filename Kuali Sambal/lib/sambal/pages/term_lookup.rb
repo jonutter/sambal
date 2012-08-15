@@ -8,8 +8,8 @@ class TermLookup < BasePage
   element(:name) { |b| b.frm.text_field(name: "criteriaFields[specification.name]") }
   element(:data_type) { |b| b.frm.text_field(name: "criteriaFields[specification.type]") }
 
-  action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
-  action(:clear_values) { |b| b.frm.button(text: "clear values").click; b.loading.wait_while_present }
+  action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present } # Persistent ID needed!
+  action(:clear_values) { |b| b.frm.button(text: "clear values").click; b.loading.wait_while_present } # Persistent ID needed!
   action(:create_new) { |b| b.frm.link(title: "Create New Term with").click }
   
 end

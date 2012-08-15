@@ -143,11 +143,12 @@ class EditEvaluationAssignment
   end
 
   def check_group(title)
+    frm.table(:class=>"listHier lines nolines").wait_until_present
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(title)}/).checkbox(:name=>"selectedGroupIDs").set
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    
+    link(:assign_to_evaluation_groups, :text=>"Assign to Evaluation Groups", :frame=>frame)
   end
 end
 

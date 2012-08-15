@@ -29,8 +29,8 @@ describe "Signing In" do
     @sakai = SakaiOAE.new(@config['browser'], @config['url'])
     @directory = YAML.load_file("directory.yml")
     @browser = @sakai.browser
-    @username = @directory['person1']['id']
-    @password = @directory['person1']['password']
+    @username = @directory['person2']['id']
+    @password = @directory['person2']['password']
     
     # Test case variables...
     @login_error = "Invalid username or password"
