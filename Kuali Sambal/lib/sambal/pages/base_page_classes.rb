@@ -134,7 +134,7 @@ class HolidayBase < BasePage
   element(:holiday_start_meridian) { |b| b.frm.select(name: "newCollectionLines['holidays'].startTimeAmPm") }
   element(:holiday_end_date) { |b| b.frm.text_field(name: "newCollectionLines['holidays'].endDate") }
   element(:holiday_end_time) { |b| b.frm.text_field(name: "newCollectionLines['holidays'].endTime") }
-  element(:holiday_end_meridian) { |b| b.frm.text_field(name: "newCollectionLines['holidays'].endTimeAmPm") }
+  element(:holiday_end_meridian) { |b| b.frm.select(name: "newCollectionLines['holidays'].endTimeAmPm") }
   element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].allDay") }
   element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].dateRange") }
   element(:instructional) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].instructional") }
@@ -154,45 +154,53 @@ module Holidays
     holiday_start_date.set date
     all_day.set unless all_day.set?
     date_range.clear if date_range.set?
+    loading.wait_while_present
     instruct(inst)
-    add_button
+    add_button.click
+    loading.wait_while_present
   end
 
   def add_date_range_holiday(type, start_date, end_date, inst=false)
-    all_day.set unless all_day.set?
-    date_range.set unless date_range.set?
     holiday_type.select type
     holiday_start_date.set start_date
+    all_day.set unless all_day.set?
+    date_range.set unless date_range.set?
+    wait_until { holiday_end_date.enabled? }
     holiday_end_date.set end_date
     instruct(inst)
-    add_button
+    add_button.click
+    loading.wait_while_present
   end
 
   def add_partial_day_holiday(type, start_date, start_time, start_meridian, end_time, end_meridian, inst=false)
-    all_day.clear if all_day.set?
-    date_range.clear if date_range.set?
     holiday_type.select type
     holiday_start_date.set start_date
+    all_day.clear if all_day.set?
+    date_range.clear if date_range.set?
+    wait_until { holiday_end_date.disabled? }
     holiday_start_time.set start_time
-    holiday_start_meridian.set start_meridian
+    holiday_start_meridian.select start_meridian
     holiday_end_time.set end_time
-    holiday_end_meridian.set end_meridian
+    holiday_end_meridian.select end_meridian
     instruct(inst)
-    add_button
+    add_button.click
+    loading.wait_while_present
   end
 
   def add_partial_range_holiday(type, start_date, start_time, start_meridian, end_date, end_time, end_meridian, inst=false)
-    all_day.clear if all_day.set?
-    date_range.set unless date_range.set?
     holiday_type.select type
     holiday_start_date.set start_date
+    all_day.clear if all_day.set?
+    date_range.set unless date_range.set?
+    wait_until { holiday_end_date.enabled? }
     holiday_start_time.set start_time
-    holiday_start_meridian.set start_meridian
+    holiday_start_meridian.select start_meridian
     holiday_end_date.set end_date
     holiday_end_time.set end_time
-    holiday_end_meridian.set end_meridian
+    holiday_end_meridian.select end_meridian
     instruct(inst)
-    add_button
+    add_button.click
+    loading.wait_while_present
   end
 
   def delete_holiday(holiday_type)
