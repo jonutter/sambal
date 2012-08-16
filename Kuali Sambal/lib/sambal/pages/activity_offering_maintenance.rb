@@ -1,6 +1,7 @@
 class ActivityOfferingMaintenance < BasePage
 
   wrapper_elements
+  validation_elements
   frame_element
 
   expected_element :activity_code
@@ -67,6 +68,7 @@ class ActivityOfferingMaintenance < BasePage
   end
 
   value(:seat_pool_count) { |b| b.frm.div(id: "seatpoolCount").span(id: "_span").text }
+  value(:seats_remaining_span) { |b| b.frm.div(id: "seatsRemaining").span(id: "_span").text }
   value(:percent_seats_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=%)/] }
   value(:seat_count_remaining) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=.S)/] }
   value(:max_enrollment_count) { |b| b.frm.div(id: "seatsRemaining").text[/\d+(?=\))/] }
