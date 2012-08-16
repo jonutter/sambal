@@ -6,7 +6,7 @@ class PopulationsBase < BasePage
 
     def population_lookup_elements
       element(:keyword) { |b| b.frm.text_field(name: "lookupCriteria[keyword]") }
-      element(:results_table) { |b| b.frm.table(xpath: "//div[@id='lookup_population']//table") } 
+      element(:results_table) { |b| b.frm.div(id: "lookup_population").table(index: 0) }
 
       element(:active) { |b| b.frm.radio(value: "kuali.population.population.state.active") }
       element(:inactive) { |b| b.frm.radio(value: "kuali.population.population.state.inactive") }
