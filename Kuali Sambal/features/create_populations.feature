@@ -27,7 +27,6 @@ I want to create populations by using rules, and based other populations
     And there is no new population created
 
   Scenario: Error when creating a union based pop with only 1 population
-    Given I am logged in as admin
     When I try to create a population that is union-based with one population
     Then an error message appears stating "must select at least 2 different populations"
 
