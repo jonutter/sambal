@@ -137,7 +137,7 @@ class HolidayBase < BasePage
   element(:holiday_end_meridian) { |b| b.frm.text_field(name: "newCollectionLines['holidays'].endTimeAmPm") }
   element(:all_day) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].allDay") }
   element(:date_range) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].dateRange") }
-  element(:instructional) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].inst") }
+  element(:instructional) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].instructional") }
   element(:add_button) { |b| b.frm.button(id: /u\d+_add/) }
 
   element(:make_official_button) { |b| b.frm.button(text: "Make Official") }
@@ -150,38 +150,41 @@ end
 module Holidays
 
   def add_all_day_holiday(type, date, inst=false)
-    holiday_type.set type
+    holiday_type.select type
     holiday_start_date.set date
     all_day.set unless all_day.set?
     date_range.clear if date_range.set?
     instruct(inst)
+    add_button
   end
 
   def add_date_range_holiday(type, start_date, end_date, inst=false)
     all_day.set unless all_day.set?
     date_range.set unless date_range.set?
-    holiday_type.set type
+    holiday_type.select type
     holiday_start_date.set start_date
     holiday_end_date.set end_date
     instruct(inst)
+    add_button
   end
 
   def add_partial_day_holiday(type, start_date, start_time, start_meridian, end_time, end_meridian, inst=false)
     all_day.clear if all_day.set?
     date_range.clear if date_range.set?
-    holiday_type.set type
+    holiday_type.select type
     holiday_start_date.set start_date
     holiday_start_time.set start_time
     holiday_start_meridian.set start_meridian
     holiday_end_time.set end_time
     holiday_end_meridian.set end_meridian
     instruct(inst)
+    add_button
   end
 
   def add_partial_range_holiday(type, start_date, start_time, start_meridian, end_date, end_time, end_meridian, inst=false)
     all_day.clear if all_day.set?
     date_range.set unless date_range.set?
-    holiday_type.set type
+    holiday_type.select type
     holiday_start_date.set start_date
     holiday_start_time.set start_time
     holiday_start_meridian.set start_meridian
@@ -189,6 +192,7 @@ module Holidays
     holiday_end_time.set end_time
     holiday_end_meridian.set end_meridian
     instruct(inst)
+    add_button
   end
 
   def delete_holiday(holiday_type)
@@ -238,9 +242,10 @@ module Holidays
 
   # Returns a random item from the list of holidays
   def select_random_holiday
-    holidays = holiday_type.options
+    holidays = []
+    holiday_type.options.each { |opt| holidays << opt.text }
     holidays.delete(0)
-    holidays[rand(holidays.length)].text
+    holidays[rand(holidays.length)]
   end
 
   private
