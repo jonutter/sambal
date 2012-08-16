@@ -140,7 +140,9 @@ class HolidayBase < BasePage
   element(:instructional) { |b| b.frm.checkbox(name: "newCollectionLines['holidays'].inst") }
   element(:add_button) { |b| b.frm.button(id: /u\d+_add/) }
 
-  action(:make_official) { |b| b.frm.button(name: "").click; b.loading.wait_while_present }
+  element(:make_official_button) { |b| b.frm.button(text: "Make Official") }
+
+  action(:make_official) { |b| b.make_official_button.click; b.loading.wait_while_present }
   action(:save) { |b| b.frm.button(name: "").click; b.loading.wait_while_present }
 
 end
@@ -232,6 +234,13 @@ module Holidays
     else
       target_row(holiday_type).checkbox(name: /instructional/).set
     end
+  end
+
+  # Returns a random item from the list of holidays
+  def select_random_holiday
+    holidays = holiday_type.options
+    holidays.delete(0)
+    holidays[rand(holidays.length)].text
   end
 
   private

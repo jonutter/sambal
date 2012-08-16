@@ -4,7 +4,7 @@ Given /^I am logged in as admin$/ do
   end
 end
 
-When /^I create a new Academic Calendar$/ do
+When /^I create an Academic Calendar$/ do
   @calendar_name = random_alphanums
   @start_date = "01/01/#{next_year}"
   @end_date = "06/20/#{next_year}"
@@ -28,7 +28,7 @@ When /^I save the new Academic Calendar$/ do
   end
 end
 
-Then /^I should be able to save it, and the Make Official button should become active$/ do
+Then /^I should be able to save the Academic Calendar, and the Make Official button should become active$/ do
   on AcademicCalendar do |page|
     page.make_official_button.should be_disabled
     page.save
