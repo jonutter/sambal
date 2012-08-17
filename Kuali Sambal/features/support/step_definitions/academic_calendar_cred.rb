@@ -99,14 +99,11 @@ When /^I copy the Academic Calendar$/ do
   on CreateAcadCalendar do |page|
     page.name.set random_alphanums
     page.start_date.set "01/02/#{next_year}"
-    page.end_date.set "12/31/#{next_year}"
+    page.end_date.set "12/31/#{next_year + 1}"
   end
 end
 
 When /^I update the Academic Calendar$/ do
-  @new_name = random_alphanums
-  @new_start_date = "02/15/#{next_year}"
-  @new_end_date = "07/06/#{next_year}"
   visit MainMenu do |page|
     page.enrollment_home
   end
@@ -117,10 +114,13 @@ When /^I update the Academic Calendar$/ do
     page.search_for_academic_calendar @calendar_name
     page.edit @calendar_name
   end
+  @calendar_name = random_alphanums
+  @start_date = "02/15/#{next_year}"
+  @end_date = "07/06/#{next_year + 1}"
   on AcademicCalendar do |page|
-    page.name.set @new_name
-    page.start_date.set @new_start_date
-    page.end_date.set @new_end_date
+    page.name.set @calendar_name
+    page.start_date.set @start_date
+    page.end_date.set @end_date
     page.save
   end
 end
@@ -135,7 +135,11 @@ When /^I delete the Academic Calendar draft$/ do
 end
 
 Then /^the calendar should reflect the updates$/ do
-
+  on AcademicCalendar do |page|
+    page.name.value.should == @calendar_name
+    page.start_date.value.should == @start_date
+    page.end_date.value.should == @end_date
+  end
 end
 
 When /^I search for the Academic Calendar with wildcards$/ do
