@@ -22,21 +22,23 @@ When /^I create an Academic Calendar$/ do
   end
 end
 
-When /^I save the new Academic Calendar$/ do
-  on AcademicCalendar do |page|
+When /^I save the (Academic Calendar|Holiday Calendar|Academic Term)$/ do |arg|
+  arg.gsub!(" ", "")
+  on Module.const_get(arg) do |page|
     page.save
   end
 end
 
-Then /^I should be able to save the Academic Calendar, and the Make Official button should become active$/ do
-  on AcademicCalendar do |page|
+Then /^I should be able to save the (Academic Calendar|Holiday Calendar), and the Make Official button should become active$/ do |arg|
+  arg.gsub!(" ", "")
+  on Module.const_get(arg) do |page|
     page.make_official_button.should be_disabled
     page.save
     page.make_official_button.should be_enabled
   end
 end
 
-When /^I search for the Academic Calendar$/ do
+When /^I search for the (Holiday Calendar|Academic Calendar|Academic Term)$/ do |arg|
   visit MainMenu do |page|
     page.enrollment_home
   end
@@ -44,7 +46,7 @@ When /^I search for the Academic Calendar$/ do
     page.search_for_calendar_or_term
   end
   on CalendarSearch do |page|
-    page.search_for_academic_calendar @calendar_name
+    page.search_for arg, @calendar_name
   end
 end
 
@@ -74,7 +76,7 @@ Then /^the calendar (.*) be set to Official$/ do |arg|
   end
 end
 
-When /^I copy the calendar$/ do
+When /^I copy the Academic Calendar$/ do
   on CalendarSearch do |page|
     page.copy @calendar_name
   end

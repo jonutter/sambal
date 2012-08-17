@@ -10,25 +10,15 @@ class CalendarSearch < BasePage
   CALENDAR_END_DATE = 2
   CALENDAR_STATUS = 3
 
-  element(:search_for)  { |b| b.frm.select(name: "calendarType") }
+  element(:search_for_select)  { |b| b.frm.select(name: "calendarType") }
   element(:name) { |b| b.frm.text_field(name: "name") }
   element(:year) { |b| b.frm.text_field(name: "year") }
   element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
 
   action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
 
-  def search_for_academic_calendar nm, yr=""
-    search_for.select "Academic Calendar"
-    setnameyear nm, yr
-  end
-
-  def search_for_holiday_calendar nm, yr=""
-    search_for.select "Holiday Calendar"
-    setnameyear nm, yr
-  end
-
-  def search_for_academic_term nm, yr=""
-    search_for.select "Academic Term"
+  def search_for cal_or_term, nm, yr=""
+    search_for_select.select cal_or_term
     setnameyear nm, yr
   end
 

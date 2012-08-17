@@ -150,6 +150,7 @@ end
 module Holidays
 
   def add_all_day_holiday(type, date, inst=false)
+    wait_until { holiday_type.enabled? }
     holiday_type.select type
     holiday_start_date.set date
     all_day.set unless all_day.set?
@@ -161,6 +162,7 @@ module Holidays
   end
 
   def add_date_range_holiday(type, start_date, end_date, inst=false)
+    wait_until { holiday_type.enabled? }
     holiday_type.select type
     holiday_start_date.set start_date
     all_day.set unless all_day.set?
@@ -173,6 +175,7 @@ module Holidays
   end
 
   def add_partial_day_holiday(type, start_date, start_time, start_meridian, end_time, end_meridian, inst=false)
+    wait_until { holiday_type.enabled? }
     holiday_type.select type
     holiday_start_date.set start_date
     all_day.clear if all_day.set?
@@ -188,6 +191,7 @@ module Holidays
   end
 
   def add_partial_range_holiday(type, start_date, start_time, start_meridian, end_date, end_time, end_meridian, inst=false)
+    wait_until { holiday_type.enabled? }
     holiday_type.select type
     holiday_start_date.set start_date
     all_day.clear if all_day.set?
@@ -251,8 +255,10 @@ module Holidays
   # Returns a random item from the list of holidays
   def select_random_holiday
     holidays = []
+    wait_until { holiday_type.enabled? }
+    sleep 5
     holiday_type.options.each { |opt| holidays << opt.text }
-    holidays.delete(0)
+    holidays.delete_if { |item| item == "Select holiday type" }
     holidays[rand(holidays.length)]
   end
 

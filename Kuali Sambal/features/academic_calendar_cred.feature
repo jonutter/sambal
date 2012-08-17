@@ -3,7 +3,7 @@ Feature: Academic Calendar CRED
   Scenario: Create and save academic calendar from blank
     Given I am logged in as admin
     When I create an Academic Calendar
-    Then I should be able to save it, and the Make Official button should become active
+    Then I should be able to save the Academic Calendar, and the Make Official button should become active
 
   Scenario: Search for newly created academic calendar
     Given I create an Academic Calendar
@@ -22,8 +22,8 @@ Feature: Academic Calendar CRED
     Given I create an Academic Calendar
     And I save the new Academic Calendar
     And I search for the Academic Calendar
-    When I copy the calendar
-    Then I should be able to save it, and the Make Official button should become active
+    When I copy the Academic Calendar
+    Then I should be able to save the Academic Calendar, and the Make Official button should become active
 
   Scenario: Update Academic Calendar
     Given I create an Academic Calendar

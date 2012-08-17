@@ -1,4 +1,4 @@
-class HolidayCalendarInformation < HolidayBase
+class HolidayCalendar < HolidayBase
 
   include Holidays
 
