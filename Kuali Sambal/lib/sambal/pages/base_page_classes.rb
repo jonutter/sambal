@@ -168,7 +168,11 @@ module Holidays
     all_day.set unless all_day.set?
     date_range.set unless date_range.set?
     loading.wait_while_present
-    wait_until { holiday_end_date.enabled? }
+    begin
+      wait_until { holiday_end_date.enabled? }
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      sleep 2
+    end
     holiday_end_date.set end_date
     instruct(inst)
     add_button.click
@@ -182,7 +186,11 @@ module Holidays
     all_day.clear if all_day.set?
     date_range.clear if date_range.set?
     loading.wait_while_present
-    wait_until { holiday_end_date.disabled? }
+    begin
+      wait_until { holiday_end_time.enabled? }
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      sleep 2
+    end
     holiday_start_time.set start_time
     holiday_start_meridian.select start_meridian
     holiday_end_time.set end_time
@@ -199,7 +207,11 @@ module Holidays
     all_day.clear if all_day.set?
     date_range.set unless date_range.set?
     loading.wait_while_present
-    wait_until { holiday_end_date.enabled? }
+    begin
+      wait_until { holiday_end_date.enabled? }
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      sleep 2
+    end
     holiday_start_time.set start_time
     holiday_start_meridian.select start_meridian
     holiday_end_date.set end_date
