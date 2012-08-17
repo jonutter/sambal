@@ -142,10 +142,29 @@ Then /^the calendar should reflect the updates$/ do
   end
 end
 
-When /^I search for the Academic Calendar with wildcards$/ do
-  pending
-end
+When /^I search for the (.*) using (.*)$/ do |arg1, arg2|
+  search_term = case(arg2)
+                  when "wildcards"
+                    "*"
+                  when "partial name"
+                    @calendar_name[0]
+                end
 
-When /^I search for the Academic Calendar using partial name$/ do
-  pending
+  visit MainMenu do |page|
+    page.enrollment_home
+  end
+  on Enrollment do |page|
+    page.search_for_calendar_or_term
+  end
+  on CalendarSearch do |page|
+    page.search_for arg1, search_term
+
+    while page.showing_up_to.to_i < page.total_results.to_i
+      if page.results_list.include? @calendar_name
+        break
+      else
+        page.next
+      end
+    end
+  end
 end

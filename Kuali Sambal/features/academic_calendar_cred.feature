@@ -42,7 +42,7 @@ Feature: Academic Calendar CRED
   Scenario: Search for Academic Calendar using wildcards
     Given I create an Academic Calendar
     And I save the Academic Calendar
-    When I search for the Academic Calendar with wildcards
+    When I search for the Academic Calendar using wildcards
     Then the calendar should appear in search results
 
   Scenario: Search for Academic Calendar using partial name

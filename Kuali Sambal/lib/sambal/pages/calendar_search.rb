@@ -15,7 +15,19 @@ class CalendarSearch < BasePage
   element(:year) { |b| b.frm.text_field(name: "year") }
   element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
 
+  value(:table_info) { |b| b.frm.div(class: "dataTables_info").text }
+
   action(:search) { |b| b.frm.button(text: "Search").click; b.loading.wait_while_present }
+  action(:next) { |b| b.frm.link(text: "Next").click }
+  action(:previous) { |b| b.frm.link(text: "Previous").click }
+
+  def total_results
+    table_info[/(?<=of )\d+/]
+  end
+
+  def showing_up_to
+    table_info[/(?<=to )\d+/]
+  end
 
   def search_for cal_or_term, nm, yr=""
     search_for_select.select cal_or_term
