@@ -23,25 +23,15 @@ When /^I create an Academic Calendar$/ do
 end
 
 When /^I save the (Academic Calendar|Holiday Calendar|Academic Term)$/ do |arg|
-  klass = case(arg)
-            when "Academic Calendar"
-              AcademicCalendar
-            when "Holiday Calendar"
-              CreateHolidayCalendar
-          end
-  on klass do |page|
+  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  on klasses[arg.to_sym] do |page|
     page.save
   end
 end
 
 Then /^I should be able to save the (Academic Calendar|Holiday Calendar), and the Make Official button should become active$/ do |arg|
-  klass = case(arg)
-            when "Academic Calendar"
-              AcademicCalendar
-            when "Holiday Calendar"
-              CreateHolidayCalendar
-          end
-  on klass do |page|
+  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  on klasses[arg.to_sym] do |page|
     page.make_official_button.should be_disabled
     page.save
     page.make_official_button.should be_enabled
@@ -71,13 +61,8 @@ Then /^the calendar (.*) appear in search results$/ do |arg|
 end
 
 When /^I make the (.*) official$/ do |arg|
-  klass = case(arg)
-            when "Academic Calendar"
-              AcademicCalendar
-            when "Holiday Calendar"
-              CreateHolidayCalendar
-          end
-  on klass do |page|
+  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  on klasses[arg.to_sym] do |page|
     page.make_official
   end
 end
@@ -143,13 +128,7 @@ Then /^the calendar should reflect the updates$/ do
 end
 
 When /^I search for the (.*) using (.*)$/ do |arg1, arg2|
-  search_term = case(arg2)
-                  when "wildcards"
-                    "*"
-                  when "partial name"
-                    @calendar_name[0]
-                end
-
+  search_terms = { :wildcards=>"*", "partial name"=>@calendar_name[0] }
   visit MainMenu do |page|
     page.enrollment_home
   end
@@ -157,7 +136,7 @@ When /^I search for the (.*) using (.*)$/ do |arg1, arg2|
     page.search_for_calendar_or_term
   end
   on CalendarSearch do |page|
-    page.search_for arg1, search_term
+    page.search_for arg1.to_sym, search_terms[arg2]
 
     while page.showing_up_to.to_i < page.total_results.to_i
       if page.results_list.include? @calendar_name

@@ -76,6 +76,15 @@ module PopulationsSearch
     names.delete_if { |name| name == "" }
     names
   end
+  alias results_names results_list
+
+  def results_descriptions
+    descriptions = []
+    results_table.wait_until_present
+    results_table.rows.each { |row| descriptions << row[POPULATION_DESCRIPTION].text }
+    descriptions.delete_if { |description| description == "" }
+    descriptions
+  end
 
   private
 
