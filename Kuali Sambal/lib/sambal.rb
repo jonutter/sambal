@@ -1,7 +1,6 @@
 TEST_SITE = "http://env2.ks.kuali.org" # TODO: Put this elsewhere when code gets gemmified
 
 require 'watir-webdriver'
-require 'rspec'
 
 $: << File.dirname(__FILE__)+'/sambal'
 

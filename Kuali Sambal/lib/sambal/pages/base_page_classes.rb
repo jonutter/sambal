@@ -143,7 +143,7 @@ class HolidayBase < BasePage
   element(:make_official_button) { |b| b.frm.button(text: "Make Official") }
 
   action(:make_official) { |b| b.make_official_button.click; b.loading.wait_while_present }
-  action(:save) { |b| b.frm.button(name: "").click; b.loading.wait_while_present }
+  action(:save) { |b| b.frm.button(text: "Save").click; b.loading.wait_while_present }
 
 end
 
@@ -167,6 +167,7 @@ module Holidays
     holiday_start_date.set start_date
     all_day.set unless all_day.set?
     date_range.set unless date_range.set?
+    loading.wait_while_present
     wait_until { holiday_end_date.enabled? }
     holiday_end_date.set end_date
     instruct(inst)
@@ -180,6 +181,7 @@ module Holidays
     holiday_start_date.set start_date
     all_day.clear if all_day.set?
     date_range.clear if date_range.set?
+    loading.wait_while_present
     wait_until { holiday_end_date.disabled? }
     holiday_start_time.set start_time
     holiday_start_meridian.select start_meridian
@@ -196,6 +198,7 @@ module Holidays
     holiday_start_date.set start_date
     all_day.clear if all_day.set?
     date_range.set unless date_range.set?
+    loading.wait_while_present
     wait_until { holiday_end_date.enabled? }
     holiday_start_time.set start_time
     holiday_start_meridian.select start_meridian

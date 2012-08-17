@@ -23,15 +23,25 @@ When /^I create an Academic Calendar$/ do
 end
 
 When /^I save the (Academic Calendar|Holiday Calendar|Academic Term)$/ do |arg|
-  arg.gsub!(" ", "")
-  on Module.const_get(arg) do |page|
+  klass = case(arg)
+            when "Academic Calendar"
+              AcademicCalendar
+            when "Holiday Calendar"
+              CreateHolidayCalendar
+          end
+  on klass do |page|
     page.save
   end
 end
 
 Then /^I should be able to save the (Academic Calendar|Holiday Calendar), and the Make Official button should become active$/ do |arg|
-  arg.gsub!(" ", "")
-  on Module.const_get(arg) do |page|
+  klass = case(arg)
+            when "Academic Calendar"
+              AcademicCalendar
+            when "Holiday Calendar"
+              CreateHolidayCalendar
+          end
+  on klass do |page|
     page.make_official_button.should be_disabled
     page.save
     page.make_official_button.should be_enabled
@@ -60,8 +70,14 @@ Then /^the calendar (.*) appear in search results$/ do |arg|
   end
 end
 
-When /^I click Make Official$/ do
-  on AcademicCalendar do |page|
+When /^I make the (.*) official$/ do |arg|
+  klass = case(arg)
+            when "Academic Calendar"
+              AcademicCalendar
+            when "Holiday Calendar"
+              CreateHolidayCalendar
+          end
+  on klass do |page|
     page.make_official
   end
 end

@@ -7,7 +7,7 @@ class HolidayCalendar < HolidayBase
   frame_element
   wrapper_elements
 
-  element(:last_saved_element) { |b| b.frm.span(id: "u35_span") }
+  element(:last_saved_element) { |b| b.frm.span(id: "u35_span") } # Persistent ID needed!
 
   value(:last_saved) { |b| b.last_saved_element.text } # Persistent ID needed!
   value(:calendar_name) { |b| b.frm.span(id: "u40").text } # Persistent ID needed!

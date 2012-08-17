@@ -21,19 +21,3 @@ When /^I create a Holiday Calendar$/ do
     page.add_partial_range_holiday(page.select_random_holiday, "05/11/#{next_year + 1}", "02:22", "am", "05/22/#{next_year + 1}", "04:44", "pm")
   end
 end
-
-Then /^I should be able to save the Holiday Calendar, and the Make Official button should become active$/ do
-  on CreateHolidayCalendar do |page|
-    page.make_official_button.should be_disabled
-    page.save
-    page.make_official_button.should be_enabled
-  end
-end
-
-And /^I save the Holiday Calendar$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I search for the Holiday Calendar$/ do
- pending # express the regexp above with the code you wish you had
-end

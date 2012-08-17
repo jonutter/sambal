@@ -14,7 +14,7 @@ Feature: Holiday Calendar CRED
   Scenario: Make Holiday Calendar Official
     Given I create a Holiday Calendar
     And I save the Holiday Calendar
-    When I click Make Official
+    When I make the Holiday Calendar official
     And I search for the Holiday Calendar
     Then the calendar should be set to Official
 
