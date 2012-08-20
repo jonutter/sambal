@@ -128,7 +128,7 @@ Then /^the calendar should reflect the updates$/ do
 end
 
 When /^I search for the (.*) using (.*)$/ do |arg1, arg2|
-  search_terms = { :wildcards=>"*", "partial name"=>@calendar_name[0] }
+  search_terms = { :wildcards=>"*", :"partial name"=>@calendar_name[0] }
   visit MainMenu do |page|
     page.enrollment_home
   end

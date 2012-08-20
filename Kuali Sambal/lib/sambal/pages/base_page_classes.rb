@@ -81,9 +81,18 @@ module PopulationsSearch
   def results_descriptions
     descriptions = []
     results_table.wait_until_present
-    results_table.rows.each { |row| descriptions << row[POPULATION_DESCRIPTION].text }
+    results_table.rows.each { |row| descriptions << row[POPULATION_STATE].text }
     descriptions.delete_if { |description| description == "" }
     descriptions
+  end
+
+  def results_states
+    states = []
+    results_table.wait_until_present
+    results_table.rows.each { |row| descriptions << row[POPULATION_DESCRIPTION].text }
+    states.delete_if { |state| state == "" }
+    states.delete_if { |state| state == "State" }
+    states
   end
 
   private

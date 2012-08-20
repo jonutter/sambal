@@ -13,31 +13,48 @@ Then /^the search results should include a population where "(.*)" includes "(.*
   end
 end
 
-Then /^the search results should include a population where "description" includes "60-89 credit hours"$/ do
-
+When /^I search for "Active" populations$/ do
+  go_to_manage_population
+  on ManagePopulations do |page|
+    page.active.set
+    page.search
+  end
 end
 
-When /^I search populations for state is "Active"$/ do
-
+Then /^the search results should only include "Active" populations$/ do
+  on ManagePopulations do |page|
+    page.results_states.each { |state| state.should == "Active" }
+  end
 end
 
-When /^I search populations for keyword is "Athletic Managers & Trainers" and state "Inactive"$/ do
-
+When /^I search populations with Keyword "(.*)" and State "(.*)"$/ do |keyword, state|
+  pending
 end
 
-Then /^the search results should include a population with "Name" "Athletic Managers & Trainers" and "State" "Inactive"$/ do
-
+Then /^the search results should include a population with Name "(.*)" and State "(.*)"$/ do |name, state|
+  pending
 end
 
-When /^I search populations for keyword is "Athlete"$/ do
-
+When /^I search populations with keyword "(.*)"$/ do |keyword|
+  pending
 end
 
-And /^select population with name "Athlete" from the search results$/ do
-
+And /^I select population with name "(.*)" from the search results$/ do |name|
+  pending
 end
-Then a read-only view of the population is displayed
-And the view of the population "name" field is "Athlete"
-And the view of the population "description" field is "Students who are members of an NCAA certified sport"
-And the view of the population "type" field is "rule"
-And the view of the population "state" field is "active"
+
+And /^the view of the population "name" field is "Athlete"$/ do
+  pending # Are these necessary?
+end
+
+And /^the view of the population "description" field is "Students who are members of an NCAA certified sport"$/ do
+  pending
+end
+
+And /^the view of the population "type" field is "rule"$/ do
+  pending
+end
+
+And /^the view of the population "state" field is "active"$/ do
+  pending
+end

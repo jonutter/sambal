@@ -13,8 +13,8 @@ I want to search for a population
     Then the search results should include a population where "Description" includes "60-89 credit hours"
 
   Scenario: Search for existing population by state
-    When I search populations for state is "Active"
-    Then the search results should include a populations with state equals "Active"
+    When I search for "Active" populations
+    Then the search results should only include "Active" populations
 
   Scenario: Search for existing population by name and state
     Given a population "Athletic Managers & Trainers" is set to state "Inactive"
