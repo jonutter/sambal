@@ -1,7 +1,7 @@
 class ViewPopulation < BasePage
 
   def frm
-    self.frame(class=>"fancybox-iframe")
+    self.frame(class: "fancybox-iframe")
   end
   
   action(:expand_all) { |b| b.frm.button(text: "Expand All").click; b.loading.wait_while_present }

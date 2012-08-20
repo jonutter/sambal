@@ -81,7 +81,7 @@ module PopulationsSearch
   def results_descriptions
     descriptions = []
     results_table.wait_until_present
-    results_table.rows.each { |row| descriptions << row[POPULATION_STATE].text }
+    results_table.rows.each { |row| descriptions << row[POPULATION_DESCRIPTION].text }
     descriptions.delete_if { |description| description == "" }
     descriptions
   end
@@ -89,7 +89,7 @@ module PopulationsSearch
   def results_states
     states = []
     results_table.wait_until_present
-    results_table.rows.each { |row| descriptions << row[POPULATION_DESCRIPTION].text }
+    results_table.rows.each { |row| states << row[POPULATION_STATE].text }
     states.delete_if { |state| state == "" }
     states.delete_if { |state| state == "State" }
     states
@@ -104,14 +104,6 @@ module PopulationsSearch
 end
 
 module PopulationEdit
-
-  # Returns (as a string) one of the rules listed in the Rule selection list.
-  def random_rule
-    rules = []
-    rule.options.to_a.each { |item| rules << item.text }
-    rules.shuffle!
-    rules[0]
-  end
 
   def remove_population(name)
     self.div(text:/#{name}/).link(text: "X").click

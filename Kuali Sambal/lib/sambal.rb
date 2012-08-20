@@ -10,3 +10,4 @@ require 'workflows'
 require 'kuali_base_page'
 require 'pages/base_page_classes'
 Dir["#{File.dirname(__FILE__)}/sambal/pages/*.rb"].each {|f| require f }
+Dir["#{File.dirname(__FILE__)}/sambal/data_objects/*.rb"].each {|f| require f }

@@ -25,15 +25,7 @@ When /^I edit the (.*) of the population$/ do |attrib|
       when 'rule'
         @old_rule = @rule
         # Select a random rule...
-        def new_random_rule(page)
-          new_rule = page.random_rule
-          if new_rule == @old_rule
-            new_random_rule(page)
-          else
-            new_rule
-          end
-        end
-        @rule = new_random_rule(page)
+
         page.rule.select @rule
       when 'populations'
         @old_pop1 = @pop1

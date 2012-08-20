@@ -6,10 +6,15 @@ When /^I search populations for keyword "(.*)"$/ do |arg|
   end
 end
 
-Then /^the search results should include a population where "(.*)" includes "(.*)"$/ do |arg1, arg2|
-  methds = { :Name=>"results_names", :Description=>"results_descriptions"}
+Then /^the search results should include a population named "(.*)"$/ do |pop_name|
   on ManagePopulations do |page|
-    page.send(methds[arg1.to_sym]).should include arg2
+    page.results_names.should include pop_name
+  end
+end
+
+Then /^the search results should include a population where the description includes "(.*)"$/ do |desc|
+  on ManagePopulations do |page|
+    page.results_descriptions.grep(/#{Regexp.escape(desc)}/).should_be true
   end
 end
 
@@ -27,8 +32,9 @@ Then /^the search results should only include "Active" populations$/ do
   end
 end
 
-When /^I search populations with Keyword "(.*)" and State "(.*)"$/ do |keywerd, state|
+When /^I search populations with the Keyword "(.*)" and a State of "(.*)"$/ do |keywerd, state|
   methd = state.downcase
+  go_to_manage_population
   on ManagePopulations do |page|
     page.keyword.set keywerd
     page.send(methd)
@@ -43,7 +49,8 @@ Then /^the search results should include a population with Name "(.*)" and State
   end
 end
 
-When /^I search populations with keyword "(.*)"$/ do |keywerd|
+When /^I search populations with Keyword "(.*)"$/ do |keywerd|
+  go_to_manage_population
   on ManagePopulations do |page|
     page.keyword.set keywerd
     page.search
@@ -57,8 +64,22 @@ And /^I view the population with name "(.*)" from the search results$/ do |name|
 end
 
 And /^the view of the population "(.*)" field is "(.*)"$/ do |field, value|
-  methd = {}
+  methd = field.downcase
   on ViewPopulation do |page|
-    page.send(methd).should == value
+    page.send(methd[field]).should == value
+  end
+end
+
+Given /^I set the population "(.*)" to state "(.*)"$/ do |pop, state|
+  methd = state.downcase
+  go_to_manage_population
+  on ManagePopulations do |page|
+    page.keyword.set pop
+    page.search
+    page.edit pop
+  end
+  on EditPopulation do |page|
+    page.send(methd).set
+    page.update
   end
 end
