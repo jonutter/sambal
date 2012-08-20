@@ -90,7 +90,7 @@ When /^I try to create a population that is exclusion-based with no reference po
 	  page.exclusion
 	  @pop1 = add_random_population
 	  page.create_population
-    end
+  end
 
 end
 
@@ -107,7 +107,7 @@ When /^I try to create a population that is union-based with one population$/ do
 	  page.union
 	  @pop1 = add_random_population
 	  page.create_population
-    end
+  end
 
 end
 
@@ -146,6 +146,6 @@ When /^I create an exclusion-based population with 2 additional populations$/ do
 	  @pop1 = add_random_population
 	  @pop2 = add_random_population
 	  page.create_population
-    end
+  end
 
 end

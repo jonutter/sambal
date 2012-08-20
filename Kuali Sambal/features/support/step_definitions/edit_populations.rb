@@ -47,12 +47,9 @@ When /^I edit the (.*) of the population$/ do |attrib|
   end
 end
 
-Then /^a read-only view of the population information is displayed$/ do
+Then /^a read-only view of the population is displayed$/ do
   on ViewPopulation do |page|
-    page.name.should == @pop_name
-    page.description.should == @pop_desc
-    page.populations.should include @pop1
-    page.populations.should include @pop2
+    page.header.should == "View Population"
   end
 end
 
