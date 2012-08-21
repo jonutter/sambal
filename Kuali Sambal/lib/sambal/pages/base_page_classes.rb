@@ -108,12 +108,12 @@ module PopulationEdit
 
   def child_populations
     names = []
-    frm.text_fields(name: /document.newMaintainableObject.dataObject.childPopulations[\d+].name/).each { |field| names << field.value }
-    names
+    frm.divs(class: "uif-group uif-boxGroup uif-horizontalBoxGroup uif-collectionItem uif-boxCollectionItem").each { |div| names << div.text_field.value }
+    names.delete_if { |name| name == "" }
   end
 
   def remove_population(name)
-    frm.div(class: "uif-group uif-boxGroup uif-horizontalBoxGroup uif-collectionItem uif-boxCollectionItem", text: /#{Regexp.escape(name)}/).link(text: "X").click
+    frm.text_field(value: name).parent.parent.parent.link(text: "X").click
     loading.wait_while_present
   end
 

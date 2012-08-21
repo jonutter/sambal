@@ -97,9 +97,10 @@ class Population
       page.description.set options[:description]
       page.send(options[:status].downcase).set
       page.rule.set(options[:rule]) unless options[:rule] == nil
-      page.reference_population.set(options[:reference_population]) unless options[:ref_pop] == nil
-      unless @child_populations==options[:child_pops] && options[:child_pops] == page.child_populations
-
+      update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population
+      unless @child_populations == options[:child_pops]
+        page.child_populations.each { |pop| page.remove_population(pop) }
+        options[:child_pops].each { |pop| add_child_population(pop) }
       end
       page.update
     end
@@ -163,6 +164,21 @@ class Population
       page.wait_until(10) { page.reference_population.value == population }
     end
     @reference_population = population
+  end
+
+  def update_ref_pop(pop)
+    on EditPopulation do |page|
+      page.lookup_ref_pop
+    end
+    on ActivePopulationLookup do |page|
+      page.keyword.wait_until_present
+      page.keyword.set pop
+      page.search
+      page.return_value pop
+    end
+    on CreatePopulation do |page|
+      page.wait_until(10) { page.reference_population.value == pop }
+    end
   end
 
   # Returns (as a string) one of the rules listed in the Rule selection list.
