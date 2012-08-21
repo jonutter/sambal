@@ -14,7 +14,7 @@ class Population
       :name=>random_alphanums,
       :description=>random_multiline(15,3),
       :type=>"rule-based",
-      :child_populations=>nil,
+      :child_populations=>[],
       :rule=>nil,
       :reference_population=>nil,
       :state=>"Active"
@@ -24,9 +24,7 @@ class Population
     @name=options[:name]
     @description=options[:description]
     @type = options[:type]
-    @child_populations = []
-    @child_populations << options[:child_populations]
-    @child_populations.flatten! if @child_populations[0].class == Array
+    @child_populations = options[:child_populations]
     @rule = options[:rule]
     operations = {:"union-based"=>"union",:"intersection-based"=>"intersection",:"exclusion-based"=>"exclusion"}
     @operation = operations[type.to_sym]
@@ -39,8 +37,8 @@ class Population
     on CreatePopulation do |page|
       page.name.set @name
       page.description.set @description
-      page.by_using_populations unless type == 'rule-based'
-      case(type)
+      page.by_using_populations unless @type == 'rule-based'
+      case(@type)
         when 'rule-based'
           # Select a random rule if none is defined
           @rule = random_rule(page) if @rule == nil
@@ -54,20 +52,56 @@ class Population
         when 'exclusion-based'
           # Select exclusion...
           page.exclusion
-          @reference_population
+          @reference_population == nil ? add_random_ref_pop : add_ref_pop
         else
           puts "Your population type value must be one of the following:\n'rule-based', 'union-based', 'intersection-based', or 'exclusion-based'.\nPlease update your script"
           exit
       end
       unless type=='rule-based'
-        @child_populations.each do |pop|
-          pop == nil ? add_random_population : add_child_population(pop)
+        if @child_populations == []
+          2.times{add_random_population}
+        else
+          @child_populations.each do |pop|
+            add_child_population(pop)
+          end
         end
       end
     end
     on CreatePopulation do |page|
       # Click the create population button...
       page.create_population
+    end
+  end
+
+  def edit_population(opts={})
+
+    defaults = {
+      :name=>@name,
+      :description=>@description,
+      :status=>@status,
+      :rule=>@rule,
+      :ref_pop=>@reference_population,
+      :child_pops=>@child_populations
+    }
+    options=defaults.merge(opts)
+
+    go_to_manage_population
+    on ManagePopulations do |page|
+      page.keyword.set @name
+      page.both.set
+      page.search
+      page.edit @name
+    end
+    on EditPopulation do |page|
+      page.name.set options[:name]
+      page.description.set options[:description]
+      page.send(options[:status].downcase).set
+      page.rule.set(options[:rule]) unless options[:rule] == nil
+      page.reference_population.set(options[:reference_population]) unless options[:ref_pop] == nil
+      unless @child_populations==options[:child_pops] && options[:child_pops] == page.child_populations
+
+      end
+      page.update
     end
   end
 
@@ -82,14 +116,12 @@ class Population
       page.return_value child_population
     end
     on CreatePopulation do |page|
-      page.wait_until(15) { page.population.value == population }
+      page.wait_until(15) { page.population.value == child_population }
       page.add
     end
-
   end
 
   def add_random_population
-    @child_populations.compact!
     on CreatePopulation do |page|
       page.lookup_population
     end
@@ -104,6 +136,21 @@ class Population
     @child_populations << population
   end
 
+  def add_ref_pop
+    on CreatePopulation do |page|
+      page.lookup_ref_population
+    end
+    on ActivePopulationLookup do |page|
+      page.keyword.wait_until_present
+      page.keyword.set @reference_population
+      page.search
+      page.return_value @reference_population
+    end
+    on CreatePopulation do |page|
+      page.wait_until(10) { page.reference_population.value == @reference_population }
+    end
+  end
+
   def add_random_ref_pop
     on CreatePopulation do |page|
       page.lookup_ref_population
@@ -115,7 +162,7 @@ class Population
     on CreatePopulation do |page|
       page.wait_until(10) { page.reference_population.value == population }
     end
-    population
+    @reference_population = population
   end
 
   # Returns (as a string) one of the rules listed in the Rule selection list.

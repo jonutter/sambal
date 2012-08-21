@@ -74,6 +74,7 @@ module PopulationsSearch
     results_table.wait_until_present
     results_table.rows.each { |row| names << row[POPULATION_NAME].text }
     names.delete_if { |name| name == "" }
+    names.delete_if { |name| name == "Name" }
     names
   end
   alias results_names results_list
@@ -105,8 +106,14 @@ end
 
 module PopulationEdit
 
+  def child_populations
+    names = []
+    frm.text_fields(name: /document.newMaintainableObject.dataObject.childPopulations[\d+].name/).each { |field| names << field.value }
+    names
+  end
+
   def remove_population(name)
-    self.div(text:/#{name}/).link(text: "X").click
+    frm.div(class: "uif-group uif-boxGroup uif-horizontalBoxGroup uif-collectionItem uif-boxCollectionItem", text: /#{Regexp.escape(name)}/).link(text: "X").click
     loading.wait_while_present
   end
 
