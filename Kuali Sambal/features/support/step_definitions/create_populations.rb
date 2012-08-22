@@ -1,5 +1,5 @@
 When /^I create a population that is (.*)$/ do |type|
-  @population = make Population
+  @population = make Population, :type=>type
   @population.create_population
 end
 
