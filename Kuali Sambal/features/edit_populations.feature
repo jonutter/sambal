@@ -10,7 +10,7 @@ I want to create populations by using rules, and based other populations
     And I edit the description of the population
     And I edit the state of the population
     And I edit the rule of the population
-    Then a read-only view of the population information is displayed
+    Then a read-only view of the population is displayed
     And the population exists with a state of "inactive"
 
   Scenario: Edit a population based on a Union operation
@@ -20,7 +20,7 @@ I want to create populations by using rules, and based other populations
     And I edit the state of the population
     And I edit the rule of the population
     And I edit the populations of the population
-    Then a read-only view of the population information is displayed
+    Then a read-only view of the population is displayed
     And the population exists with a state of "inactive"
 
   Scenario: Edit a population based on an Exclusion operation
@@ -30,7 +30,7 @@ I want to create populations by using rules, and based other populations
     And I edit the state of the population
     And I edit the rule of the population
     And I edit the populations of the population
-    Then a read-only view of the population information is displayed
+    Then a read-only view of the population is displayed
     And the population exists with a state of "inactive"
 
   Scenario: Edit a population that uses Intersection
@@ -40,7 +40,7 @@ I want to create populations by using rules, and based other populations
     And I edit the state of the population
     And I edit the rule of the population
     And I edit the populations of the population
-    Then a read-only view of the population information is displayed
+    Then a read-only view of the population is displayed
     And the population exists with a state of "inactive"
 
   Scenario: Try to edit a population using a name that has already been associated with a population
