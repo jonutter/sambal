@@ -10,6 +10,10 @@ module PageHelper
     @current_page
   end
 
+  def make data_object_class, opts={}
+    data_object_class.new @browser, opts
+  end
+
   def wait_until(timeout=30, message=nil, &block)
     Object::Watir::Wait.until(timeout, message, &block)
   end

@@ -1,10 +1,10 @@
 When /^I create a population that is (.*)$/ do |type|
-  @population = Population.new @browser
+  @population = make Population
   @population.create_population
 end
 
 When /^I create another population with the same name$/ do
-  @population2 = Population.new(@browser, :name=>@population.name)
+  @population2 = make Population, :name=>@population.name
   @population2.create_population
 end
 
@@ -39,22 +39,22 @@ Then /^an error message appears stating "(.*?)"$/ do |errMsg|
 end
 
 When /^I try to create a population that is exclusion-based with no reference population$/ do
-  @population = Population.new(@browser, :type=>"exclusion-based", :reference_population=>" " )
+  @population = make Population, :type=>"exclusion-based", :reference_population=>" "
   @population.create_population
 end
 
 When /^I try to create a population that is union-based with one population$/ do
-  @population = Population.new(@browser, :type=>"union-based", :child_populations=>["random"])
+  @population = make Population, :type=>"union-based", :child_populations=>["random"]
   @population.create_population
 end
 
 
 When /^I create an union-based population with 3 populations$/ do
-  @population = Population.new(@browser, :type=>"union-based", :child_populations=>["random", "random", "random"])
+  @population = make Population, :type=>"union-based", :child_populations=>["random", "random", "random"]
   @population.create_population
 end
 
 When /^I create an exclusion-based population with 2 additional populations$/ do
-  @population = Population.new(@browser, :type=>"exclusion-based", :child_populations=>["random", "random", "random"])
+  @population = make Population, :type=>"exclusion-based", :child_populations=>["random", "random", "random"]
   @population.create_population
 end
