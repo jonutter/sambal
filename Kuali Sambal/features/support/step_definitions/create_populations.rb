@@ -19,6 +19,7 @@ Then /^there is no new population created$/ do
   on ManagePopulations do |page|
     page.keyword.set @population.name
     page.search
+    # TODO: Improve this to look at results contents for duplicates in the Array
     page.results_list.length.should == 2 #imperfect since keyword search also searches description
   end
 end
@@ -26,7 +27,7 @@ end
 Then /^the population exists with a state of "(.*?)"$/ do |state|
   go_to_manage_population
   on ManagePopulations do |page|
-    page.keyword.set @population
+    page.keyword.set @population.name
     page.search
     page.status(@population).should == state
   end

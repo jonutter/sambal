@@ -1,4 +1,5 @@
 Given /^I am logged in as admin$/ do
+
   visit Login do |page|
     page.login_with "admin", "admin"
   end
