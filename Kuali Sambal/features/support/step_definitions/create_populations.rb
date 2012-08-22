@@ -45,7 +45,7 @@ end
 
 When /^I try to create a population that is union-based with one population$/ do
   @population = Population.new(@browser, :type=>"union-based", :child_populations=>["random"])
-
+  @population.create_population
 end
 
 
