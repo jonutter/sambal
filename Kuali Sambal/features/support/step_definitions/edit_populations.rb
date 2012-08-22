@@ -10,10 +10,10 @@ Then /^a read-only view of the population is displayed$/ do
 end
 
 When /^I rename a population with an existing name$/ do
-
+  pending
 
 end
 
 Then /^the population name is not changed$/ do
-
+  pending
 end

@@ -33,9 +33,9 @@ Then /^the population exists with a state of "(.*?)"$/ do |state|
 end
 
 Then /^an error message appears stating "(.*?)"$/ do |errMsg|
-	on CreatePopulation do |page|
-		page.first_error.should match /.*#{errMsg}.*/
-	end
+  on CreatePopulation do |page|
+    page.first_error.should match /.*#{errMsg}.*/
+  end
 end
 
 When /^I try to create a population that is exclusion-based with no reference population$/ do

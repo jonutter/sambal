@@ -77,7 +77,7 @@ class Population
     end
   end
 
-  def edit_population(opts={})
+  def edit_population opts={}
 
     defaults = {
       :name=>@name,
