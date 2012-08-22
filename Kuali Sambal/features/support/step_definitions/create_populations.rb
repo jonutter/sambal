@@ -44,17 +44,17 @@ When /^I try to create a population that is exclusion-based with no reference po
 end
 
 When /^I try to create a population that is union-based with one population$/ do
-  @population = make Population, :type=>"union-based", :child_populations=>["random"]
+  @population = make Population, :type=>"union-based", :child_populations=>%w{random}
   @population.create_population
 end
 
 
 When /^I create an union-based population with 3 populations$/ do
-  @population = make Population, :type=>"union-based", :child_populations=>["random", "random", "random"]
+  @population = make Population, :type=>"union-based", :child_populations=>%w{random random random}
   @population.create_population
 end
 
 When /^I create an exclusion-based population with 2 additional populations$/ do
-  @population = make Population, :type=>"exclusion-based", :child_populations=>["random", "random", "random"]
+  @population = make Population, :type=>"exclusion-based", :child_populations=>%w{random random random}
   @population.create_population
 end
