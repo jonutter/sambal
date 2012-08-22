@@ -62,7 +62,11 @@ class Population
           2.times{add_random_population}
         else
           @child_populations.each do |pop|
-            add_child_population(pop)
+            if pop = "random"
+              add_random_population
+            else
+              add_child_population(pop)
+            end
           end
         end
       end
