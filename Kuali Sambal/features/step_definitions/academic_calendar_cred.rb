@@ -1,10 +1,3 @@
-Given /^I am logged in as admin$/ do
-
-  visit Login do |page|
-    page.login_with "admin", "admin"
-  end
-end
-
 When /^I create an Academic Calendar$/ do
   @calendar_name = random_alphanums
   @start_date = "09/01/#{next_year}"

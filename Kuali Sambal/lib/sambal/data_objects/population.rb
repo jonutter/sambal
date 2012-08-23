@@ -52,18 +52,19 @@ class Population
         when 'exclusion-based'
           # Select exclusion...
           page.exclusion
-          @reference_population == nil ? add_random_ref_pop : add_ref_pop
+          @reference_population == nil ? add_random_ref_pop : add_ref_pop unless @reference_population == " "
         else
           puts "Your population type value must be one of the following:\n'rule-based', 'union-based', 'intersection-based', or 'exclusion-based'.\nPlease update your script"
           exit
       end
       unless type=='rule-based'
-        if @child_populations == []
-          2.times{add_random_population}
+        puts @child_populations.length
+        if @child_populations.length == 0
+          2.times { @child_populations << add_random_population }
         else
           @child_populations.each do |pop|
             if pop == "random"
-              add_random_population
+              pop.replace(add_random_population)
             else
               add_child_population(pop)
             end
@@ -75,6 +76,7 @@ class Population
       # Click the create population button...
       page.create_population
     end
+    sleep 10
   end
 
   def edit_population opts={}
@@ -138,7 +140,7 @@ class Population
       page.wait_until(15) { page.population.value == population }
       page.add
     end
-    @child_populations << population
+    population
   end
 
   def add_ref_pop

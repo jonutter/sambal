@@ -14,7 +14,7 @@ class BasePage < PageMaker
       action(:doc_search) { |b| b.link(title: "Document Search").click }
 
       value(:build) { |b| b.div(id: "build").text }
-      value(:logged_in_user) { |b| b.div(id: "login-info").text }
+      value(:logged_in_user) { |b| b.div(id: "login-info").text[/(?<=:.).*$/] }
 
       value(:copyright) { |b| b.div(id: "footer-copyright").text }
       action(:acknowledgements) { |b| b.link(href: "acknowledgments.jsp").click }

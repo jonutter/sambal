@@ -20,7 +20,7 @@ Then /^there is no new population created$/ do
     page.keyword.set @population.name
     page.search
     # TODO: Improve this to look at results contents for duplicates in the Array
-    page.results_list.length.should == 2 #imperfect since keyword search also searches description
+    page.results_list.length.should == 1 #imperfect since keyword search also searches description
   end
 end
 
@@ -29,7 +29,7 @@ Then /^the population exists with a state of "(.*?)"$/ do |state|
   on ManagePopulations do |page|
     page.keyword.set @population.name
     page.search
-    page.status(@population).should == state
+    page.status(@population.status.downcase).should == state
   end
 end
 
@@ -49,13 +49,12 @@ When /^I try to create a population that is union-based with one population$/ do
   @population.create_population
 end
 
-
 When /^I create an union-based population with 3 populations$/ do
   @population = make Population, :type=>"union-based", :child_populations=>%w{random random random}
   @population.create_population
 end
 
-When /^I create an exclusion-based population with 2 additional populations$/ do
-  @population = make Population, :type=>"exclusion-based", :child_populations=>%w{random random random}
+When /^I create an exclusion-based population with 2 child populations$/ do
+  @population = make Population, :type=>"exclusion-based", :child_populations=>%w{random random}
   @population.create_population
 end

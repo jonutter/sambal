@@ -1,6 +1,5 @@
-# This module contains methods that exist in a grey, nebulous middle zone...
-# They aren't quite step definitions, but they involve multiple
-# page classes.
+# Helper methods that don't properly belong elsewhere. This is
+# a sort of "catch all" Module.
 module Workflows
 
   # Site Navigation helpers...
@@ -22,8 +21,31 @@ module Workflows
     end
   end
 
-  # Larger flows...
+  # Helper methods...
+  def logged_in?
+    logged_in = "Ramble On"
+    on Header do |page|
+      logged_in = page.main_menu_el.present?
+    end
+    logged_in
+  end
 
+  def logged_in_user
+    user = ""
+    on Header do |page|
+      begin
+        user = page.logged_in_user
+      rescue Watir::Exception::UnknownObjectException
+        user = "No One"
+      end
+    end
+    user
+  end
 
+  def log_in(user, pwd)
+    visit Login do |page|
+      page.login_with user, pwd
+    end
+  end
 
 end
