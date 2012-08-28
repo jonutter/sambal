@@ -1,7 +1,7 @@
 Feature: Create Populations
 
 In order to reserve seats in a course offering for a group of students 
-I want to create populations by using rules, and based other populations
+I want to create populations by using rules, and based on other populations
 
   Scenario: Create a new population using a rule
     Given I am logged in as admin
