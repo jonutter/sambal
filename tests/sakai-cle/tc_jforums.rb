@@ -94,6 +94,7 @@ class TestJForums < Test::Unit::TestCase
     topic = student_lounge.new_topic
    
     topic.subject=@topics[0][:subject]
+sleep 3
     topic.message_text=@topics[0][:message]
     topic.attach_files
     topic.filename1(@topics[0][:file], @file_path)
@@ -176,12 +177,12 @@ class TestJForums < Test::Unit::TestCase
     
     search_page = info.search
     search_page.keywords=@keywords
-    
+sleep 60
     forums_page = search_page.click_search
-    
+sleep 5
     # TEST CASE: Verify a topic was found
     assert_match(/topic.+found/i, frm.span(:class=>"maintitle").text) # FIXME
-    
+
     topic_page = forums_page.open_topic @topics[0][:subject]
     
     reply_page = topic_page.post_reply

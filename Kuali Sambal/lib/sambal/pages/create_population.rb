@@ -14,6 +14,6 @@ class CreatePopulation < PopulationsBase
   action(:union) { |b| b.union_radio.set }
   action(:intersection) { |b| b.frm.radio(value: "kuali.population.rule.type.intersection").set }
   action(:exclusion) { |b| b.frm.radio(value: "kuali.population.rule.type.exclusion").set }
-  action(:create_population) { |b| b.frm.button(id: "button_createPopulation").click; b.loading.wait_while_present }
+  action(:create) { |b| b.frm.button(id: "button_createPopulation").click; b.loading.wait_while_present }
 
 end

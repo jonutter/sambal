@@ -3,9 +3,9 @@
 #
 # Smoke tests a portfolio site.
 #
-# Note that the Portfolio Site used for testing (see line 48) must
+# Note that the Portfolio Site used for testing (see line 49) must
 # exist, and have several participants, with proper roles...
-# - At least 2 instructors (defined starting at line 27)
+# - At least 2 instructors (defined starting at line 29)
 # - At least 1 student (with a "participant" role in the Portfolio, if possible)
 # 
 # Author: Abe Heward (aheward@rSmart.com)

@@ -32,7 +32,7 @@ class Population
     @status = options[:state]
   end
 
-  def create_population
+  def create
     go_to_create_population
     on CreatePopulation do |page|
       page.name.set @name
@@ -41,7 +41,7 @@ class Population
       case(@type)
         when 'rule-based'
           # Select a random rule if none is defined
-          @rule = random_rule(page) if @rule == nil
+          @rule=random_rule(page) if @rule == nil
           page.rule.select @rule
         when 'union-based'
           # Select union...
@@ -52,13 +52,12 @@ class Population
         when 'exclusion-based'
           # Select exclusion...
           page.exclusion
-          @reference_population == nil ? add_random_ref_pop : add_ref_pop unless @reference_population == " "
+          @reference_population == nil ? @reference_population = add_random_ref_pop : add_ref_pop(@reference_population) unless @reference_population == " "
         else
           puts "Your population type value must be one of the following:\n'rule-based', 'union-based', 'intersection-based', or 'exclusion-based'.\nPlease update your script"
           exit
       end
       unless type=='rule-based'
-        puts @child_populations.length
         if @child_populations.length == 0
           2.times { @child_populations << add_random_population }
         else
@@ -74,7 +73,7 @@ class Population
     end
     on CreatePopulation do |page|
       # Click the create population button...
-      page.create_population
+      page.create
     end
     sleep 10
   end
@@ -102,13 +101,36 @@ class Population
       page.name.set options[:name]
       page.description.set options[:description]
       page.send(options[:status].downcase).set
-      page.rule.set(options[:rule]) unless options[:rule] == nil
-      update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population
+      if options[:rule] == "random"
+        options[:rule]=new_random_rule(page)
+      end
+      page.rule.select(options[:rule]) unless options[:rule] == nil
+      if options[:ref_pop] == "random"
+        options[:ref_pop] = update_random_ref_pop
+      else
+        update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population
+      end
       unless @child_populations == options[:child_pops]
         page.child_populations.each { |pop| page.remove_population(pop) }
-        options[:child_pops].each { |pop| add_child_population(pop) }
+        options[:child_pops].each do |pop|
+          if pop == "random"
+            pop.replace(add_random_population)
+          else
+            add_child_population(pop)
+          end
+        end
       end
       page.update
+      if page.first_msg == "Document was successfully submitted."
+        @name=options[:name]
+        @description=options[:description]
+        @status=options[:status]
+        @rule=options[:rule]
+        @reference_population=options[:ref_pop]
+        @child_populations=options[:child_pops]
+      else
+        # Do not update the Population attributes.
+      end
     end
   end
 
@@ -123,7 +145,7 @@ class Population
       page.return_value child_population
     end
     on CreatePopulation do |page|
-      page.wait_until(15) { page.population.value == child_population }
+      page.wait_until(15) { page.child_population.value == child_population }
       page.add
     end
   end
@@ -133,28 +155,33 @@ class Population
       page.lookup_population
     end
     population = search_for_pop
+    @child_populations.each do |chpop|
+      if chpop == population
+        population = search_for_pop
+      end
+    end
     on ActivePopulationLookup do |page|
       page.return_value population
     end
     on CreatePopulation do |page|
-      page.wait_until(15) { page.population.value == population }
+      page.wait_until(15) { page.child_population.value == population }
       page.add
     end
     population
   end
 
-  def add_ref_pop
+  def add_ref_pop(population)
     on CreatePopulation do |page|
       page.lookup_ref_population
     end
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
-      page.keyword.set @reference_population
+      page.keyword.set population
       page.search
-      page.return_value @reference_population
+      page.return_value population
     end
     on CreatePopulation do |page|
-      page.wait_until(10) { page.reference_population.value == @reference_population }
+      page.wait_until(10) { page.reference_population.value == population }
     end
   end
 
@@ -169,12 +196,12 @@ class Population
     on CreatePopulation do |page|
       page.wait_until(10) { page.reference_population.value == population }
     end
-    @reference_population = population
+    population
   end
 
   def update_ref_pop(pop)
     on EditPopulation do |page|
-      page.lookup_ref_pop
+      page.lookup_ref_population
     end
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
@@ -187,12 +214,35 @@ class Population
     end
   end
 
+  def update_random_ref_pop
+    pop = ""
+    on EditPopulation do |page|
+      page.lookup_ref_population
+    end
+    on ActivePopulationLookup do |page|
+      page.keyword.wait_until_present
+      page.search
+      names = page.results_list
+      names.shuffle!
+      if names[0] != @reference_population
+        pop = names[0]
+      else
+        pop = names[1]
+      end
+      page.return_value pop
+    end
+    on CreatePopulation do |page|
+      page.wait_until(10) { page.reference_population.value == pop }
+    end
+    pop
+  end
+
   # Returns (as a string) one of the rules listed in the Rule selection list.
   def random_rule(page)
     rules = []
     page.rule.options.to_a.each { |item| rules << item.text }
     rules.shuffle!
-    @rule = rules[0]
+    rules[0]
   end
 
   def new_random_rule(page)
@@ -202,7 +252,6 @@ class Population
     else
       new_rule
     end
-    @rule = new_random_rule(page)
   end
 
   private
@@ -216,11 +265,7 @@ class Population
     end
     search_for_pop if @names.length < 2
     @names.shuffle!
-    if @names[0] != @pop1
-      @names[0]
-    else
-      @names[1]
-    end
+    @names[0]
   end
 
 end

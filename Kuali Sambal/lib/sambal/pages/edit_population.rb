@@ -4,6 +4,7 @@ class EditPopulation < PopulationsBase
 
   frame_element
   population_attribute_elements
+  validation_elements
   include PopulationEdit
 
   element(:active) { |b| b.frm.radio(value: "kuali.population.population.state.active") }

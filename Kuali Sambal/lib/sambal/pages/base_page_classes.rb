@@ -17,7 +17,7 @@ class PopulationsBase < BasePage
       element(:name) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.populationInfo.name") }
       element(:description) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.populationInfo.descr.plain") }
       element(:rule) { |b| b.frm.select(name: "document.newMaintainableObject.dataObject.populationRuleInfo.agendaIds[0]") }
-      element(:population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
+      element(:child_population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
@@ -115,6 +115,8 @@ module PopulationEdit
   def remove_population(name)
     frm.text_field(value: name).parent.parent.parent.link(text: "X").click
     loading.wait_while_present
+    wait_until { child_population.enabled? }
+    sleep 2 #FIXME - Needed because otherwise the automation causes an application error
   end
 
 end

@@ -1,4 +1,4 @@
-class AcademicCalendar < BasePage
+class EditAcademicCalendar < BasePage
 
   expected_element :academic_calendar_name
 
