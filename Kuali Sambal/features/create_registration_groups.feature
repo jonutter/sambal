@@ -8,7 +8,7 @@ As an Administrator, I want to create the registration groups for a Course Offer
     When I generate unconstrained registration groups
     Then registration groups are generated for each activity offering
 
-#this is too imperative?
+#this is too imperative? split into 2 separate scenarios
   Scenario: Add to existing registration groups by adding an activity offering
     Given I am logged in as admin
     And I manage course offerings for a course offering with a single actvitiy #use ENGL103A (delete if exists, then copy ENGL103)
