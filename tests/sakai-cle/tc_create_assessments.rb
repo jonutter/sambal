@@ -294,10 +294,10 @@ class TestCreateNewAssessments < Test::Unit::TestCase
     pool = tfq.save
 
     pools_list = pool.question_pools
-
     # Import a Question Pool
     import_page = pools_list.import
     import_page.choose_file(@pool_file, @file_path)
+
     pools_list = import_page.import
 
     # TEST CASE: Verify import worked

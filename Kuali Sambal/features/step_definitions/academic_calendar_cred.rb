@@ -1,30 +1,21 @@
+Given /^I am creating an Academic Calendar$/ do
+
+end
+
 When /^I create an Academic Calendar$/ do
-  @calendar_name = random_alphanums
-  @start_date = "09/01/#{next_year}"
-  @end_date = "06/20/#{next_year + 1}"
-  visit MainMenu do |page|
-    page.enrollment_home
-  end
-  on Enrollment do |page|
-    page.create_academic_calendar
-  end
-  on CreateAcadCalendar do |page|
-    page.name.set @calendar_name
-    page.start_date.set @start_date
-    page.end_date.set @end_date
-    page.copy_academic_calendar
-  end
+  @calendar = make AcademicCalendar
+  @calendar.create
 end
 
 When /^I save the (Academic Calendar|Holiday Calendar|Academic Term)$/ do |arg|
-  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
   on klasses[arg.to_sym] do |page|
     page.save
   end
 end
 
 Then /^I should be able to save the (Academic Calendar|Holiday Calendar), and the Make Official button should become active$/ do |arg|
-  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
   on klasses[arg.to_sym] do |page|
     page.make_official_button.should be_disabled
     page.save
@@ -55,7 +46,7 @@ Then /^the calendar (.*) appear in search results$/ do |arg|
 end
 
 When /^I make the (.*) official$/ do |arg|
-  klasses = {:"Academic Calendar"=>AcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
+  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
   on klasses[arg.to_sym] do |page|
     page.make_official
   end
@@ -96,7 +87,7 @@ When /^I update the Academic Calendar$/ do
   @calendar_name = random_alphanums
   @start_date = "02/15/#{next_year}"
   @end_date = "07/06/#{next_year + 1}"
-  on AcademicCalendar do |page|
+  on EditAcademicCalendar do |page|
     page.name.set @calendar_name
     page.start_date.set @start_date
     page.end_date.set @end_date
@@ -105,7 +96,7 @@ When /^I update the Academic Calendar$/ do
 end
 
 When /^I delete the Academic Calendar draft$/ do
-  on AcademicCalendar do |page|
+  on EditAcademicCalendar do |page|
     page.delete_draft
 
     sleep 5
@@ -114,7 +105,7 @@ When /^I delete the Academic Calendar draft$/ do
 end
 
 Then /^the calendar should reflect the updates$/ do
-  on AcademicCalendar do |page|
+  on EditAcademicCalendar do |page|
     page.name.value.should == @calendar_name
     page.start_date.value.should == @start_date
     page.end_date.value.should == @end_date

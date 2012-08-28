@@ -175,7 +175,9 @@ class TestCreatingCourseSite < Test::Unit::TestCase
     
     add_tools.site_email_address = @email
     add_tools.web_content_source=@web_content_source
-    
+
+    sleep 5
+
     # Click the Continue button
     # Note that I am calling this element directly rather than using its Class definition
     # because of an inexplicable ObsoleteElementError occuring in Selenium-Webdriver
@@ -185,16 +187,20 @@ class TestCreatingCourseSite < Test::Unit::TestCase
     
     # TEST CASE: Joiner Role selection list is not visible by default
     assert_equal false, access.joiner_role_div.visible?
-    
+
+    sleep 5
+
     access.select_allow
     access.joiner_role=@joiner_role
     
     review = access.continue
-    sleep 5
+    sleep 15
     
     # TEST CASE: Verify the text on the Review page
     assert @browser.text.include?(@review_text)
     assert @browser.text.include?("#{site_name}"), "Review page not showing site name #{site_name}"
+
+    sleep 10
 
     site_setup = review.request_site
     

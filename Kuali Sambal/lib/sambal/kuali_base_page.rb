@@ -39,6 +39,7 @@ class BasePage < PageMaker
       element(:error_list) { |b| b.frm.ul(id: "pageValidationList") }
       element(:info_list) { |b| b.frm.ul(id: "pageValidationList") }
       value(:first_error) { |b| b.error_list.link.text }
+      value(:first_msg) { |b| b.info_list.li.text }
     end
   end
 
