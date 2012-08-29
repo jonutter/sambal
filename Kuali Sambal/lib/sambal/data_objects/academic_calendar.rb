@@ -4,7 +4,8 @@ class AcademicCalendar
   include Workflows
   include Utilities
 
-  attr_accessor :name, :start_date, :end_date, :organization
+  attr_accessor :name, :start_date, :end_date, :organization, :events,
+      :holidays, :terms
 
   def initialize(browser, opts={})
     @browser = browser
@@ -21,6 +22,9 @@ class AcademicCalendar
     @start_date=options[:start_date]
     @end_date=options[:end_date]
     @organization=options[:organization]
+    @events=options[:events]
+    @holidays=options[:holidays]
+    @terms=options[:terms]
   end
 
   def create
@@ -33,7 +37,13 @@ class AcademicCalendar
     on CreateAcadCalendar do |page|
       page.start_blank_calendar
     end
-    create_sub_task
+    on EditAcademicCalendar do |page|
+      page.academic_calendar_name.set @name
+      page.organization.select @organization
+      page.calendar_start_date.set @start_date
+      page.calendar_end_date.set @end_date
+      page.save
+    end
   end
 
   def copy_from(name)
@@ -44,7 +54,11 @@ class AcademicCalendar
       page.create_academic_calendar
     end
     if right_source? name
-      create_sub_task
+      on CreateAcadCalendar do |page|
+        page.name.set @name
+        page.start_date.set @start_date
+        page.end_date.set @end_date
+      end
     else
       on CreateAcadCalendar do |page|
         page.choose_different_calendar
@@ -53,9 +67,28 @@ class AcademicCalendar
         page.search_for "Academic Calendar", name
         page.copy name
       end
-
+      on EditAcademicCalendar do |page|
+        page.academic_calendar_name.set @name
+        page.organization.select @organization
+        page.calendar_start_date.set @start_date
+        page.calendar_end_date.set @end_date
+      end
     end
+    on EditAcademicCalendar do |page|
+      page.save
+    end
+  end
 
+  def search
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.search_for_calendar_or_term
+    end
+    on CalendarSearch do |page|
+      page.search_for "Academic Calendar", @name
+    end
   end
 
   def right_source?(name)
@@ -68,14 +101,9 @@ class AcademicCalendar
     end
   end
 
-  private
-
-  def create_sub_task
-    on CreateAcadCalendar do |page|
-      page.name.set @name
-      page.start_date.set @start_date
-      page.end_date.set @end_date
-      page.copy_academic_calendar
+  def make_official
+    on EditAcademicCalendar do |page|
+      page.make_official
     end
   end
 

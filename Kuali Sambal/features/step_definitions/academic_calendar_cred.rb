@@ -1,76 +1,45 @@
-Given /^I am creating an Academic Calendar$/ do
-
-end
-
 When /^I create an Academic Calendar$/ do
   @calendar = make AcademicCalendar
   @calendar.create
 end
 
-When /^I save the (Academic Calendar|Holiday Calendar|Academic Term)$/ do |arg|
-  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
-  on klasses[arg.to_sym] do |page|
-    page.save
+Then /^the Make Official button should become active$/ do
+  on EditAcademicCalendar do |page|
+    page.make_official_button.enabled?.should == true # TODO: Figure out why ".should_be enabled" does not work.
   end
 end
 
-Then /^I should be able to save the (Academic Calendar|Holiday Calendar), and the Make Official button should become active$/ do |arg|
-  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
-  on klasses[arg.to_sym] do |page|
-    page.make_official_button.should be_disabled
-    page.save
-    page.make_official_button.should be_enabled
-  end
-end
-
-When /^I search for the (Holiday Calendar|Academic Calendar|Academic Term)$/ do |arg|
-  visit MainMenu do |page|
-    page.enrollment_home
-  end
-  on Enrollment do |page|
-    page.search_for_calendar_or_term
-  end
-  on CalendarSearch do |page|
-    page.search_for arg, @calendar_name
-  end
+When /^I search for the calendar$/ do
+  @calendar.search
 end
 
 Then /^the calendar (.*) appear in search results$/ do |arg|
   on CalendarSearch do |page|
     if arg == "should"
-      page.results_list.should include @calendar_name
+      page.results_list.should include @calendar.name
     else
-      page.results_list.should_not include @calendar_name
+      page.results_list.should_not include @calendar.name
     end
   end
 end
 
-When /^I make the (.*) official$/ do |arg|
-  klasses = {:"Academic Calendar"=>EditAcademicCalendar, :"Holiday Calendar"=>CreateHolidayCalendar }
-  on klasses[arg.to_sym] do |page|
-    page.make_official
-  end
+When /^I make the calendar official$/ do
+  @calendar.make_official
 end
 
 Then /^the calendar (.*) be set to Official$/ do |arg|
   on CalendarSearch do |page|
     if arg == "should"
-      page.calendar_status(@calendar_name).should == "Official"
+      page.calendar_status(@calendar.name).should == "Official"
     else
-      page.calendar_status(@calendar_name).should_not == "Official"
+      page.calendar_status(@calendar.name).should_not == "Official"
     end
   end
 end
 
 When /^I copy the Academic Calendar$/ do
-  on CalendarSearch do |page|
-    page.copy @calendar_name
-  end
-  on CreateAcadCalendar do |page|
-    page.name.set random_alphanums
-    page.start_date.set "01/02/#{next_year}"
-    page.end_date.set "12/31/#{next_year + 1}"
-  end
+  @calendar_copy = make AcademicCalendar
+  @calendar_copy.copy_from @calendar
 end
 
 When /^I update the Academic Calendar$/ do
@@ -81,16 +50,16 @@ When /^I update the Academic Calendar$/ do
     page.search_for_calendar_or_term
   end
   on CalendarSearch do |page|
-    page.search_for_academic_calendar @calendar_name
-    page.edit @calendar_name
+    page.search_for_academic_calendar @calendar.name
+    page.edit @calendar.name
   end
-  @calendar_name = random_alphanums
-  @start_date = "02/15/#{next_year}"
-  @end_date = "07/06/#{next_year + 1}"
+  @calendar.name = random_alphanums
+  @calendar.start_date = "02/15/#{next_year}"
+  @calendar.end_date = "07/06/#{next_year + 1}"
   on EditAcademicCalendar do |page|
-    page.name.set @calendar_name
-    page.start_date.set @start_date
-    page.end_date.set @end_date
+    page.academic_calendar_name.set @calendar.name
+    page.calendar_start_date.set @calendar.start_date
+    page.calendar_end_date.set @calendar.end_date
     page.save
   end
 end
@@ -106,9 +75,9 @@ end
 
 Then /^the calendar should reflect the updates$/ do
   on EditAcademicCalendar do |page|
-    page.name.value.should == @calendar_name
-    page.start_date.value.should == @start_date
-    page.end_date.value.should == @end_date
+    page.academic_calendar_name.value.should == @calendar.name
+    page.calendar_start_date.value.should == @calendar.start_date
+    page.calendar_end_date.value.should == @calendar.end_date
   end
 end
 

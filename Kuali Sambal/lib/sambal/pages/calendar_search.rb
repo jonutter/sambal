@@ -13,7 +13,7 @@ class CalendarSearch < BasePage
   element(:search_for_select)  { |b| b.frm.select(name: "calendarType") }
   element(:name) { |b| b.frm.text_field(name: "name") }
   element(:year) { |b| b.frm.text_field(name: "year") }
-  element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout") }
+  element(:results_table) { |b| b.frm.table(class: "uif-tableCollectionLayout dataTable") }
 
   value(:table_info) { |b| b.frm.div(class: "dataTables_info").text }
 
@@ -63,6 +63,7 @@ class CalendarSearch < BasePage
     results_table.rows.each do |row|
       list << row[CALENDAR_NAME].text
     end
+    list.delete_if { |item| item == "Name" }
     list
   end
 
