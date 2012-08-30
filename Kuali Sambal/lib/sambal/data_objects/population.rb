@@ -103,7 +103,7 @@ case @type
    else
 	@type.should == "union|exclusion|rule-based"
 end
-puts options
+
     go_to_manage_population
     on ManagePopulations do |page|
       page.keyword.set @name
@@ -283,8 +283,6 @@ puts options
     unless @rule == nil
       page.rule.should == @rule
     end  
-    puts "page #{page.status.downcase}"
-    puts "object #{@status.downcase}"
     page.state.downcase.should == @status.downcase
     page.operation.downcase.should == @operation.downcase
     unless @reference_population == nil

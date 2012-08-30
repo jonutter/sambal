@@ -63,15 +63,3 @@ end
 Then /^the (.*) population exists with updated data$/ do |type|
 	@population.validate_pop
 end
-
-When /^I setup the debug object$/ do
-  @population = make Population
-  @population.name = "Early Registration"
-  @population.description = "Students who register on the first day of early registration period" 
-  @population.child_populations = ["Athletic Managers & Trainers","DSS","Athlete"]
-  @population.status = "active"
-  @population.rule = nil
-  @population.reference_population = nil
-  @population.type = "union-based"
-  @population.operation = "union"
-end
