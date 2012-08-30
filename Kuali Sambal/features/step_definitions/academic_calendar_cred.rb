@@ -13,12 +13,37 @@ When /^I search for the calendar$/ do
   @calendar.search
 end
 
+When /^I search for the Academic Calendar using (.*)$/ do |arg|
+  search_terms = { :wildcards=>"*", :"partial name"=>@calendar.name[0..2] }
+  visit MainMenu do |page|
+    page.enrollment_home
+  end
+  on Enrollment do |page|
+    page.search_for_calendar_or_term
+  end
+  on CalendarSearch do |page|
+    page.search_for "Academic Calendar", search_terms[arg.to_sym]
+
+    while page.showing_up_to.to_i < page.total_results.to_i
+      if page.results_list.include? @calendar.name
+        break
+      else
+        page.next
+      end
+    end
+  end
+end
+
 Then /^the calendar (.*) appear in search results$/ do |arg|
   on CalendarSearch do |page|
     if arg == "should"
       page.results_list.should include @calendar.name
     else
-      page.results_list.should_not include @calendar.name
+      begin
+        page.results_list.should_not include @calendar.name
+      rescue Watir::Exception::UnknownObjectException
+        # Implication here is that there were no search results at all.
+      end
     end
   end
 end
@@ -39,18 +64,12 @@ end
 
 When /^I copy the Academic Calendar$/ do
   @calendar_copy = make AcademicCalendar
-  @calendar_copy.copy_from @calendar
+  @calendar_copy.copy_from @calendar.name
 end
 
 When /^I update the Academic Calendar$/ do
-  visit MainMenu do |page|
-    page.enrollment_home
-  end
-  on Enrollment do |page|
-    page.search_for_calendar_or_term
-  end
+  @calendar.search
   on CalendarSearch do |page|
-    page.search_for_academic_calendar @calendar.name
     page.edit @calendar.name
   end
   @calendar.name = random_alphanums
@@ -67,37 +86,17 @@ end
 When /^I delete the Academic Calendar draft$/ do
   on EditAcademicCalendar do |page|
     page.delete_draft
-
-    sleep 5
     page.alert.ok
   end
 end
 
 Then /^the calendar should reflect the updates$/ do
+  on CalendarSearch do |page|
+    page.edit @calendar.name
+  end
   on EditAcademicCalendar do |page|
     page.academic_calendar_name.value.should == @calendar.name
     page.calendar_start_date.value.should == @calendar.start_date
     page.calendar_end_date.value.should == @calendar.end_date
-  end
-end
-
-When /^I search for the (.*) using (.*)$/ do |arg1, arg2|
-  search_terms = { :wildcards=>"*", :"partial name"=>@calendar_name[0] }
-  visit MainMenu do |page|
-    page.enrollment_home
-  end
-  on Enrollment do |page|
-    page.search_for_calendar_or_term
-  end
-  on CalendarSearch do |page|
-    page.search_for arg1.to_sym, search_terms[arg2]
-
-    while page.showing_up_to.to_i < page.total_results.to_i
-      if page.results_list.include? @calendar_name
-        break
-      else
-        page.next
-      end
-    end
   end
 end
