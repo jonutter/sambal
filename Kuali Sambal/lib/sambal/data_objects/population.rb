@@ -12,7 +12,8 @@ class Population
 
     defaults = {
       :name=>random_alphanums,
-      :description=>random_multiline(15,3),
+      #:description=>random_multiline(15,3), problem validating this
+      :description=>random_alphanums,
       :type=>"rule-based",
       :child_populations=>[],
       :rule=>nil,
@@ -89,7 +90,20 @@ class Population
       :child_pops=>@child_populations
     }
     options=defaults.merge(opts)
-
+	
+case @type
+   when "union-based", "intersection-based" 
+     options[:rule] = nil
+     options[:ref_pop] = nil
+   when "exclusion-based" 
+     options[:rule] = nil
+   when "rule-based" 
+      options[:child_pops] = []
+      options[:ref_pop] = nil
+   else
+	@type.should == "union|exclusion|rule-based"
+end
+puts options
     go_to_manage_population
     on ManagePopulations do |page|
       page.keyword.set @name
@@ -108,9 +122,9 @@ class Population
       if options[:ref_pop] == "random"
         options[:ref_pop] = update_random_ref_pop
       else
-        update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population
+        update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population or options[:ref_pop]  == nil
       end
-      unless @child_populations == options[:child_pops]
+      unless @child_populations == options[:child_pops] or options[:child_pops] == []
         page.child_populations.each { |pop| page.remove_population(pop) }
         options[:child_pops].each do |pop|
           if pop == "random"
@@ -254,8 +268,37 @@ class Population
     end
   end
 
-  private
+  def validate_pop
+   go_to_manage_population
+   on ManagePopulations do |page|
+    page.keyword.set @name
+      page.both.set
+      page.search
+      page.view @name
+  end
+   on ViewPopulation do |page|
+    page.header.should == "View Population"
+    page.name.should == @name
+    page.description.should == @description
+    unless @rule == nil
+      page.rule.should == @rule
+    end  
+    puts "page #{page.status.downcase}"
+    puts "object #{@status.downcase}"
+    page.state.downcase.should == @status.downcase
+    page.operation.downcase.should == @operation.downcase
+    unless @reference_population == nil
+      page.reference_population.should == @reference_population
+    end
+    unless @child_populations == []
+	diffPopList = (page.populations_list | @child_populations) - (page.populations_list & @child_populations)
+	diffPopList.should == []
+    end
+  end
+end
 
+
+  private
   def search_for_pop
     on ActivePopulationLookup do |page|
       page.keyword.wait_until_present
@@ -267,5 +310,7 @@ class Population
     @names.shuffle!
     @names[0]
   end
+
+
 
 end

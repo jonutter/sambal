@@ -1,3 +1,22 @@
+#When /^I update all the editable fields of a (.*) population$/ do |type|
+#  @population = make Population, :type=>type
+#  @population.create
+#end
+
+When /^I update all the editable fields of an? (.*) population$/ do  |type|
+  things = {
+  :name=>random_alphanums,
+  :description=>random_alphanums,
+  #:description=>random_multiline(20,5), validation problem
+  :type=> type,
+  :status=>"inactive",
+  :rule=>"random",
+  :ref_pop=>"random",
+  :child_pops=>%w{random random}
+  }
+  @population.edit_population things
+end
+
 When /^I edit the (.*) of the population$/ do |attrib|
   things = {
   :name=>{:name=>random_alphanums},
@@ -15,9 +34,10 @@ When /^I set the status of the population to "(.*)"/ do |status|
 end
 
 Then /^a read-only view of the population is displayed$/ do
-  on ViewPopulation do |page|
-    page.header.should == "View Population"
-  end
+  puts "to do" # express the regexp above with the code you wish you had
+#  on ViewPopulation do |page|
+#    page.header.should == "View Population"
+#  end
 end
 
 When /^I rename a population with an existing name$/ do
@@ -38,4 +58,20 @@ Then /^the population name is not changed$/ do
     page.search
     page.results_list.length.should == page.results_list.uniq.length
   end
+end
+
+Then /^the (.*) population exists with updated data$/ do |type|
+	@population.validate_pop
+end
+
+When /^I setup the debug object$/ do
+  @population = make Population
+  @population.name = "Early Registration"
+  @population.description = "Students who register on the first day of early registration period" 
+  @population.child_populations = ["Athletic Managers & Trainers","DSS","Athlete"]
+  @population.status = "active"
+  @population.rule = nil
+  @population.reference_population = nil
+  @population.type = "union-based"
+  @population.operation = "union"
 end

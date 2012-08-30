@@ -7,7 +7,7 @@ I want to be able to edit them.
   Scenario: Edit a rule based population
     Given I am logged in as admin
     When I create a population that is rule-based
-    And I edit all the fields of a rule-based population
+    And I update all the editable fields of a rule-based population
     Then a read-only view of the population is displayed
     And the rule-based population exists with updated data
 
@@ -35,7 +35,7 @@ I want to be able to edit them.
   Scenario: Try to edit a population using a name that has already been associated with a population
     Given I am logged in as admin
     When I rename a population with an existing name
-    Then an error message appears indicating that the Population Name is NOT unique
+    Then an error message appears stating "Please enter a different, unique population name"
     And the population name is not changed
 
   Scenario: Cannot edit the operation type for populations defined by using other populations
