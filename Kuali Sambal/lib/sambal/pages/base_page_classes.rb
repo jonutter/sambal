@@ -113,7 +113,7 @@ module PopulationEdit
   end
 
   def remove_population(name)
-    frm.text_field(value: name).parent.parent.parent.link(text: "X").click
+    frm.link(id: "Delete #{name}").click
     loading.wait_while_present
     wait_until { child_population.enabled? }
     sleep 2 #FIXME - Needed because otherwise the automation causes an application error
