@@ -114,12 +114,6 @@ module PopulationEdit
     names.delete_if { |name| name == "" }
   end
 
- # def populations_list
- #   pops = []
- #   self.frm.table(class: "uif-tableCollectionLayout").rows.each { |row| pops << row.span.text }
- #   pops[1,pops.length]
-#  end
-
   def remove_population(name)
     populations_table.row(text: /#{name}/).button(index: 0).click
     loading.wait_while_present
