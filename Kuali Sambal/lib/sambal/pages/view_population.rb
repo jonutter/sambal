@@ -22,7 +22,7 @@ class ViewPopulation < BasePage
   def populations_list
     pops = []
     self.frm.table(class: "uif-tableCollectionLayout").rows.each { |row| pops << row.span.text }
-    pops[1,pops.length]
+    pops[1..-1] #2nd to last
   end
 
 end

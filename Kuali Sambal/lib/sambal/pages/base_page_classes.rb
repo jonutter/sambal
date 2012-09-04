@@ -19,10 +19,12 @@ class PopulationsBase < BasePage
       element(:rule) { |b| b.frm.select(name: "document.newMaintainableObject.dataObject.populationRuleInfo.agendaIds[0]") }
       element(:child_population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
+      element(:populations_table) { |b| b.frm.div(id: "populations_table").table(index: 0) }
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
-      action(:add) { |b| b.frm.button(id: "button_searchPopulation_add").click; b.loading.wait_while_present; sleep 1.5 }
+      action(:add) { |b| b.frm.div(id: "populations_table").button(text: "add").click; b.loading.wait_while_present; sleep 1.5 } #TODO - right now, this button has a different name in edit vs create screens
+      
     end
 
   end
@@ -108,14 +110,20 @@ module PopulationEdit
 
   def child_populations
     names = []
-    frm.divs(class: "uif-group uif-boxGroup uif-horizontalBoxGroup uif-collectionItem uif-boxCollectionItem").each { |div| names << div.text_field.value }
+    frm.div(id: "populations_table").table(index: 0).rows[2..-1].each { |row| names << row.span.text }
     names.delete_if { |name| name == "" }
   end
 
+ # def populations_list
+ #   pops = []
+ #   self.frm.table(class: "uif-tableCollectionLayout").rows.each { |row| pops << row.span.text }
+ #   pops[1,pops.length]
+#  end
+
   def remove_population(name)
-    frm.link(id: "Delete #{name}").click
+    populations_table.row(text: /#{name}/).button(index: 0).click
     loading.wait_while_present
-    wait_until { child_population.enabled? }
+    wait_until { description.enabled? }
     sleep 2 #FIXME - Needed because otherwise the automation causes an application error
   end
 

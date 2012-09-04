@@ -101,7 +101,7 @@ case @type
       options[:child_pops] = []
       options[:ref_pop] = nil
    else
-	@type.should == "union|exclusion|rule-based"
+	@type.should == "union|exclusion|intersection|rule-based"
 end
 
     go_to_manage_population
@@ -125,7 +125,7 @@ end
         update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population or options[:ref_pop]  == nil
       end
       unless @child_populations == options[:child_pops] or options[:child_pops] == []
-        page.child_populations.each { |pop| page.remove_population(pop) }
+        page.child_populations.reverse.each { |pop| page.remove_population(pop) }
         options[:child_pops].each do |pop|
           if pop == "random"
             pop.replace(add_random_population)
