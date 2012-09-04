@@ -20,9 +20,11 @@ class PopulationsBase < BasePage
       element(:child_population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
 
+      element(:child_populations_table) { |b| b.frm.table(id: "u200") }
+
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
-      action(:add) { |b| b.frm.button(id: "button_searchPopulation_add").click; b.loading.wait_while_present; sleep 1.5 }
+      action(:add) { |b| b.frm.button(id: "addPop_button_add").click; b.loading.wait_while_present; sleep 1.5 }
     end
 
   end
@@ -108,12 +110,12 @@ module PopulationEdit
 
   def child_populations
     names = []
-    frm.divs(class: "uif-group uif-boxGroup uif-horizontalBoxGroup uif-collectionItem uif-boxCollectionItem").each { |div| names << div.text_field.value }
-    names.delete_if { |name| name == "" }
+    child_populations_table.divs(class: "uif-field").each { |div| names << div.text }
+    names.delete_if { |name| name == "" || name == "delete" || name == "add" }
   end
 
   def remove_population(name)
-    frm.link(id: "Delete #{name}").click
+    child_populations_table.row(text: /#{name}/).button(id: /deletePop_button/).click
     loading.wait_while_present
     wait_until { child_population.enabled? }
     sleep 2 #FIXME - Needed because otherwise the automation causes an application error

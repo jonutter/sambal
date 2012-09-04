@@ -22,13 +22,6 @@ module Workflows
   end
 
   # Helper methods...
-  def logged_in?
-    logged_in = "Ramble On"
-    on Header do |page|
-      logged_in = page.main_menu_el.present?
-    end
-    logged_in
-  end
 
   def logged_in_user
     user = ""

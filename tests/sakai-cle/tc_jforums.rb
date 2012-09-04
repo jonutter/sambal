@@ -177,9 +177,7 @@ sleep 3
     
     search_page = info.search
     search_page.keywords=@keywords
-sleep 60
     forums_page = search_page.click_search
-sleep 5
     # TEST CASE: Verify a topic was found
     assert_match(/topic.+found/i, frm.span(:class=>"maintitle").text) # FIXME
 

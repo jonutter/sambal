@@ -3,17 +3,15 @@
 #  @population.create
 #end
 
-When /^I update all the editable fields of an? (.*) population$/ do  |type|
+When /^I update all the editable fields of the population$/ do
   things = {
   :name=>random_alphanums,
-  :description=>random_alphanums,
-  #:description=>random_multiline(20,5), validation problem
-  :type=> type,
-  :status=>"inactive",
-  :rule=>"random",
-  :ref_pop=>"random",
-  :child_pops=>%w{random random}
+  :description=>random_alphanums_plus, # TODO: change to multiline when line feed issue is addressed
+  :status=>"inactive"
   }
+  things.store(:rule, "random") if @population.type == "rule-based"
+  things.store(:ref_pop, "random") if @population.type == "exclusion-based"
+  things.store(:child_pops, %w{random random}) unless @population.type == "rule-based"
   @population.edit_population things
 end
 
@@ -31,13 +29,6 @@ end
 
 When /^I set the status of the population to "(.*)"/ do |status|
   @population.edit_population(:status=>status.downcase)
-end
-
-Then /^a read-only view of the population is displayed$/ do
-  puts "to do" # express the regexp above with the code you wish you had
-#  on ViewPopulation do |page|
-#    page.header.should == "View Population"
-#  end
 end
 
 When /^I rename a population with an existing name$/ do
@@ -60,6 +51,32 @@ Then /^the population name is not changed$/ do
   end
 end
 
-Then /^the (.*) population exists with updated data$/ do |type|
-	@population.validate_pop
+Then /^a read-only view of the updated population is displayed$/ do
+  on ViewPopulation do |page|
+    page.name.should == @population.name
+    page.description.should == @population.description
+    page.rule.should == @population.rule unless @population.rule == nil
+    page.state.downcase.should == @population.status
+    page.operation.downcase.should == @population.operation unless @population.operation == nil
+    page.reference_population.should == @population.reference_population unless @reference_population == nil
+    page.child_populations.sort.should == @population.child_populations.sort unless @population.type == "rule-based"
+  end
 end
+
+When /^I am editing a (.*) population$/ do |type|
+  @population = make Population, :type=>type
+  @population.create
+  go_to_manage_population
+  on ManagePopulations do |page|
+    page.keyword.set @population.name
+    page.search
+    page.edit @population.name
+  end
+end
+
+Then /^the population operation type is read-only$/ do
+  on EditPopulation do |page|
+    page.operation_element.should exist
+  end
+end
+
