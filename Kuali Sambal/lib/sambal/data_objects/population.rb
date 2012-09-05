@@ -111,7 +111,7 @@ class Population
         update_ref_pop(options[:ref_pop]) unless options[:ref_pop] == @reference_population or options[:ref_pop]  == nil
       end
       unless @child_populations == options[:child_pops] or options[:child_pops] == []
-        page.child_populations.each { |pop| page.remove_population(pop) }
+        page.child_populations.reverse.each { |pop| page.remove_population(pop) }
         options[:child_pops].each do |pop|
           if pop == "random"
             pop.replace(add_random_population)

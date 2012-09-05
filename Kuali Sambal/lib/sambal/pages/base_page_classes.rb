@@ -19,12 +19,18 @@ class PopulationsBase < BasePage
       element(:rule) { |b| b.frm.select(name: "document.newMaintainableObject.dataObject.populationRuleInfo.agendaIds[0]") }
       element(:child_population) { |b| b.frm.text_field(name: "newCollectionLines['document.newMaintainableObject.dataObject.childPopulations'].name") }
       element(:reference_population) { |b| b.frm.text_field(name: "document.newMaintainableObject.dataObject.referencePopulation.name") }
+      element(:populations_table) { |b| b.frm.div(id: "populations_table").table(index: 0) }
 
       element(:child_populations_table) { |b| b.frm.table(id: "u200") }
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
+<<<<<<< HEAD
       action(:add) { |b| b.frm.button(id: "addPop_button_add").click; b.loading.wait_while_present; sleep 1.5 }
+=======
+      action(:add) { |b| b.frm.div(id: "populations_table").button(text: "add").click; b.loading.wait_while_present; sleep 1.5 } #TODO - right now, this button has a different name in edit vs create screens
+      
+>>>>>>> 5c474216542f55152465b4207dbd83bb5880a2da
     end
 
   end
@@ -117,7 +123,7 @@ module PopulationEdit
   def remove_population(name)
     child_populations_table.row(text: /#{name}/).button(id: /deletePop_button/).click
     loading.wait_while_present
-    wait_until { child_population.enabled? }
+    wait_until { description.enabled? }
     sleep 2 #FIXME - Needed because otherwise the automation causes an application error
   end
 
