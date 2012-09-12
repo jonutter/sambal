@@ -59,8 +59,12 @@ module AssignmentsListMethods
   # Gets the assignment id from the href of the specified
   # Assignment link.
   def get_assignment_id(assignment_name)
-    frm.link(:text=>/#{Regexp.escape(assignment_name)}/).href =~ /(?<=\/a\/\S{36}\/).+(?=&pan)/
+    assignment_href(assignment_name) =~ /(?<=\/a\/\S{36}\/).+(?=&pan)/
     return $~.to_s
+  end
+
+  def assignment_href(name)
+    frm.link(:text=>/#{Regexp.escape(name)}/).href
   end
 
   # Clicks the Permissions button, then
@@ -148,6 +152,7 @@ end
 # The page where you create a new assignment
 module AssignmentAddMethods
   include PageObject
+  include FCKEditor
   # Clicks the Post button, then
   # instantiates the AssignmentsList page class.
   def post
@@ -176,11 +181,19 @@ module AssignmentAddMethods
     frm.div(:class=>"portletBody").div(:class=>"alertMessage").text
   end
 
+  def editor
+    frm.frame(:id, "new_assignment_instructions___Frame")
+  end
+
   # Sends the specified text to the text box in the FCKEditor
   # on the page.
   def instructions=(instructions)
-    frm.frame(:id, "new_assignment_instructions___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present
-    frm.frame(:id, "new_assignment_instructions___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(instructions)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys([:command, 'a'], :backspace)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(instructions)
+  end
+
+  def source=(text)
+    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
   end
 
   # Clicks the Preview button, then instantiates
@@ -369,7 +382,6 @@ module AssignmentsPermissionsMethods
     link(:receive_email_notifications, :text=>"Receive email notifications", :frame=>frame)
     link(:view_drafts_from_others, :text=>"Able to view draft assignment(s) created by other users", :frame=>frame)
   end
-
 
 end
 

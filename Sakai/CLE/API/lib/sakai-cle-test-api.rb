@@ -4,6 +4,7 @@ require 'sakai-cle-test-api/utilities'
 require 'sakai-cle-test-api/tools_menu'
 require 'sakai-cle-test-api/admin_page_elements'
 Dir["#{File.dirname(__FILE__)}/sakai-cle-test-api/*.rb"].each {|f| require f }
+Dir["#{File.dirname(__FILE__)}/sakai-cle-test-api/data_objects/*.rb"].each {|f| require f }
 
 # Initialize this class at the start of your test cases to
 # open the specified test browser at the specified Sakai welcome page URL.
@@ -21,7 +22,6 @@ class SakaiCLE
     @browser = Watir::Browser.new web_browser
     @browser.window.resize_to(1400,900)
     @browser.goto url
-    $frame_index = 0 # TODO - Need to remove this and all dependent code.
   end
 
   # Returns the class containing the welcome page's page elements.

@@ -21,6 +21,33 @@ module Workflows
     end
   end
 
+  def go_to_holiday_calendar
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.create_holiday_calendar
+    end
+  end
+
+  def go_to_academic_calendar
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.create_academic_calendar
+    end
+  end
+
+  def go_to_calendar_search
+    visit MainMenu do |page|
+      page.enrollment_home
+    end
+    on Enrollment do |page|
+      page.search_for_calendar_or_term
+    end
+  end
+
   # Helper methods...
 
   def logged_in_user

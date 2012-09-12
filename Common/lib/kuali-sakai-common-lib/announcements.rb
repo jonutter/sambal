@@ -28,6 +28,10 @@ module AnnouncementsMethods
     return subjects
   end
 
+  def href(subject)
+    frm.link(:text=>subject).href
+  end
+
   # Returns true or false depending on whether the specified announcement has an attachment.
   # @param subject [String] the text of the announcement listing link.
   def has_attachment?(subject)

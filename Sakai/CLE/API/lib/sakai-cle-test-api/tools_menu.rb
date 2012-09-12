@@ -13,7 +13,6 @@ module ToolsMenu
   def open_my_site_by_id(id)
     @browser.link(:text, "My Sites").click
     @browser.link(:href, /#{id}/).click
-    $frame_index=1
     Home.new(@browser)
   end
 
@@ -23,10 +22,9 @@ module ToolsMenu
   #
   # Will error out if there are not matching links.
   def open_my_site_by_name(name)
-    short_name = name[0..19]
+    truncated_name = name[0..19]
     @browser.link(:text, "My Sites").click
-    @browser.link(:text, /#{Regexp.escape(short_name)}/).click
-    $frame_index=1
+    @browser.link(:text, /#{Regexp.escape(truncated_name)}/).click
     Home.new(@browser)
   end
 
@@ -50,7 +48,6 @@ module ToolsMenu
   # instantiates the MyWorkspace class.
   def administration_workspace
     @browser.link(:text, "Administration Workspace").click
-    $frame_index=1
     MyWorkspace.new(@browser)
   end
 
@@ -222,12 +219,10 @@ module ToolsMenu
 
   link(:my_sites, :text=>"My Sites")
 
-  # Clicks the "My Workspace" link, sets the
-  # $frame_index global variable to 0, then instantiates
+  # Clicks the "My Workspace" link, then instantiates
   # the MyWorkspace Class.
   def my_workspace
     @browser.link(:text=>"My Workspace").click
-    $frame_index=0
     MyWorkspace.new(@browser)
   end
 
@@ -383,16 +378,6 @@ module ToolsMenu
   # The Page Reset button, found on all Site pages
   def reset
     @browser.link(:href=>/tool-reset/).click
-    page_title = @browser.div(:class=>"title").text
-    case(page_title)
-      when "Lessons"
-        Lessons.new(@browser)
-      when "Syllabus"
-        Syllabus.new(@browser)
-      when "Portfolios"
-        Portfolios.new @browser
-      # Add more cases here, as necessary...
-    end
   end
 
   # Clicks the "(Logout)" link in the upper right of the page.
@@ -410,4 +395,9 @@ module ToolsMenu
     @browser.frame(:class=>"portletMainIframe")
   end
 
+  class << self
+    def frame_element
+      thing(:portlet) { |b| b.frame(:class=>"portletMainIframe") }
+    end
+  end
 end

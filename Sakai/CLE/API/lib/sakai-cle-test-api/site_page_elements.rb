@@ -724,27 +724,7 @@ class Information
 end
 
 
-#================
-# Drop Box pages
-#================
 
-# 
-class DropBox < AddFiles
-  
-  include ToolsMenu
-  
-  def initialize(browser)
-    @browser = browser
-    
-    @@classes = {
-      :this => "DropBox",
-      :parent => "DropBox",
-      :second => "",
-      :third => ""
-    }
-  end
-  
-end
 
 
 
@@ -1400,6 +1380,7 @@ class AddEditSection
   
   include PageObject
   include ToolsMenu
+  include FCKEditor
   
   # Clicks the Add button on the page
   # then instantiates the ConfirmSectionAdd class.
@@ -1411,11 +1392,15 @@ class AddEditSection
   # Pointer to the Edit Text box of the FCKEditor
   # on the page.
   def content_editor
-    frm.frame(:id, "AddSectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0)
+    frm.frame(:id, "AddSectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame")
   end
 
   def add_content=(text)
-    content_editor.send_keys(text)
+    content_editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+  end
+
+  def source=(text)
+    content_editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
   end
 
   def clear_content
@@ -1437,11 +1422,23 @@ class AddEditSection
     frm.link(:id=>"AddSectionForm:ResourceHelperLinkView:serverViewButton").click
     LessonAddAttachment.new(@browser)
   end
+
+  # Clicks the select button for "Upload or link to a file"
+  # NOT for "Upload or link to a file in Resources"!
+  def select_a_file
+    frm.link(:id=>"AddSectionForm:ContentUploadView:serverViewButton").click
+  end
   
   in_frame(:index=>1) do |frame|
     text_field(:title, :id=>"AddSectionForm:title", :frame=>frame)
+    text_field(:instructions, :id=>"AddSectionForm:instr", :frame=>frame)
     select_list(:content_type, :id=>"AddSectionForm:contentType", :frame=>frame)
-    checkbox(:auditory_content, :id=>"AddSectionForm:contentaudio", :frame=>frame)
+    checkbox(:auditory, :id=>"AddSectionForm:contentaudio", :frame=>frame)
+    checkbox(:textual, :id=>"AddSectionForm:contentext", :frame=>frame)
+    checkbox(:visual, :id=>"AddSectionForm:contentaudio", :frame=>frame)
+    text_field(:url_title, :id=>"AddSectionForm:ResourcePropertiesPanel:res_name", :frame=>frame)
+    text_field(:url_description, :id=>"AddSectionForm:ResourcePropertiesPanel:res_desc", :frame=>frame)
+    text_field(:file_description, :id=>"AddSectionForm:ResourcePropertiesPanel:res_desc", :frame=>frame)
   end
 end
 
@@ -1486,16 +1483,17 @@ class SelectingContent
 end
 
 # 
-class LessonAddAttachment < AddFiles
+class LessonAddAttachment
 
   include ToolsMenu
-  
-  def initialize(browser)
-    @browser = browser
-    @@classes = {
-      :this => "LessonAddAttachment",
-      :parent => "AddEditSection"
-    }
+  include PageObject
+
+  frame_element
+
+  action(:continue) { |b| b.portlet.link(:id=>"UploadServerViewForm:addButton").click }
+
+  def upload_local_file(filename, filepath="")
+    frm.file_field(:id=>"file1").set(filepath + filename)
   end
 
 end

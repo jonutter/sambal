@@ -227,11 +227,6 @@ class Home
     button(:update_announcements, :name=>"eventSubmit_doUpdate", :frame=>frame)
   end
   
-  # The Home class should be instantiated whenever the user
-  # context is a given Site or the Administration Workspace.
-  # In that context, the frame index is 1.
-  $frame_index=1
-  
   # Gets the text of the displayed announcements, for
   # test case verification
   def announcements_list
@@ -303,135 +298,7 @@ class MyWorkspace
   
 end
 
-#================
-# Resources Pages 
-#================
 
-# New class template. For quick class creation...
-class ResourcesUploadFiles
-  
-  include ToolsMenu
-  
-  @@filex=0
-  
-  # Enters the specified folder/filename value into
-  # the file field on the page. Note that files are
-  # assumed to be in the relative path ../../data/sakai-cle-test-api
-  # The method will throw an error if the specified file
-  # is not found.
-  # 
-  # This method is designed to be able to use
-  # multiple times, but it assumes
-  # that the add_another_file method is used
-  # before it, every time except before the first time.
-  def file_to_upload(file_name, file_path="")
-    frm.file_field(:id, "content_#{@@filex}").set(file_path + file_name)
-    @@filex+=1
-  end
-  
-  # Clicks the Upload Files Now button, resets the
-  # @@filex class variable back to zero, and instantiates
-  # the Resources page class.
-  def upload_files_now
-    frm.button(:value=>"Upload Files Now").click
-    @@filex=0
-    Resources.new(@browser)
-  end
-  
-  # Clicks the Add Another File link.
-  def add_another_file
-    frm.link(:text=>"Add Another File").click
-  end
-  
-end
-
-class EditFileDetails
-  
-  include ToolsMenu
-  
-  # Clicks the Update button, then instantiates
-  # the Resources page class.
-  def update    
-    frm.button(:value=>"Update").click
-    Resources.new(@browser)
-  end
-  
-  # Enters the specified string into the title field.
-  def title=(title)
-    frm.text_field(:id=>"displayName_0").set(title)
-  end
-  
-  # Enters the specified string into the description field.
-  def description=(description)
-    frm.text_field(:id=>"description_0").set(description)
-  end
-  
-  # Sets the radio button for publically viewable.
-  def select_publicly_viewable
-    frm.radio(:id=>"access_mode_public_0").set
-  end
-  
-  # Checks the checkbox for showing only on the specifed
-  # condition.
-  def check_show_only_if_condition
-    frm.checkbox(:id=>"cbCondition_0")
-  end
-  
-  # Selects the specified Gradebook item value in the
-  # select list.
-  def gradebook_item=(item)
-    frm.select(:id=>"selectResource_0").select(item)
-  end
-  
-  # Selects the specified value in the item condition
-  # field.
-  def item_condition=(condition)
-    frm.select(:id=>"selectCondition_0").select(condition)
-  end
-  
-  # Sets the Grade field to the specified value.
-  def assignment_grade=(grade)
-    frm.text_field(:id=>"assignment_grade_0").set(grade)
-  end
-end
-
-class CreateFolders #FIXME - Need to add functions for adding multiple folders
-  
-  include ToolsMenu
-  
-  # Clicks the Create Folders Now button, then
-  # instantiates the Resources page class.
-  def create_folders_now
-    frm.button(:value=>"Create Folders Now").click
-    Resources.new(@browser)
-  end
-
-  # Enters the specified string in the Folder Name
-  # text field.
-  def folder_name=(name)
-    frm.text_field(:id=>"content_0").set(name)
-  end
-
-end
-
-# Resources page for a given Site, in the Course Tools menu
-class Resources < AddFiles
-
-  include ToolsMenu
-  
-  def initialize(browser)
-    @browser = browser
-    
-    @@classes = {
-      :this=>             "Resources",
-      :parent =>          "Resources",
-      :file_details =>    "EditFileDetails",
-      :create_folders =>  "CreateFolders",
-      :upload_files =>    "ResourcesUploadFiles"
-    }
-  end
-  
-end
 
 #================
 # Administrative Search Pages
@@ -604,11 +471,13 @@ class SiteEditor
     frm.button(:value=>"Update Participants").click
     SiteEditor.new(@browser)
   end
-  
+
+  def return_to_sites_list
+    frm.button(:name=>"back").click
+  end
+
   in_frame(:class=>"portletMainIframe") do |frame|
     button(:previous, :name=>"previous", :frame=>frame)
-    button(:return_to_sites_list, :name=>"", :frame=>frame)
-    button(:next, :name=>"", :frame=>frame)
     link(:printable_version, :text=>"Printable Version", :frame=>frame)
     select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
@@ -817,20 +686,8 @@ class EditSiteTools
   include PageObject
   include ToolsMenu
   
-  # Clicks the Continue button, then instantiates
-  # the appropriate class for the page that apears.
-  def continue
-    frm.button(:value=>"Continue").click
-    # Logic for determining the new page class...
-    if frm.div(:class=>"portletBody").text =~ /^Add Multiple Tool/
-      AddMultipleTools.new(@browser)
-    elsif frm.div(:class=>"portletBody").text =~ /^Confirming site tools edits for/
-      ConfirmSiteToolsEdits.new(@browser)
-    else
-      puts "Something is wrong"
-      puts frm.div(:class=>"portletBody").text
-    end
-  end
+  # Clicks the Continue button.
+  action(:continue) { |b| b.frm.button(:value=>"Continue").click }
   
   in_frame(:class=>"portletMainIframe") do |frame|
     # This is a comprehensive list of all checkboxes and
@@ -893,6 +750,32 @@ class EditSiteTools
     button(:cancel, :name=>"Cancel", :frame=>frame)
   end
   
+end
+
+class ReUseMaterial
+
+  include PageObject
+  include ToolsMenu
+
+  thing(:announcements_checkbox) { |b| b.frm.checkbox(name: "sakai.announcements") }
+  thing(:calendar_checkbox) { |b| b.frm.checkbox(name: "sakai.schedule") }
+  thing(:discussion_forums_checkbox) { |b| b.frm.checkbox(name: "sakai.jforum.tool") }
+  thing(:forums_checkbox) { |b| b.frm.checkbox(name: "sakai.forums") }
+  thing(:chat_room_checkbox) { |b| b.frm.checkbox(name: "sakai.chat") }
+  thing(:polls_checkbox) { |b| b.frm.checkbox(name: "sakai.poll") }
+  thing(:syllabus_checkbox) { |b| b.frm.checkbox(name: "sakai.syllabus") }
+  thing(:lessons_checkbox) { |b| b.frm.checkbox(name: "sakai.melete") }
+  thing(:resources_checkbox) { |b| b.frm.checkbox(name: "sakai.resources") }
+  thing(:assignments_checkbox) { |b| b.frm.checkbox(name: "sakai.assignment.grades") }
+  thing(:tests_and_quizzes_checkbox) { |b| b.frm.checkbox(name: "sakai.samigo") }
+  thing(:gradebook_checkbox) { |b| b.frm.checkbox(name: "sakai.gradebook.tool") }
+  thing(:gradebook2_checkbox) { |b| b.frm.checkbox(name: "sakai.gradebook.gwt.rpc") }
+  thing(:wiki_checkbox) { |b| b.frm.checkbox(name: "sakai.rwiki") }
+  thing(:news_checkbox) { |b| b.frm.checkbox(name: "sakai.news") }
+  thing(:web_content_checkbox) { |b| b.frm.checkbox(name: "sakai.iframe") }
+  thing(:site_statistics_checkbox) { |b| b.frm.checkbox(name: "sakai.sitestats") }
+  action(:continue) { |b| b.frm.button(name: "eventSubmit_doContinue").click }
+
 end
 
 # Confirmation page when editing site tools in Site Setup
@@ -994,20 +877,8 @@ class AddMultipleTools
   include PageObject
   include ToolsMenu
   
-  # Clicks the Continue button, then instantiates
-  # the appropriate Class, based on the page that
-  # appears.
-  def continue
-    frm.button(:value=>"Continue").click
-    # Logic to determine the new page class
-    if frm.div(:class=>"portletBody").text =~ /Course Site Access/
-      SiteAccess.new(@browser)
-    elsif frm.div(:class=>"portletBody").text =~ /^Confirming site tools edits/
-      ConfirmSiteToolsEdits.new(@browser)
-    else
-      puts "There's another path to define"
-    end
-  end
+  # Clicks the Continue button.
+  action(:continue) { |b| b.frm.button(:value=>"Continue").click }
 
   in_frame(:class=>"portletMainIframe") do |frame|
     # Note that the text field definitions included here
@@ -1143,7 +1014,20 @@ class CourseSiteInfo
   
   include PageObject
   include ToolsMenu
-  
+  include FCKEditor
+
+  def editor
+    frm.frame(:id=>"description___Frame")
+  end
+
+  def description=(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys text
+  end
+
+  def source=(text)
+    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
+  end
+
   # Clicks the Continue button, then
   # instantiates the EditSiteTools Class.
   def continue

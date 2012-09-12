@@ -13,4 +13,9 @@ module Utilities
     return month + day.to_s + year + hour.to_s + mins
   end
 
+  # Shorthand method for making a data object for testing.
+  def make data_object_class, opts={}
+    data_object_class.new @browser, opts
+  end
+
 end

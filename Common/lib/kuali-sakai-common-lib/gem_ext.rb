@@ -9,6 +9,7 @@ module PageObject
   end
   module Accessors
     def thing element_name
+      raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
       define_method element_name.to_s do
         yield self
       end
