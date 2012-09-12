@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 module Utilities
 
   # Creates a page object based on the class passed to it.

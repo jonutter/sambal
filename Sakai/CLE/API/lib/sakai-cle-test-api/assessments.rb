@@ -3,6 +3,41 @@
 # Assessments pages - "Samigo", a.k.a., "Tests & Quizzes"
 #================
 
+# This is a module containing methods that are
+# common to all the question pages inside the
+# Assessment section of a Site.
+module QuestionHelpers
+  include PageObject
+  # Saves the question by clicking the Save button, then makes the determination
+  # whether to instantiate the EditAssessment class, or the EditQuestionPool class.
+  def save
+
+    quiz = frm.div(:class=>"portletBody").div(:index=>0).text
+    pool = frm.div(:class=>"portletBody").div(:index=>1).text
+
+    frm.button(:value=>"Save").click
+
+    if quiz =~ /^Assessments/
+      EditAssessment.new(@browser)
+    elsif pool =~ /^Question Pools/
+      EditQuestionPool.new(@browser)
+    else
+      puts "Unexpected text: "
+      p pool
+      p quiz
+    end
+
+  end
+
+  in_frame(:class=>"portletMainIframe") do |frame|
+    link(:assessments, :text=>"Assessments", :frame=>frame)
+    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
+    link(:question_pools, :text=>"Question Pools", :frame=>frame)
+    link(:questions, :text=>/Questions:/, :frame=>frame)
+  end
+
+end
+
 # The Course Tools "Tests and Quizzes" page for a given site.
 # (Instructor view)
 class AssessmentsList
@@ -1030,6 +1065,7 @@ end
 # The last step before actually submitting the the Assessment.
 class ConfirmSubmission
   include ToolsMenu
+  include PageObject
   # Clicks the Submit for Grading button and instantiates
   # the SubmissionSummary Class.
   def submit_for_grading
@@ -1046,7 +1082,7 @@ end
 # The summary page that appears when an Assessment has been submitted.
 class SubmissionSummary
   include ToolsMenu
-
+  include PageObject
   # Clicks the Continue button and instantiates
   # the TakeAssessmentList Class.
   def continue
@@ -1058,39 +1094,4 @@ class SubmissionSummary
     div(:summary_info, :class=>"tier1", :frame=>frame)
 
   end
-end
-
-# This is a module containing methods that are
-# common to all the question pages inside the
-# Assessment section of a Site.
-module QuestionHelpers
-  include PageObject
-  # Saves the question by clicking the Save button, then makes the determination
-  # whether to instantiate the EditAssessment class, or the EditQuestionPool class.
-  def save
-
-    quiz = frm.div(:class=>"portletBody").div(:index=>0).text
-    pool = frm.div(:class=>"portletBody").div(:index=>1).text
-
-    frm.button(:value=>"Save").click
-
-    if quiz =~ /^Assessments/
-      EditAssessment.new(@browser)
-    elsif pool =~ /^Question Pools/
-      EditQuestionPool.new(@browser)
-    else
-      puts "Unexpected text: "
-      p pool
-      p quiz
-    end
-
-  end
-
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assessments, :text=>"Assessments", :frame=>frame)
-    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
-    link(:question_pools, :text=>"Question Pools", :frame=>frame)
-    link(:questions, :text=>/Questions:/, :frame=>frame)
-  end
-
 end

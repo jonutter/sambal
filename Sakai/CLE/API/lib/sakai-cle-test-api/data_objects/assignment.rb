@@ -11,7 +11,7 @@ class AssignmentObject
 
     defaults = {
         :title=>random_alphanums,
-        :instructions=>random_multiline(500, 10, :string),
+        :instructions=>random_multiline(500, 10, :alpha),
         :site=>"placeholder"
 
     }

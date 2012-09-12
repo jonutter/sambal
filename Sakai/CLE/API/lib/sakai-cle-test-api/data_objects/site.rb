@@ -20,7 +20,7 @@ class SiteObject
       :web_content_source => "http://www.rsmart.com",
       :email=>random_nicelink(32),
       :joiner_role => "Student",
-      :description => random_multiline,
+      :description => random_alphanums(30),
       :short_description => random_alphanums
     }
     options = defaults.merge(opts)
@@ -78,7 +78,8 @@ class SiteObject
 
     # Click continue button
     course_site = course_section.continue
-
+    course_site.editor.wait_until_present
+    sleep 1 #FIXME
     course_site.source(course_site.editor)
     course_site.source=@description
     course_site.short_description=@short_description
@@ -111,7 +112,7 @@ class SiteObject
 
     # Create a string that will match the new Site's "creation date" string
     @creation_date = make_date(Time.now)
-
+    site_setup.search_field.wait_until_present
     site_setup.search(Regexp.escape(@subject))
 
     # Get the site id for storage
@@ -162,6 +163,7 @@ class SiteObject
 
     # Click continue button
     course_site = course_section.continue
+    course_site.editor.wait_until_present
     course_site.source(course_site.editor)
     course_site.source=@description
     course_site.short_description=@short_description
@@ -210,6 +212,7 @@ class SiteObject
     # Create a string that will match the new Site's "creation date" string
     @creation_date = make_date(Time.now)
     on_page SiteSetup do |page|
+      page.search_field.wait_until_present
       page.search(Regexp.escape(@subject))
     end
     # Get the site id for storage

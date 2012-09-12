@@ -1369,7 +1369,7 @@ class ConfirmModule
   # Clicks the Return to Modules button, then
   # instantiates the AddEditModule class.
   def return_to_modules
-    frm.link(:id=>"AddModuleConfirmForm:returnModImg").click
+    frm.link(:id=>/ModuleConfirmForm:returnButton/).click
     AddEditModule.new(@browser)
   end
 
@@ -1488,9 +1488,9 @@ class LessonAddAttachment
   include ToolsMenu
   include PageObject
 
-  frame_element
-
-  action(:continue) { |b| b.portlet.link(:id=>"UploadServerViewForm:addButton").click }
+  def continue
+    frm.link(:id=>"UploadServerViewForm:addButton").click
+  end
 
   def upload_local_file(filename, filepath="")
     frm.file_field(:id=>"file1").set(filepath + filename)

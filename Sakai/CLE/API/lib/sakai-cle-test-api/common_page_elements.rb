@@ -382,7 +382,11 @@ class SiteSetup
   
   include PageObject
   include ToolsMenu
-  
+
+  def search_field
+    frm.text_field(:id, "search")
+  end
+
   # Clicks the "New" link on the Site Setup page.
   # instantiates the SiteType class.
   def new
@@ -395,7 +399,7 @@ class SiteSetup
   # Then clicks the Edit button and instantiates
   # The SiteSetupEdit class.
   def edit(site_name)
-    frm.text_field(:id, "search").value=Regexp.escape(site_name)
+    search_field.value=Regexp.escape(site_name)
     frm.button(:value=>"Search").click
     frm.div(:class=>"portletBody").checkbox(:name=>"selectedMembers").set
     frm.div(:class=>"portletBody").link(:text, "Edit").click
@@ -406,7 +410,7 @@ class SiteSetup
   # field, clicks the Search button, then reinstantiates
   # the Class due to the page refresh.
   def search(site_name)
-    frm.text_field(:id, "search").set site_name
+    search_field.set site_name
     frm.button(:value, "Search").click
     SiteSetup.new(@browser)
   end
@@ -415,7 +419,7 @@ class SiteSetup
   # checks the site, clicks the delete button,
   # and instantiates the DeleteSite class.
   def delete(site_name)
-    frm.text_field(:id, "Search").value=site_name
+    search_field.value=site_name
     frm.button(:value=>"Search").click
     frm.checkbox(:name=>"selectedMembers").set
     frm.div(:class=>"portletBody").link(:text, "Delete").click

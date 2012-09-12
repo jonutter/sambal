@@ -26,7 +26,7 @@ end
 class AddBlogEntry
   include ToolsMenu
   include BlogsMenuButtons
-
+  include PageObject
   def blog_text=(text)
     frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present
     frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)

@@ -1,6 +1,7 @@
 #
 class EmailArchive
   include ToolsMenu
+  include PageObject
   def options
     frm.link(:text=>"Options").click
     EmailArchiveOptions.new(@browser)

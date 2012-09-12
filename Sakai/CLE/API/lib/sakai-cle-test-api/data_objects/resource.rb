@@ -88,7 +88,7 @@ class HTMLPageObject
 
     defaults = {
         :name=>random_alphanums,
-        :description=>random_multiline(500, 10, :string),
+        :description=>random_multiline(500, 10, :alpha),
         :html=>"<body>Body</body>"
     }
     options = defaults.merge(opts)

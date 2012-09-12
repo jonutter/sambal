@@ -24,7 +24,7 @@ class EventObject
         :end_hour=>nil,
         :end_minute=>nil,
         :end_meridian=>nil,
-        :message=>random_multiline(400,20),
+        :message=>random_multiline(400,20, :alpha),
         :site=>"placeholder"
     }
     options = defaults.merge(opts)

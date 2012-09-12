@@ -11,7 +11,7 @@ class AnnouncementObject
 
     defaults = {
         :title=>random_alphanums,
-        :body=>random_multiline(500, 10, :string)
+        :body=>random_multiline(500, 10, :alpha)
     }
     options = defaults.merge(opts)
     @title=options[:title]

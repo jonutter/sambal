@@ -1,4 +1,0 @@
-# When real values are entered below, this file should be renamed to config.yml
-browser: :firefox # Can be :chrome, :ie, :firefox, or :safari
-url: # Should be the url for the login page, e.g.: http://www.rsmart.com
-data_directory: # Use the full path to the directory containing your test data files. e.g.: /Users/clarkkent/data/

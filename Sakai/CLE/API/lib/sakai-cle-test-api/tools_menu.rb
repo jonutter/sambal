@@ -395,9 +395,4 @@ module ToolsMenu
     @browser.frame(:class=>"portletMainIframe")
   end
 
-  class << self
-    def frame_element
-      thing(:portlet) { |b| b.frame(:class=>"portletMainIframe") }
-    end
-  end
 end

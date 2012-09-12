@@ -256,6 +256,7 @@ end
 #
 class AddEditEvent
   include ToolsMenu
+  include PageObject
   #
   def save_event
     frm.button(:value=>"Save Event").click
@@ -325,6 +326,7 @@ end
 # Event page.
 class EventFrequency
   include ToolsMenu
+  include PageObject
   def save_frequency
     frm.button(:value=>"Save Frequency").click
     AddEditEvent.new(@browser)
@@ -351,6 +353,7 @@ end
 
 class AddEditFields
   include ToolsMenu
+  include PageObject
   # Clicks the Save Field Changes buton and instantiates
   # The Calendar or EventDetail class--unless the Alert Message box appears,
   # in which case it re-instantiates the class.
@@ -388,6 +391,7 @@ end
 
 class ImportStepOne
   include ToolsMenu
+  include PageObject
   def continue
     frm.button(:value=>"Continue").click
     ImportStepTwo.new(@browser)
@@ -419,6 +423,7 @@ end
 
 class ImportStepThree
   include ToolsMenu
+  include PageObject
   def import_events
     frm.button(:value=>"Import Events").click
     Calendar.new(@browser)
