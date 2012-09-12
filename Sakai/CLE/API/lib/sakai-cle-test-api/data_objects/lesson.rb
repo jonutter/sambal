@@ -45,7 +45,7 @@ class ModuleObject
 
 end
 
-class SectionObject
+class ContentSectionObject
 
   include PageObject
   include Utilities
@@ -94,7 +94,7 @@ class SectionObject
     on_page AddEditModule do |page|
       page.add_content_sections
     end
-    on_page AddEditSection do |page|
+    on_page AddEditContentSection do |page|
       page.title=@title
       page.instructions=@instructions
       @modality.each do |content|

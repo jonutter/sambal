@@ -5,5 +5,7 @@
 class News
   include PageObject
   include ToolsMenu
-  include NewsMethods
+  in_frame(:class=>"portletMainIframe") do |frame|
+
+  end
 end

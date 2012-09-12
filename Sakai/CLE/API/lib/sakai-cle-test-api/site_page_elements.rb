@@ -1376,7 +1376,7 @@ class ConfirmModule
 end
 
 # Page for adding a section to a Lesson.
-class AddEditSection
+class AddEditContentSection
   
   include PageObject
   include ToolsMenu

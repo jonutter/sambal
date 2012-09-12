@@ -137,13 +137,13 @@ class SiteObject
     # Select the Course Site radio button
 
     site_type.select_course_site
-sleep 5
+
     # Store the selected term value for use later
     @term = site_type.academic_term_element.value
 
     # Click continue
     course_section = site_type.continue
-sleep 5
+
     # Fill in those fields, storing the entered values for later verification steps
     course_section.subject = @subject
 
@@ -153,7 +153,7 @@ sleep 5
 
     # Store site name for ease of coding and readability later
     @name = "#{@subject} #{@course} #{@section} #{@term}"
-sleep 5
+
     # Click continue button
     course_section.continue
 
