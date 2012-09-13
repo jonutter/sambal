@@ -47,10 +47,9 @@ class Aliases < BasePage
 end
 
 # The Page that appears when you create a New Alias
-class AliasesCreate
-  
-  include PageObject
-  include ToolsMenu
+class AliasesCreate < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     text_field(:alias_name, :id=>"id", :frame=>frame)
@@ -63,10 +62,9 @@ class AliasesCreate
 end
 
 # Page for editing an existing Alias record
-class EditAlias
-  
-  include PageObject
-  include ToolsMenu
+class EditAlias < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:remove_alias, :text=>"Remove Alias", :frame=>frame)
@@ -84,9 +82,9 @@ end
 #================
 
 # This is the page where users log in to the site.
-class Login
-  
-  include ToolsMenu
+class Login < BasePage
+
+  frame_element
   
   def search_public_courses_and_projects
     @browser.frame(:index=>0).link(:text=>"Search Public Courses and Projects").click
@@ -109,9 +107,9 @@ class Login
 end
 
 # The page where you search for public courses and projects.
-class SearchPublic
-  
-  include ToolsMenu
+class SearchPublic < BasePage
+
+  frame_element
   
   def home
     @browser.frame(:index=>0).link(:text=>"Home").click
@@ -130,9 +128,9 @@ class SearchPublic
 end
 
 # The page showing the results list of Site matches to a search of public sites/projects.
-class SearchPublicResults
-  
-  include ToolsMenu
+class SearchPublicResults < BasePage
+
+  frame_element
   
   def click_site(site_name)
     @browser.frame(:index=>0).link(:text=>site_name).click
@@ -148,9 +146,9 @@ end
 
 # The page that appears when you click a Site in the Site Search Results page, when not logged
 # in to Sakai.
-class SiteSummaryPage
-  
-  include ToolsMenu
+class SiteSummaryPage < BasePage
+
+  frame_element
   
   def return_to_list
     @browser.frame(:index=>0).button(:value=>"Return to List").click
@@ -170,21 +168,14 @@ class SiteSummaryPage
 end
 
 
-
-
-
-
-
-
 #================
 # Realms Pages
 #================
 
 # Realms page
-class Realms
-  
-  include PageObject
-  include ToolsMenu
+class Realms < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:new_realm, :text=>"New Realm", :frame=>frame)
@@ -204,10 +195,9 @@ end
 #================
 
 # The Add Sections Page in Site Management
-class AddSections
-  
-  include PageObject
-  include ToolsMenu
+class AddSections < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:overview, :id=>"addSectionsForm:_idJsp3", :frame=>frame)
@@ -250,10 +240,9 @@ end
 
 
 # Exactly like the Add Sections page, but used when editing an existing section
-class EditSections
-  
-  include PageObject
-  include ToolsMenu
+class EditSections < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:overview, :id=>"editSectionsForm:_idJsp3", :frame=>frame)
@@ -295,10 +284,9 @@ class EditSections
 end
 
 # Options page for Sections
-class SectionsOptions
-  
-  include PageObject
-  include ToolsMenu
+class SectionsOptions < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister", :frame=>frame)
@@ -315,10 +303,9 @@ end
 
 # The Sections page
 # found in the SITE MANAGEMENT menu for a Site
-class SectionsOverview
-  
-  include PageObject
-  include ToolsMenu
+class SectionsOverview < BasePage
+
+  frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:add_sections, :id=>"overviewForm:_idJsp8", :frame=>frame)
@@ -341,10 +328,9 @@ end
 #================
 
 # Sites page - arrived at via the link with class="icon-sakai-sites"
-class Sites
-  
-  include PageObject
-  include ToolsMenu
+class Sites < BasePage
+
+  frame_element
   
   # Clicks the first site Id link
   # listed. Useful when you've run a search and
@@ -395,11 +381,10 @@ end
 
 # Page that appears when you've clicked a Site ID in the
 # Sites section of the Administration Workspace.
-class EditSiteInfo
-  
-  include PageObject
-  include ToolsMenu
-  
+class EditSiteInfo < BasePage
+
+  frame_element
+
   # Clicks the Remove Site button, then instantiates
   # the RemoveSite page class.
   def remove_site
@@ -468,10 +453,9 @@ end
 
 # The page you come to when editing a Site in Sites
 # and you click on the Pages button
-class AddEditPages
-  
-  include PageObject
-  include ToolsMenu
+class AddEditPages < BasePage
+
+  frame_element
   
   # Clicks the link for New Page, then
   # instantiates the NewPage page class.
@@ -483,10 +467,9 @@ class AddEditPages
 end
 
 # Page for adding a new page to a Site.
-class NewPage
-  
-  include PageObject
-  include ToolsMenu
+class NewPage < BasePage
+
+  frame_element
   
   # Clicks the Tools button, then instantiates
   # the AddEditTools class.
@@ -504,10 +487,9 @@ class NewPage
 end
 
 # Page when editing a Site and adding/editing tools for pages.
-class AddEditTools
-  
-  include PageObject
-  include ToolsMenu
+class AddEditTools < BasePage
+
+  frame_element
   
   # Clicks the New Tool link, then instantiates
   # the NewTool class.
@@ -526,10 +508,9 @@ class AddEditTools
 end
 
 # Page for creating a new tool for a page in a site
-class NewTool
-  
-  include PageObject
-  include ToolsMenu
+class NewTool < BasePage
+
+  frame_element
   
   # Clicks the Done button, the instantiates
   # The AddEditTools class.
@@ -549,10 +530,9 @@ class NewTool
 end
 
 # Page that appears when you click "Remove Site" when editing a Site in Sites
-class RemoveSite
-  
-  include PageObject
-  include ToolsMenu
+class RemoveSite < BasePage
+
+  frame_element
   
   # Clicks the Remove button, then
   # instantiates the Sites class.
@@ -564,10 +544,9 @@ class RemoveSite
 end
 
 # Page that appears when you click "Save As" when editing a Site in Sites
-class SiteSaveAs
-  
-  include PageObject
-  include ToolsMenu
+class SiteSaveAs < BasePage
+
+  frame_element
   
   # Clicks the Save button, then
   # instantiates the Sites class.
@@ -582,10 +561,9 @@ class SiteSaveAs
   
 end
 
-class AddEditSiteProperties
-  
-  include PageObject
-  include ToolsMenu
+class AddEditSiteProperties < BasePage
+
+  frame_element
   
   # Clicks the New Property button
   def new_property
@@ -620,10 +598,9 @@ end
 #================
 
 # The Page for editing User Account details
-class EditAccount
-  
-  include PageObject
-  include ToolsMenu
+class EditAccount < BasePage
+
+  frame_element
   
   # Clicks the update details button then
   # makes sure there isn't any error message present.
@@ -666,11 +643,9 @@ end
 # defined using Watir and Ruby code.
 #
 # Do NOT use the PageObject syntax in this class.
-class UserAccount
-  
-  def initialize(browser)
-    @browser = browser
-  end
+class UserAccount < BasePage
+
+  frame_element
 
   # Clicks the Modify Details button. Instantiates the EditAccount class.
   def modify_details
@@ -737,10 +712,9 @@ end
 #================
 
 # The Page for editing User Account details
-class EditUser
-  
-  include PageObject
-  include ToolsMenu
+class EditUser < BasePage
+
+  frame_element
 
   def update_details
     frm.button(:name=>"eventSubmit_doSave").click
@@ -760,10 +734,9 @@ class EditUser
 end
 
 # The Users page - "icon-sakai-users"
-class Users
-  
-  include PageObject
-  include ToolsMenu
+class Users < BasePage
+
+  frame_element
   
   def new_user
     frm.link(:text=>"New User").click
@@ -807,10 +780,9 @@ class Users
 end
 
 # The Create New User page
-class CreateNewUser
-  
-  include PageObject
-  include ToolsMenu
+class CreateNewUser < BasePage
+
+  frame_element
   
   def save_details
     frm.button(:name=>"eventSubmit_doSave").click
@@ -836,10 +808,9 @@ end
 #================
 
 # User Membership page for admin users - "icon-sakai-usermembership"
-class UserMembership
-  
-  include PageObject
-  include ToolsMenu
+class UserMembership < BasePage
+
+  frame_element
   
   # Returns an array containing the user names displayed in the search results.
   def names
@@ -899,10 +870,9 @@ end
 #================
 
 # The topmost page in the Job Scheduler in Admin Workspace
-class JobScheduler
-  
-  include PageObject
-  include ToolsMenu
+class JobScheduler < BasePage
+
+  frame_element
   
   # Clicks the Jobs link, then instantiates
   # the JobList Class.
@@ -914,10 +884,9 @@ class JobScheduler
 end
 
 # The list of Jobs (click the Jobs button on Job Scheduler)
-class JobList
-  
-  include PageObject
-  include ToolsMenu
+class JobList < BasePage
+
+  frame_element
   
   # Clicks the New Job link, then
   # instantiates the CreateNewJob Class.
@@ -943,11 +912,10 @@ class JobList
 end
 
 # The Create New Job page
-class CreateNewJob
-  
-  include PageObject
-  include ToolsMenu
-  
+class CreateNewJob < BasePage
+
+  frame_element
+
   # Clicks the Post button, then
   # instantiates the JobList Class.
   def post
@@ -962,10 +930,9 @@ class CreateNewJob
 end
 
 # The page for Editing Triggers
-class EditTriggers
-  
-  include PageObject
-  include ToolsMenu
+class EditTriggers < BasePage
+
+  frame_element
   
   # Clicks the "Run Job Now" link, then
   # instantiates the RunJobConfirmation Class.
@@ -987,10 +954,9 @@ class EditTriggers
 end
 
 # The Create Trigger page
-class CreateTrigger
-  
-  include PageObject
-  include ToolsMenu
+class CreateTrigger < BasePage
+
+  frame_element
   
   def post
     frm.button(:value=>"Post").click
@@ -1005,10 +971,9 @@ end
 
 
 # The page for confirming you want to run a job
-class RunJobConfirmation
-  
-  include PageObject
-  include ToolsMenu
+class RunJobConfirmation < BasePage
+
+  frame_element
   
   # Clicks the "Run Now" button, then
   # instantiates the JobList Class.
@@ -1016,10 +981,7 @@ class RunJobConfirmation
     frm.button(:value=>"Run Now").click
     JobList.new(@browser)
   end
-  
-  in_frame(:index=>0) do |frame|
-    #(:, =>"", :frame=>frame)
-  end
+
 end
 
 # The page containing the Event Log

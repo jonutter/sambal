@@ -9,6 +9,7 @@ module PageHelper
     block.call @current_page if block
     @current_page
   end
+  alias on_page on
 
   def make data_object_class, opts={}
     data_object_class.new @browser, opts
