@@ -5,394 +5,219 @@
 # Menus that appear when in the context of a particular Site.
 module ToolsMenu
 
-  include PageObject
-  # Opens the "My Sites" menu box and then clicks on the link
-  # that matches the specified id.
-  #
-  # Errors out if nothing matches.
-  def open_my_site_by_id(id)
-    @browser.link(:text, "My Sites").click
-    @browser.link(:href, /#{id}/).click
-    Home.new(@browser)
-  end
-
   # Opens "My Sites" and then clicks on the matching
   # Site name. Shortens the name used for search so
   # that truncated names are not a problem.
+  # Should be followed by the Home class.
   #
   # Will error out if there are not matching links.
   def open_my_site_by_name(name)
     truncated_name = name[0..19]
     @browser.link(:text, "My Sites").click
     @browser.link(:text, /#{Regexp.escape(truncated_name)}/).click
-    Home.new(@browser)
   end
 
   # Clicks the "Account" link in the Adminstration Workspace
-  # then instantiates the UserAccount class.
+  # Should be followed by the UserAccount class.
   #
   # Throws an error if the link is not present.
-  def account
-    @browser.link(:text=>"Account").click
-    UserAccount.new(@browser)
-  end
+  action(:account) { |b| b.link(:text=>"Account").click }
 
   # Clicks the "Aliases" link in the Administration Workspace
-  # menu, then instantiates the Aliases class.
-  def aliases
-    @browser.link(:text=>"Aliases").click
-    Aliases.new(@browser)
-  end
+  # menu, then should be followed by the Aliases class.
+  action(:aliases) { |b| b.link(:text=>"Aliases").click }
 
   # Clicks the link for the Administration Workspace, then
-  # instantiates the MyWorkspace class.
-  def administration_workspace
-    @browser.link(:text, "Administration Workspace").click
-    MyWorkspace.new(@browser)
-  end
+  # should be followed by the MyWorkspace class.
+  action(:administration_workspace) { |b| b.link(:text, "Administration Workspace").click }
 
   # Clicks the Announcements link then instantiates
   # the Announcements class.
-  def announcements
-    @browser.link(:class=>'icon-sakai-announcements').click
-    Announcements.new(@browser)
-  end
+  action(:announcements) { |b| b.link(:class=>'icon-sakai-announcements').click }
 
   # Clicks the Assignments link, then instantiates
   # the Assignments class.
-  def assignments
-    @browser.link(:class=>"icon-sakai-assignment-grades").click
-    AssignmentsList.new(@browser)
-  end
+  action(:assignments) { |b| b.link(:class=>"icon-sakai-assignment-grades").click }
 
-  def basic_lti
-    @browser.link(:class=>"icon-sakai-basiclti").click
-    BasicLTI.new(@browser)
-  end
+  # BasicLTI class
+  action(:basic_lti) { |b| b.link(:class=>"icon-sakai-basiclti").click }
 
-  def blogs
-    @browser.link(:class=>"icon-sakai-blogwow").click
-    Blogs.new(@browser)
-  end
+  # Blogs class
+  action(:blogs) { |b| b.link(:class=>"icon-sakai-blogwow").click }
 
   # Clicks the Blogger link in the Site menu and
   # instantiates the Blogger Class.
-  def blogger
-    @browser.link(:class=>"icon-blogger").click
-    Blogger.new(@browser)
-  end
+  action(:blogger) { |b| b.link(:class=>"icon-blogger").click }
 
   # Clicks the Calendar link, then instantiates
   # the Calendar class.
-  def calendar
-    @browser.link(:text=>"Calendar").click
-    Calendar.new(@browser)
-  end
+  action(:calendar) { |b| b.link(:text=>"Calendar").click }
 
-  link(:certification, :text=>"Certification")
+  action(:certification) { |b| b.link(:text=>"Certification").click }
 
-  def chat_room
-    @browser.link(:class=>"icon-sakai-chat").click
-    ChatRoom.new(@browser)
-  end
+  # ChatRoom class
+  action(:chat_room) { |b| b.link(:class=>"icon-sakai-chat").click }
 
-  link(:configuration_viewer, :text=>"Configuration Viewer")
-  link(:customizer, :text=>"Customizer")
+  action(:configuration_viewer) { |b| b.link(:text=>"Configuration Viewer").click }
+  action(:customizer) { |b| b.link(:text=>"Customizer").click }
 
-  # Clicks the "Discussion Forums" link in the menu,
-  # then instantiates the JForum page class.
-  def discussion_forums
-    @browser.link(:class=>"icon-sakai-jforum-tool").click
-    JForums.new(@browser)
-  end
+  # JForum page class.
+  action(:discussion_forums) {  |b| b.link(:class=>"icon-sakai-jforum-tool").click }
 
-  def drop_box
-    @browser.link(:class=>"icon-sakai-dropbox").click
-    DropBox.new(@browser)
-  end
+  # DropBox class
+  action(:drop_box) { |b| b.link(:class=>"icon-sakai-dropbox").click }
 
-  link(:email, :text=>"Email")
+  action(:email) { |b| b.link(:text=>"Email").click }
 
-  def email_archive
-    @browser.link(:class=>"icon-sakai-mailbox").click
-    EmailArchive.new(@browser)
-  end
+  # Email Archive class
+  action(:email_archive) { |b| b.link(:class=>"icon-sakai-mailbox").click }
 
-  link(:email_template_administration, :text=>"Email Template Administration")
+  action(:email_template_administration) { |b| b.link(:text=>"Email Template Administration").click }
 
-  def evaluation_system
-    @browser.link(:class=>"icon-sakai-rsf-evaluation").click
-    EvaluationSystem.new(@browser)
-  end
+  # EvaluationSystem class
+  action(:evaluation_system) { |b| b.link(:class=>"icon-sakai-rsf-evaluation").click }
 
-  def feedback
-    @browser.link(:class=>"icon-sakai-postem").click
-    Feedback.new(@browser)
-  end
+  # Feedback class
+  action(:feedback) { |b| b.link(:class=>"icon-sakai-postem").click }
 
-  # Clicks the Forms link that is found in menus for
-  # Portfolio sites.
-  def forms
-    @browser.link(:text=>"Forms", :class=>"icon-sakai-metaobj").click
-    Forms.new(@browser)
-  end
+  # Forms class
+  action(:forms) { |b| b.link(:text=>"Forms", :class=>"icon-sakai-metaobj").click }
 
-  # Clicks the Forums link, then instantiates
-  # the forums class.
-  def forums
-    @browser.link(:text=>"Forums").click
-    Forums.new(@browser)
-  end
+  # Forums class.
+  action(:forums) { |b| b.link(:text=>"Forums").click }
 
-  # Clicks the Glossary link, then instantiates the Glossary Class.
-  def glossary
-    @browser.link(:text=>"Glossary").click
-    Glossary.new(@browser)
-  end
+  # Glossary Class.
+  action(:glossary) { |b| b.link(:text=>"Glossary").click }
 
-  # Clicks the "Gradebook" link, then
-  # instantiates the Gradebook Class.
-  def gradebook
-    @browser.link(:text=>"Gradebook").click
-    Gradebook.new(@browser)
-  end
+  # Gradebook Class.
+  action(:gradebook) { |b| b.link(:text=>"Gradebook").click }
 
-  def gradebook2
-    @browser.link(:text=>"Gradebook2").click
-    frm.div(:id=>"borderLayoutContainer").wait_until_present
-    Gradebook2.new(@browser)
-  end
+  # Gradebook2 class
+  action(:gradebook2) { |b| b.link(:text=>"Gradebook2").click }
 
-  link(:help, :text=>"Help")
+  action(:help) { |b| b.link(:text=>"Help").click }
 
-  # Clicks the Home link, then instantiates the
   # Home class--unless the target page happens to be
   # My Workspace, in which case the MyWorkspace
-  # page is instantiated.
-  def home
-    @browser.link(:text, "Home").click
-    if @browser.div(:id=>"siteTitle").text == "My Workspace"
-      MyWorkspace.new(@browser)
-    else
-      Home.new(@browser)
-    end
-  end
+  # page should be used.
+  action(:home) { |b| b.link(:text, "Home").click }
 
-  # Clicks the Job Scheduler link, then
-  # instantiates the Job Scheduler class.
-  def job_scheduler
-    @browser.link(:text=>"Job Scheduler").click
-    JobScheduler.new(@browser)
-  end
+  # Job Scheduler class.
+  action(:job_scheduler) { |b| b.link(:text=>"Job Scheduler").click }
 
-  # Clicks the Lessons link, then instantiates
-  # the Lessons class.
-  def lessons
-    @browser.link(:text=>"Lessons").click
-    Lessons.new(@browser)
-  end
+  # Lessons class
+  action(:lessons) { |b| b.link(:text=>"Lessons").click }
 
-  link(:lesson_builder, :text=>"Lesson Builder")
-  link(:link_tool, :text=>"Link Tool")
-  link(:live_virtual_classroom, :text=>"Live Virtual Classroom")
+  action(:lesson_builder) { |b| b.link(:text=>"Lesson Builder").click }
+  action(:link_tool) { |b| b.link(:text=>"Link Tool").click }
+  action(:live_virtual_classroom) { |b| b.link(:text=>"Live Virtual Classroom").click }
 
-  # Clicks the "Matrices" link, then
-  # instantiates the Matrices Class.
-  def matrices
-    @browser.link(:text=>"Matrices").click
-    Matrices.new(@browser)
-  end
+  # Matrices Class
+  action(:matrices) { |b| b.link(:text=>"Matrices").click }
 
-  def media_gallery
-    @browser.link(:class=>"icon-sakai-kaltura").click
-    MediaGallery.new(@browser)
-  end
+  # MediaGallery class
+  action(:media_gallery) { |b| b.link(:class=>"icon-sakai-kaltura").click }
 
-  link(:membership, :text=>"Membership")
-  link(:memory, :text=>"Memory")
+  action(:membership, :text=>"Membership")
+  action(:memory, :text=>"Memory")
 
-  # Clicks the Messages link, then instantiates the Messages class.
-  def messages
-    @browser.link(:text=>"Messages").click
-    Messages.new(@browser)
-  end
+  # Messages class.
+  action(:messages) { |b| b.link(:text=>"Messages").click }
 
-  link(:my_sites, :text=>"My Sites")
+  action(:my_sites) { |b| b.link(:text=>"My Sites").click }
 
-  # Clicks the "My Workspace" link, then instantiates
-  # the MyWorkspace Class.
-  def my_workspace
-    @browser.link(:text=>"My Workspace").click
-    MyWorkspace.new(@browser)
-  end
+  # MyWorkspace Class.
+  action(:my_workspace) { |b| b.link(:text=>"My Workspace").click }
 
-  def news
-    @browser.link(:class=>"icon-sakai-news").click
-    News.new(@browser)
-  end
+  # News
+  action(:news) { |b| b.link(:class=>"icon-sakai-news").click }
 
-  link(:online, :text=>"On-Line")
-  link(:oauth_providers, :text=>"Oauth Providers")
-  link(:oauth_tokens, :text=>"Oauth Tokens")
-  link(:openSyllabus, :text=>"OpenSyllabus")
+  action(:online) { |b| b.link(:text=>"On-Line").click }
+  action(:oauth_providers) { |b| b.link(:text=>"Oauth Providers").click }
+  action(:oauth_tokens) { |b| b.link(:text=>"Oauth Tokens").click }
+  action(:openSyllabus) { |b| b.link(:text=>"OpenSyllabus").click }
 
-  def podcasts
-    @browser.link(:class=>"icon-sakai-podcasts").click
-    Podcasts.new(@browser)
-  end
+  # Podcasts
+  action(:podcasts) { |b| b.link(:class=>"icon-sakai-podcasts").click }
 
-  def polls
-    @browser.link(:class=>"icon-sakai-poll").click
-    Polls.new(@browser)
-  end
+  # Polls class
+  action(:polls) { |b| b.link(:class=>"icon-sakai-poll").click }
 
-  def portfolios
-    @browser.link(:class=>"icon-osp-presentation").click
-    Portfolios.new @browser
-  end
+  # Portfolios class
+  action(:portfolios) { |b| b.link(:class=>"icon-osp-presentation").click }
 
-  # Clicks the Portfolio Templates link, then
-  # instantiates the Portfolio
-  def portfolio_templates
-    @browser.link(:text=>"Portfolio Templates").click
-    PortfolioTemplates.new(@browser)
-  end
+  # PortfolioTemplates
+  action(:portfolio_templates) { |b| b.link(:text=>"Portfolio Templates").click }
 
-  link(:preferences, :text=>"Preferences")
+  action(:preferences) { |b| b.link(:text=>"Preferences").click }
 
-  def profile
-    @browser.link(:text=>"Profile").click
-    Profile.new @browser
-  end
+  action(:profile) { |b| b.link(:text=>"Profile").click }
 
-  def profile2
-    @browser.link(:class=>"icon-sakai-profile2").click
-    Profile2.new @browser
-  end
+  # Profile2 class
+  action(:profile2) { |b| b.link(:class=>"icon-sakai-profile2").click }
 
-  link(:realms, :text=>"Realms")
+  action(:realms) { |b| b.link(:text=>"Realms").click }
 
-  # Clicks the Resources link, then instantiates
-  # the Resources class.
-  def resources
-    @browser.link(:text, "Resources").click
-    Resources.new(@browser)
-  end
+  # Resources class.
+  action(:resources) { |b| b.link(:text, "Resources").click }
 
-  def roster
-    @browser.link(:class=>"icon-sakai-site-roster").click
-    Roster.new @browser
-  end
+  # Roster
+  action(:roster) { |b| b.link(:class=>"icon-sakai-site-roster").click }
 
-  link(:rsmart_support, :text=>"rSmart Support")
+  action(:rsmart_support) { |b| b.link(:text=>"rSmart Support").click }
 
   # Because "Search" is used in many pages,
   # The Search button found in the Site Management
   # Menu must be given the more explicit name
-  #
-  def site_management_search
-    @browser.link(:class=>"icon-sakai-search").click
-  end
+  action(:site_management_search) { |b| b.link(:class=>"icon-sakai-search").click }
 
-  def sections
-    @browser.link(:class=>"icon-sakai-sections").click
-    Sections.new(@browser)
-  end
+  # Sections
+  action(:sections) { |b| b.link(:class=>"icon-sakai-sections").click }
 
-  link(:site_archive, :text=>"Site Archive")
+  action(:site_archive) { |b| b.link(:text=>"Site Archive").click }
 
-  # Clicks the Site Editor link, then instantiates
-  # the Site Editor class.
-  def site_editor
-    @browser.link(:text=>"Site Editor").click
-    SiteEditor.new(@browser)
-  end
+  # SiteEditor class.
+  action(:site_editor) { |b| b.link(:text=>"Site Editor").click }
 
-  # Clicks the Site Setup link, then instantiates
-  # The SiteEditor class.
-  def site_setup
-    @browser.link(:text=>"Site Setup").click
-    SiteSetup.new(@browser)
-  end
+  # SiteSetup class.
+  action(:site_setup) { |b| b.link(:text=>"Site Setup").click }
 
-  link(:site_statistics, :text=>"Site Statistics")
+  action(:site_statistics) { |b| b.link(:text=>"Site Statistics").click }
 
-  # Clicks the Sites link, then instantiates
-  # the Sites class.
-  def sites
-    @browser.link(:class=>"icon-sakai-sites").click
-    frm.text_field(:id=>"search_site").wait_until_present
-    Sites.new(@browser)
-  end
+  # Sites class.
+  action(:sites) { |b| b.link(:class=>"icon-sakai-sites").click }
 
-  link(:skin_manager, :text=>"Skin Manager")
-  link(:super_user, :text=>"Super User")
+  action(:skin_manager) { |b| b.link(:text=>"Skin Manager").click }
+  action(:super_user) { |b| b.link(:text=>"Super User").click }
 
-  def styles
-    @browser.link(:text=>"Styles").click
-    Styles.new(@browser)
-  end
+  # Styles
+  action(:styles) { |b| b.link(:text=>"Styles").click }
 
-  # Clicks the Syllabus link, then instantiates
-  # the Syllabus class.
-  def syllabus
-    @browser.link(:text=>"Syllabus").click
-    Syllabus.new(@browser)
-  end
+  # Syllabus class.
+  action(:syllabus) { |b| b.link(:text=>"Syllabus").click }
 
-  # Clicks the Tests & Quizzes link, then
-  # instantiates the AssessmentsList class.
-  def tests_and_quizzes
-    # Need this logic to determine whether user
-    # is a student or instructor/admin
-    @browser.link(:class, "icon-sakai-siteinfo").exist? ? x=0 : x=1
-    @browser.link(:text=>"Tests & Quizzes").click
-    x==0 ? AssessmentsList.new(@browser) : TakeAssessmentList.new(@browser)
-  end
+  #AssessmentsList class OR the TakeAssessmentList for students
+  action(:tests_and_quizzes) { |b| b.link(:text=>"Tests & Quizzes").click }
+  alias assessments tests_and_quizzes
 
-  # Synonym for tests_and_quizzes method.
-  def assessments
-    tests_and_quizzes
-  end
+  # UserMembership
+  action(:user_membership) { |b| b.link(:class=>"icon-sakai-usermembership").click }
 
-  def user_membership
-    @browser.link(:class=>"icon-sakai-usermembership").click
-    UserMembership.new(@browser)
-  end
+  # Users
+  action(:users) { |b| b.link(:class=>"icon-sakai-users").click }
 
-  def users
-    @browser.link(:class=>"icon-sakai-users").click
-    Users.new(@browser)
-  end
+  # WebContent
+  action(:web_content) { |b| b.link(:class=>"icon-sakai-iframe").click }
 
-  def web_content
-    @browser.link(:class=>"icon-sakai-iframe").click
-    WebContent.new(@browser)
-  end
-
-  def wiki
-    @browser.link(:class=>"icon-sakai-rwiki").click
-    Wikis.new(@browser)
-  end
+  # Wikis
+  action(:wiki) { |b| b.link(:class=>"icon-sakai-rwiki").click }
 
   # The Page Reset button, found on all Site pages
-  def reset
-    @browser.link(:href=>/tool-reset/).click
-  end
+  action(:reset) { |b| b.link(:href=>/tool-reset/).click }
 
-  # Clicks the "(Logout)" link in the upper right of the page.
-  # Instantiates the Login class.
-  def logout
-    @browser.link(:text, "Logout").click
-    Login.new(@browser)
-  end
+  # Login class.
+  action(:logout) { |b| b.link(:text, "Logout").click }
   alias log_out logout
   alias sign_out logout
-
-  # Shortcut method so we can put all the
-  # elements into the Common gem...
-  def frm
-    @browser.frame(:class=>"portletMainIframe")
-  end
 
 end

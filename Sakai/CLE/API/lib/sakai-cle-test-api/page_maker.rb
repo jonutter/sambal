@@ -13,12 +13,6 @@ class PageMaker
 
   class << self
 
-    def page_url url
-      define_method 'goto' do
-        @browser.goto url
-      end
-    end
-
     def expected_element element_name, timeout=30
       define_method 'expected_element' do
         self.send(element_name).wait_until_present timeout
@@ -41,6 +35,7 @@ class PageMaker
 
     alias :value :element
     alias :action :element
+    alias :thing :element
 
   end
 

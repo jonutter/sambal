@@ -1,25 +1,3 @@
-# Methods to extend the page-object gem...
-module PageObject
-  module Elements
-    class Element
-      def disabled?
-        @element.disabled?
-      end
-    end
-  end
-  module Accessors
-    def thing element_name
-      raise "#{element_name} is being defined twice in #{self}!" if self.instance_methods.include?(element_name.to_sym)
-      define_method element_name.to_s do
-        yield self
-      end
-    end
-    alias item thing
-    alias value thing
-    alias action thing
-  end
-end
-
 # Need this to extend Watir to be able to attach to Sakai's non-standard tags...
 module Watir
   class Element
