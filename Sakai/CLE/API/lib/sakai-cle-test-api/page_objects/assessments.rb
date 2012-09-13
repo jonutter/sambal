@@ -7,27 +7,10 @@
 # common to all the question pages inside the
 # Assessment section of a Site.
 module QuestionHelpers
-  include PageObject
-  # Saves the question by clicking the Save button, then makes the determination
-  # whether to instantiate the EditAssessment class, or the EditQuestionPool class.
-  def save
 
-    quiz = frm.div(:class=>"portletBody").div(:index=>0).text
-    pool = frm.div(:class=>"portletBody").div(:index=>1).text
-
-    frm.button(:value=>"Save").click
-
-    if quiz =~ /^Assessments/
-      EditAssessment.new(@browser)
-    elsif pool =~ /^Question Pools/
-      EditQuestionPool.new(@browser)
-    else
-      puts "Unexpected text: "
-      p pool
-      p quiz
-    end
-
-  end
+  # EditAssessment class or the EditQuestionPool class
+  # should be called after this.
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
 
   in_frame(:class=>"portletMainIframe") do |frame|
     link(:assessments, :text=>"Assessments", :frame=>frame)
@@ -40,9 +23,9 @@ end
 
 # The Course Tools "Tests and Quizzes" page for a given site.
 # (Instructor view)
-class AssessmentsList
-  include PageObject
-  include ToolsMenu
+class AssessmentsList < BasePage
+
+  frame_element
 
   # This method reads the type of assessment selected for creation,
   # then clicks the Create button and instantiates the proper class.
@@ -126,9 +109,9 @@ end
 
 # Page that appears when previewing an assessment.
 # It shows the basic information about the assessment.
-class PreviewOverview
-  include PageObject
-  include ToolsMenu
+class PreviewOverview < BasePage
+
+  frame_element
 
   # Scrapes the value of the due date from the page. Returns it as a string.
   def due_date
@@ -165,9 +148,9 @@ class PreviewOverview
 end
 
 # The Settings page for a particular Assessment
-class AssessmentSettings
-  include PageObject
-  include ToolsMenu
+class AssessmentSettings < BasePage
+
+  frame_element
 
   # Scrapes the Assessment Type from the page and returns it as a string.
   def assessment_type_title
@@ -264,9 +247,9 @@ class AssessmentSettings
 end
 
 # Instructor's view of Students' assessment scores
-class AssessmentTotalScores
-  include PageObject
-  include ToolsMenu
+class AssessmentTotalScores < BasePage
+
+  frame_element
 
   # Gets the user ids listed in the
   # scores table, returns them as an Array
@@ -328,9 +311,9 @@ end
 
 # The page that appears when you're creating a new quiz
 # or editing an existing one
-class EditAssessment
-  include PageObject
-  include ToolsMenu
+class EditAssessment < BasePage
+
+  frame_element
 
   # Allows insertion of a question at a specified
   # point in the Assessment. Must include the
@@ -470,9 +453,9 @@ class EditAssessment
 end
 
 # This is the page for adding and editing a part of an assessment
-class AddEditAssessmentPart
-  include PageObject
-  include ToolsMenu
+class AddEditAssessmentPart < BasePage
+
+  frame_element
 
   # Clicks the Save button, then instantiates
   # the EditAssessment page class.
@@ -505,10 +488,9 @@ end
 
 # The review page once you've selected to Save and Publish
 # the assessment
-class PublishAssessment
-  include PageObject
-  include ToolsMenu
+class PublishAssessment < BasePage
 
+  frame_element
   # Clicks the Publish button, then
   # instantiates the AssessmentsList page class.
   def publish
@@ -526,9 +508,10 @@ class PublishAssessment
 end
 
 # The page for setting up a multiple choice question
-class MultipleChoice
-  include PageObject
-  include ToolsMenu
+class MultipleChoice < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -590,9 +573,9 @@ class MultipleChoice
 end
 
 # The page for setting up a Survey question
-class Survey
-  include PageObject
-  include ToolsMenu
+class Survey < BasePage
+
+  frame_element
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|

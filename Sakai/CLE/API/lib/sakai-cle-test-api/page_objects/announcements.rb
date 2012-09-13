@@ -1,6 +1,7 @@
 # The Announcements list page for a Site.
-class Announcements
-  include ToolsMenu
+class Announcements < BasePage
+
+  frame_element
 
   # Clicks the add button, instantiates the AddEditAnnouncements class.
   def add
@@ -70,8 +71,9 @@ end
 
 # Show Announcements from Another Site. On this page you select what announcements
 # you want to merge into the current Site.
-class AnnouncementsMerge
-  include ToolsMenu
+class AnnouncementsMerge < BasePage
+
+  frame_element
 
   # Checks the checkbox for the specified site name
   # @param site_name [String] the name of the relevant site displayed in the table
@@ -89,8 +91,9 @@ end
 
 # This Class does double-duty. It's for the Preview page when editing an
 # Announcement, plus for when you just click an Announcement to view it.
-class PreviewAnnouncements
-  include ToolsMenu
+class PreviewAnnouncements < BasePage
+
+  frame_element
 
   # Clicks the Return to list button and returns the Announcements class.
   def return_to_list
@@ -113,8 +116,9 @@ class PreviewAnnouncements
 end
 
 # The page where an announcement is created or edited.
-class AddEditAnnouncements
-  include ToolsMenu
+class AddEditAnnouncements < BasePage
+
+  frame_element
 
   # Clicks the Add Announcement button and then determines whether to return
   # AddEditAnnouncements or Announcements class.
@@ -291,36 +295,23 @@ class AddEditAnnouncements
 
 end
 
-# The page for attaching files and links to Announcements.
-class AnnouncementsAttach < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes= {
-        :this => "AnnouncementsAttach",
-        :parent => "AddEditAnnouncements"
-    }
-  end
-
-end
-
 # Page for merging announcements from other sites
-class AnnouncementsMerge
-  include ToolsMenu
+class AnnouncementsMerge < BasePage
+
+  frame_element
 
 end
 
 # Page for setting up options for announcements
-class AnnouncementsOptions
-  include ToolsMenu
+class AnnouncementsOptions < BasePage
+
+  frame_element
 
 end
 
 # Page containing permissions options for announcements
-class AnnouncementsPermissions
-  include ToolsMenu
+class AnnouncementsPermissions < BasePage
+
+  frame_element
 
 end
