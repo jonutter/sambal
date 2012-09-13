@@ -3,9 +3,10 @@
 #================
 
 #
-class Polls
-  include PageObject
-  include ToolsMenu
+class Polls < BasePage
+
+  frame_element
+
   def add
     frm.link(:text=>"Add").click
     frm.frame(:id, "newpolldescr::input___Frame").td(:id, "xEditingArea").wait_until_present
@@ -41,9 +42,9 @@ class Polls
 end
 
 #
-class AddEditPoll
-  include PageObject
-  include ToolsMenu
+class AddEditPoll < BasePage
+
+  frame_element
 
   def additional_instructions=(text)
     frm.frame(:id, "newpolldescr::input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
@@ -67,9 +68,10 @@ class AddEditPoll
 end
 
 #
-class AddAnOption
-  include PageObject
-  include ToolsMenu
+class AddAnOption < BasePage
+
+  frame_element
+
   def answer_option=(text)
     frm.frame(:id, "optText::input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end

@@ -597,9 +597,9 @@ class Survey < BasePage
 end
 
 #  The page for setting up a Short Answer/Essay question
-class ShortAnswer
-  include PageObject
-  include ToolsMenu
+class ShortAnswer < BasePage
+
+  frame_element
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -615,9 +615,10 @@ class ShortAnswer
 end
 
 #  The page for setting up a Fill-in-the-blank question
-class FillInBlank
-  include PageObject
-  include ToolsMenu
+class FillInBlank < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -635,9 +636,10 @@ class FillInBlank
 end
 
 #  The page for setting up a numeric response question
-class NumericResponse
-  include PageObject
-  include ToolsMenu
+class NumericResponse < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -653,9 +655,10 @@ class NumericResponse
 end
 
 #  The page for setting up a matching question
-class Matching
-  include PageObject
-  include ToolsMenu
+class Matching < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -674,9 +677,10 @@ class Matching
 end
 
 #  The page for setting up a True/False question
-class TrueFalse
-  include PageObject
-  include ToolsMenu
+class TrueFalse < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -697,9 +701,10 @@ class TrueFalse
 end
 
 #  The page for setting up a question that requires an audio response
-class AudioRecording
-  include PageObject
-  include ToolsMenu
+class AudioRecording < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -718,9 +723,10 @@ end
 
 # The page for setting up a question that requires
 # attaching a file
-class FileUpload
-  include PageObject
-  include ToolsMenu
+class FileUpload < BasePage
+
+  frame_element
+
   include QuestionHelpers
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -736,16 +742,17 @@ class FileUpload
 end
 
 # The page that appears when you are editing a type of assessment
-class EditAssessmentType
-  include PageObject
-  include ToolsMenu
+class EditAssessmentType < BasePage
+
+  frame_element
 
 end
 
 # The Page that appears when adding a new question pool
-class AddQuestionPool
-  include PageObject
-  include ToolsMenu
+class AddQuestionPool < BasePage
+
+  frame_element
+
   # Clicks the Save button, then
   # instantiates the QuestionPoolsList page class.
   def save
@@ -772,9 +779,10 @@ class AddQuestionPool
 end
 
 # The Page that appears when editing an existing question pool
-class EditQuestionPool
-  include PageObject
-  include ToolsMenu
+class EditQuestionPool < BasePage
+
+  frame_element
+
   # Clicks the Add Question link, then
   # instantiates the SelectQuestionType class.
   def add_question
@@ -803,9 +811,9 @@ class EditQuestionPool
 end
 
 # The page with the list of existing Question Pools
-class QuestionPoolsList
-  include PageObject
-  include ToolsMenu
+class QuestionPoolsList < BasePage
+
+  frame_element
   # Clicks the edit button, then instantiates
   # the EditQuestionPool page class.
   # @param name [String] the name of the pool you want to edit
@@ -859,9 +867,10 @@ end
 
 # The page that appears when you click to import
 # a pool.
-class PoolImport
-  include PageObject
-  include ToolsMenu
+class PoolImport < BasePage
+
+  frame_element
+
   # Enters the target file into the Choose File
   # file field. Including the file path separately is optional.
   # @param file_name [String] the name of the file you want to choose. Can include path info, if desired.
@@ -881,9 +890,10 @@ class PoolImport
 end
 
 # This page appears when adding a question to a pool
-class SelectQuestionType
-  include PageObject
-  include ToolsMenu
+class SelectQuestionType < BasePage
+
+  frame_element
+
   # Selects the specified question type from the
   # drop-down list, then instantiates the appropriate
   # page class, based on the question type selected.
@@ -919,9 +929,10 @@ end
 #
 # It may be that we want to deprecate this class and simply use
 # the AssessmentsList class alone.
-class TakeAssessmentList
-  include PageObject
-  include ToolsMenu
+class TakeAssessmentList < BasePage
+
+  frame_element
+
   # Returns an array containing the assessment names that appear on the page.
   def available_assessments
     # define this later
@@ -970,9 +981,10 @@ class TakeAssessmentList
 end
 
 # The student view of the overview page of an Assessment
-class BeginAssessment
-  include PageObject
-  include ToolsMenu
+class BeginAssessment < BasePage
+
+  frame_element
+
   # Clicks the Begin Assessment button.
   def begin_assessment
     frm.button(:value=>"Begin Assessment").click
@@ -1046,9 +1058,10 @@ end
 
 # The confirmation page that appears when submitting an Assessment.
 # The last step before actually submitting the the Assessment.
-class ConfirmSubmission
-  include ToolsMenu
-  include PageObject
+class ConfirmSubmission < BasePage
+
+  frame_element
+
   # Clicks the Submit for Grading button and instantiates
   # the SubmissionSummary Class.
   def submit_for_grading
@@ -1063,9 +1076,10 @@ class ConfirmSubmission
 end
 
 # The summary page that appears when an Assessment has been submitted.
-class SubmissionSummary
-  include ToolsMenu
-  include PageObject
+class SubmissionSummary < BasePage
+
+  frame_element
+
   # Clicks the Continue button and instantiates
   # the TakeAssessmentList Class.
   def continue

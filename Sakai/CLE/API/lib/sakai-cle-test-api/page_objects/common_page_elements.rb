@@ -17,10 +17,9 @@
 #================
 
 # The "Evaluations Dashboard"
-class EvaluationSystem
-  
-  include PageObject
-  include ToolsMenu
+class EvaluationSystem < BasePage
+
+  frame_element
   
   def my_templates
     frm.link(:text=>"My Templates").click
@@ -47,10 +46,9 @@ class EvaluationSystem
 end
 
 # 
-class AddTemplateTitle
-  
-  include PageObject
-  include ToolsMenu
+class AddTemplateTitle < BasePage
+
+  frame_element
   
   def save
     frm.button(:value=>"Save").click
@@ -64,10 +62,9 @@ class AddTemplateTitle
 end
 
 # 
-class EditTemplate
-  
-  include PageObject
-  include ToolsMenu
+class EditTemplate < BasePage
+
+  frame_element
   
   def item_text=(text)
     frm.frame(:id, "item-text___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
@@ -96,10 +93,9 @@ class EditTemplate
 end
 
 # 
-class NewEvaluation
-  
-  include PageObject
-  include ToolsMenu
+class NewEvaluation < BasePage
+
+  frame_element
   
   def continue_to_settings
     frm.button(:value=>"Continue to Settings").click
@@ -116,10 +112,9 @@ class NewEvaluation
 end
 
 # 
-class EvaluationSettings
-  
-  include PageObject
-  include ToolsMenu
+class EvaluationSettings < BasePage
+
+  frame_element
 
   def continue_to_assign_to_courses
     frm.button(:value=>"Continue to Assign to Courses").click
@@ -132,10 +127,9 @@ class EvaluationSettings
 end
 
 # 
-class EditEvaluationAssignment
-  
-  include PageObject
-  include ToolsMenu
+class EditEvaluationAssignment < BasePage
+
+  frame_element
   
   def save_assigned_groups
     frm.button(:value=>"Save Assigned Groups").click
@@ -153,10 +147,9 @@ class EditEvaluationAssignment
 end
 
 #
-class ConfirmEvaluation
-  
-  include PageObject
-  include ToolsMenu
+class ConfirmEvaluation < BasePage
+
+  frame_element
   
   def done
     frm.button(:value=>"Done").click
@@ -166,10 +159,9 @@ class ConfirmEvaluation
 end
 
 # 
-class MyEvaluations
-  
-  include PageObject
-  include ToolsMenu
+class MyEvaluations < BasePage
+
+  frame_element
 
   in_frame(:class=>"portletMainIframe") do |frame|
     
@@ -177,10 +169,9 @@ class MyEvaluations
 end
 
 # 
-class TakeEvaluation
-  
-  include PageObject
-  include ToolsMenu
+class TakeEvaluation < BasePage
+
+  frame_element
   
   def submit_evaluation
     frm.button(:value=>"Submit Evaluation").click
@@ -198,10 +189,9 @@ end
 #================
 
 # Topmost page for a Site in Sakai
-class Home
-  
-  include PageObject
-  include ToolsMenu
+class Home < BasePage
+
+  frame_element
   
   # Because the links below are contained within iframes
   # we need the in_frame method in place so that the
@@ -243,10 +233,9 @@ end
 # Note that this page differs depending on what user is logged in.
 # The definitions below include all potential objects. We may
 # have to split this class out into user-specific classes.
-class MyWorkspace
-  
-  include PageObject
-  include ToolsMenu
+class MyWorkspace < BasePage
+
+  frame_element
 
   # Because the links below are contained within iframes
   # we need the in_frame method in place so that the
@@ -290,12 +279,6 @@ class MyWorkspace
     return events
   end
   
-  # The MyWorkspace class should ONLY be instantiated when
-  # the user context is NOT a given site or Administration Workspace.
-  # Otherwise the frame index will not be 0, and page objects
-  # will not be found by Webdriver.
-  $frame_index=0
-  
 end
 
 
@@ -305,10 +288,9 @@ end
 #================
 
 # The Search page in the Administration Workspace - "icon-sakai-search"
-class Search
-  
-  include PageObject
-  include ToolsMenu
+class Search < BasePage
+
+  frame_element
   
   in_frame(:index=>0) do |frame|
     link(:admin, :text=>"Admin", :frame=>frame)
@@ -322,10 +304,9 @@ class Search
 end
 
 # The Search Admin page within the Search page in the Admin workspace
-class SearchAdmin
-  
-  include PageObject
-  include ToolsMenu
+class SearchAdmin < BasePage
+
+  frame_element
   
   in_frame(:index=>0) do |frame|
     link(:search, :text=>"Search", :frame=>frame)
@@ -378,10 +359,9 @@ module SiteEditorMenu
 end
 
 # The Site Setup page - a.k.a., link class=>"icon-sakai-sitesetup"
-class SiteSetup
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetup < BasePage
+
+  frame_element
 
   def search_field
     frm.text_field(:id, "search")
@@ -454,10 +434,10 @@ end
 # found in SITE MANAGEMENT
 # or else Site Setup after you have
 # selected to Edit a particular site.
-class SiteEditor
-  
-  include PageObject
-  include ToolsMenu
+class SiteEditor < BasePage
+
+  frame_element
+
   include SiteEditorMenu
   
   # Sets the specified role for the specified participant.
@@ -497,10 +477,10 @@ class SiteEditor
 end
 
 # Groups page inside the Site Editor
-class Groups
-    
-  include PageObject
-  include ToolsMenu
+class Groups < BasePage
+
+  frame_element
+
   include SiteEditorMenu
   
   # Clicks the Create New Group link and
@@ -520,10 +500,9 @@ class Groups
 end
 
 # The Create New Group page inside the Site Editor
-class CreateNewGroup
+class CreateNewGroup < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   
   # Clicks the Add button and instantiates the Groups Class.
   def add
@@ -545,10 +524,9 @@ class CreateNewGroup
 end
 
 # The first page of the Duplicate Site pages in the Site Editor.
-class DuplicateSite
-  
-  include PageObject
-  include ToolsMenu
+class DuplicateSite < BasePage
+
+  frame_element
    
   def duplicate
     frm.button(:value=>"Duplicate").click
@@ -569,10 +547,9 @@ end
 
 
 # Page for Adding Participants to a Site in Site Setup
-class SiteSetupAddParticipants
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetupAddParticipants < BasePage
+
+  frame_element
   
   def continue
     frm.button(:value=>"Continue").click
@@ -593,10 +570,9 @@ class SiteSetupAddParticipants
 end
 
 # Page for selecting Participant roles individually
-class SiteSetupChooseRolesIndiv
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetupChooseRolesIndiv < BasePage
+
+  frame_element
   
   def continue
     frm.button(:value=>"Continue").click
@@ -613,10 +589,9 @@ end
 
 # Page for selecting the same role for All. This class is used for
 # both Course and Portfolio sites.
-class SiteSetupChooseRole
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetupChooseRole < BasePage
+
+  frame_element
   
   def continue
     frm.button(:value=>"Continue").click
@@ -640,10 +615,9 @@ end
 
 # Page for specifying whether to send an email
 # notification to the newly added Site participants
-class SiteSetupParticipantEmail
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetupParticipantEmail < BasePage
+
+  frame_element
   
   def continue
     frm.button(:value=>"Continue").click
@@ -661,10 +635,9 @@ class SiteSetupParticipantEmail
 end
 
 # The confirmation page showing site participants and their set roles
-class SiteSetupParticipantConfirmation
-  
-  include PageObject
-  include ToolsMenu
+class SiteSetupParticipantConfirm < BasePage
+
+  frame_element
   
   def finish
     frm.button(:value=>"Finish").click
@@ -689,10 +662,9 @@ end
 
 # The Edit Tools page (click on "Edit Tools" when editing a site
 # in Site Setup in the Admin Workspace)
-class EditSiteTools
+class EditSiteTools < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   
   # Clicks the Continue button.
   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
@@ -760,10 +732,9 @@ class EditSiteTools
   
 end
 
-class ReUseMaterial
+class ReUseMaterial < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   thing(:announcements_checkbox) { |b| b.frm.checkbox(name: "sakai.announcements") }
   thing(:calendar_checkbox) { |b| b.frm.checkbox(name: "sakai.schedule") }
@@ -787,10 +758,9 @@ class ReUseMaterial
 end
 
 # Confirmation page when editing site tools in Site Setup
-class ConfirmSiteToolsEdits
-  
-  include PageObject
-  include ToolsMenu
+class ConfirmSiteToolsEdits < BasePage
+
+  frame_element
 
   def finish_button
     frm.button(:value=>"Finish")
@@ -807,10 +777,9 @@ end
 
 
 # The Delete Confirmation Page for deleting a Site
-class DeleteSite
-  
-  include PageObject
-  include ToolsMenu
+class DeleteSite < BasePage
+
+  frame_element
   
   # Clicks the Remove button, then instantiates
   # the SiteSetup class.
@@ -828,15 +797,10 @@ class DeleteSite
   
 end
 #The Site Type page that appears when creating a new site
-class SiteType
-  
-  include PageObject
-  include ToolsMenu
-  
-  # The page's Continue button. Button gets
-  # clicked and then the appropriate class
-  # gets instantiated, based on the page that
-  # appears.
+class SiteType < BasePage
+
+  frame_element
+
   def continue #FIXME
     if frm.button(:id, "submitBuildOwn").enabled?
       frm.button(:id, "submitBuildOwn").click
@@ -844,27 +808,8 @@ class SiteType
       frm.button(:id, "submitFromTemplateCourse").click
     elsif frm.button(:id, "submitFromTemplate").enabled?
       frm.button(:id, "submitFromTemplate").click
-=begin
-    elsif frm.button(:value=>"Continue", :index=>$frame_index).enabled?
-      frm.button(:value=>"Continue", :index=>$frame_index).fire_event("onclick")
-    elsif frm.button(:value=>"Continue", :index=>$frame_index).enabled?
-      frm.button(:value=>"Continue", :index=>$frame_index).fire_event("onclick")
-    elsif frm.button(:value=>"Continue", :index=>2).enabled?
-      frm.button(:value=>"Continue", :index=>2).fire_event("onclick")
-    else
-      frm.button(:value=>"Continue", :index=>2).fire_event("onclick")
-=end
     end
-    
-    if frm.div(:class=>"portletBody").h3.text=="Course/Section Information"
-      CourseSectionInfo.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Project Site Information"
-      ProjectSiteInfo.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Portfolio Site Information"
-      PortfolioSiteInfo.new(@browser)
-    else
-      puts "Something is wrong on Saturn 3"
-    end
+
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -884,10 +829,9 @@ end
 
 # The Add Multiple Tool Instances page that appears during Site creation
 # after the Course Site Tools page
-class AddMultipleTools
-  
-  include PageObject
-  include ToolsMenu
+class AddMultipleTools < BasePage
+
+  frame_element
   
   # Clicks the Continue button.
   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
@@ -919,10 +863,9 @@ class AddMultipleTools
 end
 
 # The Course/Section Information page that appears when creating a new Site
-class CourseSectionInfo
-  
-  include PageObject
-  include ToolsMenu
+class CourseSectionInfo < BasePage
+
+  frame_element
   
   # Clicks the Continue button, then instantiates
   # the CourseSiteInfo Class.
@@ -964,10 +907,9 @@ end
 
 # The Site Access Page that appears during Site creation
 # immediately following the Add Multiple Tools Options page.
-class SiteAccess
-  
-  include PageObject
-  include ToolsMenu
+class SiteAccess < BasePage
+
+  frame_element
   
   # The page element that displays the joiner role
   # select list. Use this method to validate whether the
@@ -998,10 +940,9 @@ class SiteAccess
 end
 
 # The Confirmation page at the end of a Course Site Setup
-class ConfirmSiteSetup
-  
-  include PageObject
-  include ToolsMenu
+class ConfirmSiteSetup < BasePage
+
+  frame_element
   
   # Clicks the Request Site button, then
   # instantiates the SiteSetup Class.
@@ -1022,10 +963,9 @@ end
 
 # The Course Site Information page that appears when creating a new Site
 # immediately after the Course/Section Information page
-class CourseSiteInfo
-  
-  include PageObject
-  include ToolsMenu
+class CourseSiteInfo < BasePage
+
+  frame_element
   include FCKEditor
 
   def editor
@@ -1065,10 +1005,9 @@ class CourseSiteInfo
 end
 
 # 
-class PortfolioSiteInfo
-  
-  include PageObject
-  include ToolsMenu
+class PortfolioSiteInfo < BasePage
+
+  frame_element
 
   def description=(text)
     frm.frame(:id, "description___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
@@ -1090,10 +1029,9 @@ class PortfolioSiteInfo
 end
 
 # 
-class PortfolioSiteTools
-  
-  include PageObject
-  include ToolsMenu
+class PortfolioSiteTools < BasePage
+
+  frame_element
 
   def continue
     frm.button(:value=>"Continue").click
@@ -1107,10 +1045,9 @@ class PortfolioSiteTools
 end
 
 # 
-class PortfolioConfigureToolOptions
-  
-  include PageObject
-  include ToolsMenu
+class PortfolioConfigureToolOptions < BasePage
+
+  frame_element
   
   def continue
     frm.button(:value=>"Continue").click

@@ -25,14 +25,16 @@ end
 # For now it includes all views, though that probably
 # means it will have to be re-instantiated every time
 # a new view is selected.
-class Calendar
-  include ToolsMenu
+class Calendar < BasePage
+
+  frame_element
+
   include CalendarTools
+
   # Selects the specified item in the View select list,
   # then reinstantiates the Class.
   def select_view(item)
     frm.select(:id=>"view").select(item)
-    Calendar.new(@browser)
   end
 
   # Selects the specified item in the View select list.
@@ -50,17 +52,13 @@ class Calendar
   end
 
   # Returns the text of the Calendar's header.
-  def header
-    frm.div(:class=>"portletBody").h3.text
-  end
+  value(:header) { |b| b.frm.div(:class=>"portletBody").h3.text }
 
   # This is the alert box object. If you want to
   # get the text contents of the alert box, use
   # alert_box.text. That will get you a string object
   # that is the text contents.
-  def alert_box
-    frm.div(:class=>"alertMessage")
-  end
+  element(:alert_box) { |b| b.frm.div(:class=>"alertMessage") }
 
   # Clicks the link to the specified event, then
   # instantiates the EventDetail class.
@@ -201,8 +199,9 @@ class Calendar
 end
 
 # The page that appears when you click on an event in the Calendar
-class EventDetail
-  include ToolsMenu
+class EventDetail < BasePage
+
+  frame_element
   include CalendarTools
   # Clicks the Go to Today button, then instantiates
   # the Calendar class.
@@ -254,24 +253,25 @@ class EventDetail
 end
 
 #
-class AddEditEvent
-  include ToolsMenu
-  include PageObject
-  #
-  def save_event
-    frm.button(:value=>"Save Event").click
-    Calendar.new(@browser)
-  end
+class AddEditEvent < BasePage
+
+  include FCKEditor
+
+  frame_element
+
+  expected_element message_editor
+
+  # Calendar class
+  action(:save_event) { |b| b.frm.button(:value=>"Save Event").click }
+
   #
   def message=(text)
-    frm.frame(:id, "description___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    message_editor.send_keys(text)
   end
 
   # The FCKEditor object. Use this method to set up a "wait_until_present"
   # step, since sometimes it takes a long time for this object to load.
-  def message_editor
-    frm.frame(:id, "description___Frame").td(:id, "xEditingArea").frame(:index=>0)
-  end
+  element(:message_editor) { |b| b.frm.frame(:id, "description___Frame").td(:id, "xEditingArea").frame(:index=>0) }
 
   def frequency
     frm.button(:name=>"eventSubmit_doEditfrequency").click
@@ -324,9 +324,10 @@ end
 
 # The page that appears when the Frequency button is clicked on the Add/Edit
 # Event page.
-class EventFrequency
-  include ToolsMenu
-  include PageObject
+class EventFrequency < BasePage
+
+  frame_element
+
   def save_frequency
     frm.button(:value=>"Save Frequency").click
     AddEditEvent.new(@browser)
@@ -351,9 +352,9 @@ class EventFrequency
   end
 end
 
-class AddEditFields
-  include ToolsMenu
-  include PageObject
+class AddEditFields < BasePage
+
+  frame_element
   # Clicks the Save Field Changes buton and instantiates
   # The Calendar or EventDetail class--unless the Alert Message box appears,
   # in which case it re-instantiates the class.
@@ -389,9 +390,10 @@ class AddEditFields
   end
 end
 
-class ImportStepOne
-  include ToolsMenu
-  include PageObject
+class ImportStepOne < BasePage
+
+  frame_element
+
   def continue
     frm.button(:value=>"Continue").click
     ImportStepTwo.new(@browser)
@@ -405,8 +407,10 @@ class ImportStepOne
   end
 end
 
-class ImportStepTwo
-  include ToolsMenu
+class ImportStepTwo < BasePage
+
+  frame_element
+
   def continue
     frm.button(:value=>"Continue").click
     ImportStepThree.new(@browser)
@@ -421,9 +425,10 @@ class ImportStepTwo
   end
 end
 
-class ImportStepThree
-  include ToolsMenu
-  include PageObject
+class ImportStepThree < BasePage
+
+  frame_element
+
   def import_events
     frm.button(:value=>"Import Events").click
     Calendar.new(@browser)
@@ -461,20 +466,4 @@ class ImportStepThree
     radio_button(:import_events_for_selected_groups, :id=>"groups", :frame=>frame)
 
   end
-end
-
-# TODO: Rethink this!!!
-class EventAttach < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes = {
-        :this=>"EventAttach",
-        :parent=>"AddEditEvent"
-    }
-  end
-
 end

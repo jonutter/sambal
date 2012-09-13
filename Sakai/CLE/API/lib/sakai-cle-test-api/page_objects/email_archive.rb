@@ -1,7 +1,8 @@
 #
-class EmailArchive
-  include ToolsMenu
-  include PageObject
+class EmailArchive < BasePage
+
+  frame_element
+
   def options
     frm.link(:text=>"Options").click
     EmailArchiveOptions.new(@browser)
@@ -18,7 +19,8 @@ class EmailArchive
   end
 end
 
-class EmailArchiveOptions
-  include ToolsMenu
+class EmailArchiveOptions < BasePage
+
+  frame_element
 
 end

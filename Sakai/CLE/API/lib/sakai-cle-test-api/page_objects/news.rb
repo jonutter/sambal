@@ -2,10 +2,7 @@
 # News pages
 #================
 #
-class News
-  include PageObject
-  include ToolsMenu
-  in_frame(:class=>"portletMainIframe") do |frame|
+class News < BasePage
 
-  end
+  frame_element
 end

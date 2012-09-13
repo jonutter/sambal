@@ -1,7 +1,8 @@
 #
-class Gradebook2
-  include PageObject
-  include ToolsMenu
+class Gradebook2 < BasePage
+
+  frame_element
+
   # Returns an array of names of Gradebook items
   def gradebook_items
     items = []

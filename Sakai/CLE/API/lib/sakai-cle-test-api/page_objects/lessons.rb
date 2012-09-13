@@ -39,10 +39,9 @@ end
 # Instructor/Admin and the Student views of this page
 # many methods will error out if used when in the
 # Student view.
-class Lessons
+class Lessons < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include LessonsMenu
 
   # Clicks the Add Module link, then
@@ -99,10 +98,9 @@ class Lessons
 end
 
 # The student user's view of a Lesson Module or Section.
-class ViewModule
+class ViewModule < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   def sections_list
     list = []
@@ -133,10 +131,9 @@ end
 
 # This is the Instructor's preview of the Student's view
 # of the list of Lesson Modules.
-class ViewModuleList
+class ViewModuleList < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   def open_lesson(name)
     frm.link(:text=>name).click
@@ -151,28 +148,25 @@ class ViewModuleList
 end
 
 # The instructor's preview of the student view of the lesson.
-class LessonStudentSide
+class LessonStudentSide < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include LessonsMenu
 
 end
 
 # The instructor's preview of the student's view of the section.
-class SectionStudentSide
+class SectionStudentSide < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include LessonsMenu
 
 end
 
 # The Managing Options page for Lessons
-class LessonManage
+class LessonManage < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include LessonsMenu
 
   def manage_content
@@ -195,10 +189,9 @@ class LessonManage
 end
 
 # The Sorting Modules and Sections page in Lessons
-class LessonManageSort
+class LessonManageSort < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   def view
     frm.link(:text=>"View").click
@@ -217,10 +210,9 @@ class LessonManageSort
 end
 
 # The Import/Export page in Manage Lessons for a Site
-class LessonImportExport
+class LessonImportExport < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include LessonsMenu
 
   # Uploads the file specified - meaning that it enters
@@ -247,10 +239,9 @@ end
 # and Instructor views of the page. Thus,
 # not all methods in the class will work
 # at all times.
-class LessonPreferences
+class LessonPreferences < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   # Clicks the View button
   # then instantiates the Lessons class.
@@ -267,10 +258,9 @@ class LessonPreferences
 end
 
 # This Class encompasses methods for both the Add and the Edit pages for Lesson Modules.
-class AddEditModule
+class AddEditModule < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   # Clicks the Add button for the Lesson Module
   # then instantiates the ConfirmModule class.
@@ -294,10 +284,9 @@ class AddEditModule
 end
 
 # The confirmation page when you are saving a Lesson Module.
-class ConfirmModule
+class ConfirmModule < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   # Clicks the Add Content Sections button and
   # instantiates the AddEditSection class.
@@ -316,10 +305,9 @@ class ConfirmModule
 end
 
 # Page for adding a section to a Lesson.
-class AddEditContentSection
+class AddEditContentSection < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include FCKEditor
 
   # Clicks the Add button on the page
@@ -385,10 +373,9 @@ end
 
 # Confirmation page for Adding (or Editing)
 # a Section to a Module in Lessons.
-class ConfirmSectionAdd
+class ConfirmSectionAdd < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   # Clicks the Add Another Section button
   # then instantiates the AddSection class.
@@ -407,10 +394,9 @@ class ConfirmSectionAdd
 end
 
 #
-class SelectingContent
+class SelectingContent < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   def continue
     frm.link(:id=>"ServerViewForm:addButton").click
@@ -424,10 +410,9 @@ class SelectingContent
 end
 
 #
-class LessonAddAttachment
+class LessonAddAttachment < BasePage
 
-  include ToolsMenu
-  include PageObject
+  frame_element
 
   def continue
     frm.link(:id=>"UploadServerViewForm:addButton").click

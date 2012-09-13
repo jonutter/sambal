@@ -1,6 +1,7 @@
-class Messages
-  include PageObject
-  include ToolsMenu
+class Messages < BasePage
+
+  frame_element
+
   # Clicks the Compose Message button,
   # then instantiates the
   # ComposeMessage class.
@@ -75,9 +76,10 @@ class Messages
   end
 end
 
-class MessagesSentList
-  include PageObject
-  include ToolsMenu
+class MessagesSentList < BasePage
+
+  frame_element
+
   # Clicks the "Messages" breadcrumb link to return
   # to the top level of Messages. Then instantiates
   # the Messages class.
@@ -126,9 +128,10 @@ class MessagesSentList
   end
 end
 
-class MessagesReceivedList
-  include PageObject
-  include ToolsMenu
+class MessagesReceivedList < BasePage
+
+  frame_element
+
   # Returns a string consisting of the content of the
   # page header--or "breadcrumb", as it's called.
   def header
@@ -217,9 +220,10 @@ class MessagesReceivedList
 end
 
 # Page for the Contents of a Custom Folder for Messages
-class FolderList #FIXME
-  include PageObject
-  include ToolsMenu
+class FolderList < BasePage
+
+  frame_element
+
   def compose_message
     frm.link(:text=>"Compose Message").click
     ComposeMessage.new(@browser)
@@ -299,9 +303,10 @@ end
 
 # Page that appears when you want to move a message
 # from one folder to another.
-class MoveMessageTo
-  include PageObject
-  include ToolsMenu
+class MoveMessageTo < BasePage
+
+  frame_element
+
   def move_messages
     frm.button(:value=>"Move Messages").click
     Messages.new(@browser)
@@ -325,9 +330,10 @@ class MoveMessageTo
 end
 
 # The page showing the list of deleted messages.
-class MessagesDeletedList
-  include PageObject
-  include ToolsMenu
+class MessagesDeletedList < BasePage
+
+  frame_element
+
   # Returns a string consisting of the content of the
   # page header--or "breadcrumb", as it's called.
   def header
@@ -395,9 +401,10 @@ class MessagesDeletedList
 end
 
 # The page showing the list of Draft messages.
-class MessagesDraftList
-  include PageObject
-  include ToolsMenu
+class MessagesDraftList < BasePage
+
+  frame_element
+
   def compose_message
     frm.link(:text=>"Compose Message").click
     ComposeMessage.new(@browser)
@@ -420,9 +427,10 @@ class MessagesDraftList
 end
 
 # The Page where you are reading a Message.
-class MessageView
-  include PageObject
-  include ToolsMenu
+class MessageView < BasePage
+
+  frame_element
+
   # Returns the contents of the message body.
   def message_text
     frm.div(:class=>"textPanel").text
@@ -452,9 +460,10 @@ class MessageView
   end
 end
 
-class ComposeMessage
-  include PageObject
-  include ToolsMenu
+class ComposeMessage < BasePage
+
+  frame_element
+
   def send
     frm.button(:value=>"Send ").click
     Messages.new(@browser)
@@ -489,9 +498,10 @@ class ComposeMessage
   end
 end
 
-class ReplyToMessage
-  include PageObject
-  include ToolsMenu
+class ReplyToMessage < BasePage
+
+  frame_element
+
   def send
     frm.button(:value=>"Send ").click
     # Need logic here to ensure the
@@ -532,9 +542,10 @@ class ReplyToMessage
 end
 
 # The page for composing a message
-class ForwardMessage
-  include PageObject
-  include ToolsMenu
+class ForwardMessage < BasePage
+
+  frame_element
+
   def send
     frm.button(:value=>"Send ").click
     MessagesReceivedList.new(@browser) #FIXME!
@@ -571,9 +582,10 @@ end
 # The page that appears when you select to
 # Delete a message that is already inside
 # the Deleted folder.
-class MessageDeleteConfirmation
-  include PageObject
-  include ToolsMenu
+class MessageDeleteConfirmation < BasePage
+
+  frame_element
+
   def alert_message_text
     frm.span(:class=>"alertMessage").text
   end
@@ -589,9 +601,10 @@ class MessageDeleteConfirmation
 end
 
 # The page for creating a new folder for Messages
-class MessagesNewFolder
-  include PageObject
-  include ToolsMenu
+class MessagesNewFolder < BasePage
+
+  frame_element
+
   def add
     frm.button(:value=>"Add").click
     Messages.new(@browser)
@@ -604,9 +617,9 @@ class MessagesNewFolder
 end
 
 # The page for editing a Message Folder's settings
-class MessageFolderSettings
-  include PageObject
-  include ToolsMenu
+class MessageFolderSettings < BasePage
+
+  frame_element
 
   def rename_folder
     frm.button(:value=>"Rename Folder").click
@@ -626,30 +639,13 @@ class MessageFolderSettings
 end
 
 # Page that confirms you want to delete the custom messages folder.
-class FolderDeleteConfirm
-  include PageObject
-  include ToolsMenu
+class FolderDeleteConfirm < BasePage
+
+  frame_element
 
   def delete
     frm.button(:value=>"Delete").click
     Messages.new(@browser)
-  end
-
-end
-
-# The attachment page for Messages
-class MessagesAttachment < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes = {
-        :this => "MessagesAttachment",
-        :parent => "ComposeMessage",
-        :second => "ReplyToMessage"
-    }
   end
 
 end

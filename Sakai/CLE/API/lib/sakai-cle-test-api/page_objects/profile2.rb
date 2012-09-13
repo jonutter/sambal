@@ -37,9 +37,9 @@ module Profile2Nav
 
 end
 #
-class Profile2
-  include PageObject
-  include ToolsMenu
+class Profile2 < BasePage
+
+  frame_element
   include Profile2Nav
   def edit_basic_info
     frm.div(:id=>"mainPanel").span(:text=>"Basic Information").fire_event("onmouseover")
@@ -162,16 +162,16 @@ class Profile2
 end
 
 #
-class Profile2Preferences
-  include PageObject
-  include ToolsMenu
+class Profile2Preferences < BasePage
+
+  frame_element
   include Profile2Nav
 
 end
 
-class Profile2Privacy
-  include PageObject
-  include ToolsMenu
+class Profile2Privacy < BasePage
+
+  frame_element
   include Profile2Nav
   in_frame(:class=>"portletMainIframe") do |frame|
 
@@ -193,9 +193,9 @@ class Profile2Privacy
   end
 end
 
-class Profile2Search
-  include PageObject
-  include ToolsMenu
+class Profile2Search < BasePage
+
+  frame_element
   include Profile2Nav
   def search_by_name_or_email
     frm.button(:value=>"Search by name or email").click
@@ -247,9 +247,9 @@ class Profile2Search
   end
 end
 
-class Profile2Connections
-  include PageObject
-  include ToolsMenu
+class Profile2Connections < BasePage
+
+  frame_element
   include Profile2Nav
   def confirm_request(name)
     frm.div(:class=>"connection", :text=>name).link(:title=>"Confirm connection request").click
@@ -276,9 +276,9 @@ class Profile2Connections
   end
 end
 
-class Profile2View
-  include PageObject
-  include ToolsMenu
+class Profile2View < BasePage
+
+  frame_element
   include Profile2Nav
   #
   def connection

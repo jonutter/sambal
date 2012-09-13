@@ -1,5 +1,7 @@
-class Forums
-  include ToolsMenu
+class Forums < BasePage
+
+  frame_element
+
   # Pass this method a string that matches
   # the title of a Forum on the page, it returns
   # True if the specified forum row has "DRAFT" in it.
@@ -81,8 +83,10 @@ class Forums
   end
 end
 
-class TopicPage
-  include ToolsMenu
+class TopicPage < BasePage
+
+  frame_element
+
   def post_new_thread
     frm.link(:text=>"Post New Thread").click
     ComposeForumMessage.new(@browser)
@@ -108,8 +112,10 @@ class TopicPage
   end
 end
 
-class ViewForumThread
-  include ToolsMenu
+class ViewForumThread < BasePage
+
+  frame_element
+
   def reply_to_thread
     frm.link(:text=>"Reply to Thread").click
     ComposeForumMessage.new(@browser)
@@ -121,18 +127,20 @@ class ViewForumThread
   end
 end
 
-class ComposeForumMessage
-  include ToolsMenu
-  include PageObject
+class ComposeForumMessage < BasePage
+
+  include FCKEditor
+  frame_element
+
+  expected_element editor
+
   def post_message
     frm.button(:text=>"Post Message").click
     # Not sure if we need logic here...
     TopicPage.new(@browser)
   end
 
-  def editor
-    frm.frame(:id, "dfCompose:df_compose_body_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0)
-  end
+  element(:editor) { |b| b.frm.frame(:id, "dfCompose:df_compose_body_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0) }
 
   def message=(text)
     editor.send_keys(text)
@@ -156,17 +164,15 @@ class ComposeForumMessage
     end
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"dfCompose:df_compose_title", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"dfCompose:df_compose_title") }
 
-  end
 end
 
-class ForumTemplateSettings
-  include ToolsMenu
-  def page_title
-    frm.div(:class=>"portletBody").h3(:index=>0).text
-  end
+class ForumTemplateSettings < BasePage
+
+  frame_element
+
+  value(:page_title) { |b| b.frm.div(:class=>"portletBody").h3(:index=>0).text }
 
   def save
     frm.button(:value=>"Save").click
@@ -177,25 +183,13 @@ class ForumTemplateSettings
     frm.button(:value=>"Cancel").click
     Forums.new(@browser)
   end
-=begin
-    def site_role=(role)
-    frm.select(:id=>"revise:role").select(role)
-    0.upto(frm.select(:id=>"revise:role").length - 1) do |x|
-      if frm.div(:class=>"portletBody").table(:class=>"permissionPanel jsfFormTable lines nolines", :index=>x).visible?
-        @@table_index = x
 
-        def permission_level=(value)
-          frm.select(:id=>"revise:perm:#{@@table_index}:level").select(value)
-        end
-
-      end
-    end
-  end
-=end
 end
 
-class OrganizeForums
-  include ToolsMenu
+class OrganizeForums < BasePage
+
+  frame_element
+
   def save
     frm.button(:value=>"Save").click
     Forums.new(@browser)
@@ -212,9 +206,10 @@ class OrganizeForums
   end
 end
 
-class EditForum
-  include ToolsMenu
-  include PageObject
+class EditForum < BasePage
+
+  frame_element
+
   def save
     frm.button(:value=>"Save").click
     Forums.new(@browser)
@@ -245,9 +240,9 @@ class EditForum
   end
 end
 
-class AddEditTopic
-  include ToolsMenu
-  include PageObject
+class AddEditTopic < BasePage
+
+  frame_element
 
   @@table_index=0
 
@@ -295,19 +290,4 @@ class AddEditTopic
     text_area(:short_description, :id=>"revise:topic_shortDescription", :frame=>frame)
 
   end
-end
-
-# TODO: Determine where this should go and a better way to organize the code
-class ForumsAddAttachments < AddFiles
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes = {
-        :this => "ForumsAddAttachments",
-        :parent => "AddEditTopic",
-        :second => "EditForum"
-    }
-  end
-
 end

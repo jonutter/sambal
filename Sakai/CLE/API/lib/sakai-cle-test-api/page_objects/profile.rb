@@ -3,9 +3,10 @@
 #================
 
 #
-class Profile
-  include PageObject
-  include ToolsMenu
+class Profile < BasePage
+
+  frame_element
+
   def edit_my_profile
     frm.link(:text=>"Edit my Profile").click
     EditProfile.new(@browser)
@@ -27,9 +28,10 @@ class Profile
 end
 
 #
-class EditProfile
-  include PageObject
-  include ToolsMenu
+class EditProfile < BasePage
+
+  frame_element
+
   def save
     frm.button(:value=>"Save").click
     Profile.new(@browser)

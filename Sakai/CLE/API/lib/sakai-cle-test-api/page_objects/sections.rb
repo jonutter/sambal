@@ -1,6 +1,5 @@
 
 module SectionsMenu
-  include PageObject
   # Clicks the Add Sections button/link and instantiates
   # the AddEditSections Class.
   def add_sections
@@ -26,9 +25,10 @@ module SectionsMenu
 end
 
 # Topmost page for Sections in Site Management
-class Sections
-  include PageObject
-  include ToolsMenu
+class Sections < BasePage
+
+  frame_element
+
   include SectionsMenu
   # Clicks the Edit link for the specified section.
   # Then instantiates the AddEditSections class.
@@ -112,10 +112,9 @@ end
 # That will be added at some future time.
 # The same goes for adding days with different meeting times. This will hopefully
 # be supported in the future.
-class AddEditSections
+class AddEditSections < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include SectionsMenu
   # Clicks the Add Sections button then instantiates the Sections Class,
   # unless there's an Alert message, in which case it will reinstantiate
@@ -181,9 +180,9 @@ class AddEditSections
 end
 
 #
-class AssignTeachingAssistants
-  include PageObject
-  include ToolsMenu
+class AssignTeachingAssistants < BasePage
+
+  frame_element
   include SectionsMenu
   def assign_TAs
     frm.button(:value=>"Assign TAs").click
@@ -201,9 +200,9 @@ class AssignTeachingAssistants
 end
 
 #
-class AssignStudents
-  include PageObject
-  include ToolsMenu
+class AssignStudents < BasePage
+
+  frame_element
   include SectionsMenu
   def assign_students
     frm.button(:value=>"Assign students").click
@@ -221,9 +220,9 @@ class AssignStudents
 end
 
 # The Options page for Sections.
-class SectionsOptions
-  include PageObject
-  include ToolsMenu
+class SectionsOptions < BasePage
+
+  frame_element
   include SectionsMenu
   def update
     frm().button(:value=>"Update").click

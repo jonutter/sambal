@@ -89,7 +89,7 @@ class TestImportSite < Test::Unit::TestCase
     @section4.create
 
     #@site2 = make SiteObject
-    #@site2.create_and_reuse_site @site1.name
+    @site2.create_and_reuse_site @site1.name
 
   end
   

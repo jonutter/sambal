@@ -35,14 +35,14 @@ class Aliases < BasePage
 
   frame_element
 
-  element(:new_alias) { |b| b.frm.link(:text=>"New Alias") }
+  action(:new_alias) { |b| b.frm.link(:text=>"New Alias").click }
     text_field(:search_field, :id=>"search", :frame=>frame)
-    link(:search_button, :text=>"Search", :frame=>frame)
+  action(:search_button) { |b| b.frm.button(:text=>"Search").click }
   element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
     button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
     button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+    button(:first, :name=>"eventSubmit_doList_first").click }
 
 end
 
@@ -67,7 +67,7 @@ class EditAlias < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:remove_alias, :text=>"Remove Alias", :frame=>frame)
+    action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias", :frame=>frame)
     text_field(:target, :id=>"target", :frame=>frame)
     button(:save, :name=>"eventSubmit_doSave", :frame=>frame)
     button(:cancel, :name=>"eventSubmit_doCancel", :frame=>frame)
@@ -178,8 +178,8 @@ class Realms < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:new_realm, :text=>"New Realm", :frame=>frame)
-    link(:search, :text=>"Search", :frame=>frame)
+    action(:new_realm) { |b| b.frm.link(:text=>"New Realm", :frame=>frame)
+    action(:search) { |b| b.frm.link(:text=>"Search", :frame=>frame)
     select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
     button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
@@ -200,9 +200,9 @@ class AddSections < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:overview, :id=>"addSectionsForm:_idJsp3", :frame=>frame)
-    link(:student_memberships, :id=>"addSectionsForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"addSectionsForm:_idJsp17", :frame=>frame)
+    action(:overview, :id=>"addSectionsForm:_idJsp3", :frame=>frame)
+    action(:student_memberships, :id=>"addSectionsForm:_idJsp12", :frame=>frame)
+    action(:options, :id=>"addSectionsForm:_idJsp17", :frame=>frame)
     select_list(:num_to_add, :id=>"addSectionsForm:numToAdd", :frame=>frame)
     select_list(:category, :id=>"addSectionsForm:category", :frame=>frame)
     button(:add_sections, :id=>"addSectionsForm:_idJsp89", :frame=>frame)
@@ -232,7 +232,7 @@ class AddSections < BasePage
     radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
     radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
     text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    link(:add_days, :id=>"addSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
+    action(:add_days, :id=>"addSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
     
   end
 
@@ -245,9 +245,9 @@ class EditSections < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:overview, :id=>"editSectionsForm:_idJsp3", :frame=>frame)
-    link(:student_memberships, :id=>"editSectionsForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"editSectionsForm:_idJsp17", :frame=>frame)
+    action(:overview, :id=>"editSectionsForm:_idJsp3", :frame=>frame)
+    action(:student_memberships, :id=>"editSectionsForm:_idJsp12", :frame=>frame)
+    action(:options, :id=>"editSectionsForm:_idJsp17", :frame=>frame)
     select_list(:num_to_add, :id=>"editSectionsForm:numToAdd", :frame=>frame)
     select_list(:category, :id=>"editSectionsForm:category", :frame=>frame)
     button(:add_sections, :id=>"editSectionsForm:_idJsp89", :frame=>frame)
@@ -277,7 +277,7 @@ class EditSections < BasePage
     radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
     radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
     text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    link(:add_days, :id=>"editSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
+    action(:add_days, :id=>"editSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
     
   end
 
@@ -293,9 +293,9 @@ class SectionsOptions < BasePage
     checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch", :frame=>frame)
     button(:update, :id=>"optionsForm:_idJsp50", :frame=>frame)
     button(:cancel, :id=>"optionsForm:_idJsp51", :frame=>frame)
-    link(:overview, :id=>"optionsForm:_idJsp3", :frame=>frame)
-    link(:add_sections, :id=>"optionsForm:_idJsp8", :frame=>frame)
-    link(:student_memberships, :id=>"optionsForm:_idJsp12", :frame=>frame)
+    action(:overview, :id=>"optionsForm:_idJsp3", :frame=>frame)
+    action(:add_sections, :id=>"optionsForm:_idJsp8", :frame=>frame)
+    action(:student_memberships, :id=>"optionsForm:_idJsp12", :frame=>frame)
     
   end
 
@@ -308,16 +308,16 @@ class SectionsOverview < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add_sections, :id=>"overviewForm:_idJsp8", :frame=>frame)
-    link(:student_memberships, :id=>"overviewForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"overviewForm:_idJsp17", :frame=>frame)
-    link(:sort_name, :id=>"overviewForm:sectionsTable:_idJsp54", :frame=>frame)
-    link(:sort_ta, :id=>"overviewForm:sectionsTable:_idJsp73", :frame=>frame)
-    link(:sort_day, :id=>"overviewForm:sectionsTable:_idJsp78", :frame=>frame)
-    link(:sort_time, :id=>"overviewForm:sectionsTable:_idJsp83", :frame=>frame)
-    link(:sort_location, :id=>"overviewForm:sectionsTable:_idJsp88", :frame=>frame)
-    link(:sort_current_size, :id=>"overviewForm:sectionsTable:_idJsp93", :frame=>frame)
-    link(:sort_avail, :id=>"overviewForm:sectionsTable:_idJsp97", :frame=>frame)
+    action(:add_sections, :id=>"overviewForm:_idJsp8", :frame=>frame)
+    action(:student_memberships, :id=>"overviewForm:_idJsp12", :frame=>frame)
+    action(:options, :id=>"overviewForm:_idJsp17", :frame=>frame)
+    action(:sort_name, :id=>"overviewForm:sectionsTable:_idJsp54", :frame=>frame)
+    action(:sort_ta, :id=>"overviewForm:sectionsTable:_idJsp73", :frame=>frame)
+    action(:sort_day, :id=>"overviewForm:sectionsTable:_idJsp78", :frame=>frame)
+    action(:sort_time, :id=>"overviewForm:sectionsTable:_idJsp83", :frame=>frame)
+    action(:sort_location, :id=>"overviewForm:sectionsTable:_idJsp88", :frame=>frame)
+    action(:sort_current_size, :id=>"overviewForm:sectionsTable:_idJsp93", :frame=>frame)
+    action(:sort_avail, :id=>"overviewForm:sectionsTable:_idJsp97", :frame=>frame)
     
   end
 
@@ -361,11 +361,11 @@ class Sites < BasePage
   
   in_frame(:index=>0) do |frame|
     text_field(:search_field, :id=>"search", :frame=>frame)
-    link(:search_button, :text=>"Search", :frame=>frame)
+    action(:search_button, :text=>"Search", :frame=>frame)
     text_field(:search_site_id, :id=>"search_site", :frame=>frame)
-    link(:search_site_id_button, :text=>"Site ID", :frame=>frame)
+    action(:search_site_id_button, :text=>"Site ID", :frame=>frame)
     text_field(:search_user_id, :id=>"search_user", :frame=>frame)
-    link(:search_user_id_button, :text=>"User ID", :frame=>frame)
+    action(:search_user_id_button, :text=>"User ID", :frame=>frame)
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
     button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
     button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
@@ -722,7 +722,7 @@ class EditUser < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:remove_user, :text=>"Remove User", :frame=>frame)
+    action(:remove_user, :text=>"Remove User", :frame=>frame)
     text_field(:first_name, :id=>"first-name", :frame=>frame)
     text_field(:last_name, :id=>"last-name", :frame=>frame)
     text_field(:email, :id=>"email", :frame=>frame)
@@ -768,7 +768,7 @@ class Users < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:clear_search, :text=>"Clear Search", :frame=>frame)
+    action(:clear_search, :text=>"Clear Search", :frame=>frame)
     text_field(:search_field, :id=>"search", :frame=>frame)
     select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
@@ -851,14 +851,14 @@ class UserMembership < BasePage
     select_list(:page_size, :id=>"userlistForm:pager_pageSize", :frame=>frame)
     button(:export_csv, :id=>"userlistForm:exportCsv", :frame=>frame)
     button(:export_excel, :id=>"userlistForm:exportXls", :frame=>frame)
-    link(:sort_user_id, :id=>"userlistForm:_idJsp13:_idJsp14", :frame=>frame)
-    link(:sort_internal_user_id, :id=>"userlistForm:_idJsp13:_idJsp18", :frame=>frame)
-    link(:sort_name, :id=>"userlistForm:_idJsp13:_idJsp21", :frame=>frame)
-    link(:sort_email, :id=>"userlistForm:_idJsp13:_idJsp24", :frame=>frame)
-    link(:sort_type, :id=>"userlistForm:_idJsp13:_idJsp28", :frame=>frame)
-    link(:sort_authority, :id=>"userlistForm:_idJsp13:_idJsp31", :frame=>frame)
-    link(:sort_created_on, :id=>"userlistForm:_idJsp13:_idJsp34", :frame=>frame)
-    link(:sort_modified_on, :id=>"userlistForm:_idJsp13:_idJsp37", :frame=>frame)
+    action(:sort_user_id, :id=>"userlistForm:_idJsp13:_idJsp14", :frame=>frame)
+    action(:sort_internal_user_id, :id=>"userlistForm:_idJsp13:_idJsp18", :frame=>frame)
+    action(:sort_name, :id=>"userlistForm:_idJsp13:_idJsp21", :frame=>frame)
+    action(:sort_email, :id=>"userlistForm:_idJsp13:_idJsp24", :frame=>frame)
+    action(:sort_type, :id=>"userlistForm:_idJsp13:_idJsp28", :frame=>frame)
+    action(:sort_authority, :id=>"userlistForm:_idJsp13:_idJsp31", :frame=>frame)
+    action(:sort_created_on, :id=>"userlistForm:_idJsp13:_idJsp34", :frame=>frame)
+    action(:sort_modified_on, :id=>"userlistForm:_idJsp13:_idJsp37", :frame=>frame)
     #(:, =>"", :frame=>frame)
     
   end
