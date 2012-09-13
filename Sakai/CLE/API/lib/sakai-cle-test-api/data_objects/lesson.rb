@@ -104,7 +104,7 @@ class ContentSectionObject
       sleep 3 # Need to wait for page refresh
       case @content_type
         when "Compose content with editor"
-          page.source(content_editor)
+          page.source(page.content_editor)
           page.source=@editor_content
         when "Upload or link to a file"
           page.select_a_file

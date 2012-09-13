@@ -40,10 +40,11 @@ class WebContentObject
       page.continue
     end
     on_page ConfirmSiteToolsEdits do |page|
+      page.finish_button.wait_until_present
       page.finish
     end
-sleep 10
     on_page SiteEditor do |page|
+      page.return_button.wait_until_present
       page.return_to_sites_list
     end
   end

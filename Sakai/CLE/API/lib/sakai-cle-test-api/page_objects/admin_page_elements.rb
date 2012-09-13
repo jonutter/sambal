@@ -31,21 +31,18 @@
 #================
 
 # The Aliases page - "icon-sakai-aliases", found in the Administration Workspace
-class Aliases
+class Aliases < BasePage
 
-  include PageObject
-  include ToolsMenu
-  
-  in_frame(:index=>0) do |frame|
-    link(:new_alias, :text=>"New Alias", :frame=>frame)
+  frame_element
+
+  element(:new_alias) { |b| b.frm.link(:text=>"New Alias") }
     text_field(:search_field, :id=>"search", :frame=>frame)
     link(:search_button, :text=>"Search", :frame=>frame)
-    select_list(:select_page_size, :id=>"selectPageSize", :frame=>frame)
+  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
     button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
     button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
     button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
     button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-  end
 
 end
 

@@ -38,17 +38,12 @@ class SiteObject
   end
 
   def create
-    workspace = my_workspace
-    #Go to Site Setup page
-    if @browser.title=~/Site Setup/
-      on_page SiteSetup do |page|
-        page.new
-      end
-      site_type = SiteType.new @browser
-    else
-      site_setup = workspace.site_setup
-      site_type = site_setup.new
+    my_workspace unless @browser.title=~/My Workspace/
+    site_setup unless @browser.title=~/Site Setup/
+    on_page SiteSetup do |page|
+      page.new
     end
+    site_type = SiteType.new @browser
 
     # Select the Course Site radio button
 
@@ -122,18 +117,12 @@ class SiteObject
   end
 
   def create_and_reuse_site(site_name)
-    workspace = my_workspace
-
-    #Go to Site Setup page
-    if @browser.title=~/Site Setup/
-      on_page SiteSetup do |page|
-        page.new
-      end
-      site_type = SiteType.new @browser
-    else
-      site_setup = workspace.site_setup
-      site_type = site_setup.new
+    my_workspace unless @browser.title=~/My Workspace/
+    site_setup unless @browser.title=~/Site Setup/
+    on_page SiteSetup do |page|
+      page.new
     end
+    site_type = SiteType.new @browser
 
     # Select the Course Site radio button
 

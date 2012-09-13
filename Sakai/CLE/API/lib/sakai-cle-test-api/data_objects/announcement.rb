@@ -17,16 +17,22 @@ class AnnouncementObject
     @title=options[:title]
     @body=options[:body]
     @site=options[:site]
+    raise "You must specify a Site for the announcement" if @site==nil
   end
 
   def create
-    home = my_workspace.open_my_site_by_name @site
-    announcements = home.announcements
-    add = announcements.add
-    add.title=@title
-    add.body=@body
-    list = add.add_announcement
-    @link = list.href(@title)
+    my_workspace.open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    announcements unless @browser.title=~/Announcements$/
+    on_page Announcements do |page|
+      page.add
+    end
+    on_page AddEditAnnouncements do |page|
+      page.title=@title
+      page.body=@body
+      page.add_announcement
+    end
+    on_page Announcements do |page|
+      @link = page.href(@title)
+    end
   end
-
 end

@@ -47,9 +47,10 @@ class EventObject
   end
 
   def create
-    home = my_workspace.open_my_site_by_name @site
-    calendar = home.calendar
-    add_event = calendar.add
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    calendar unless @browser.title=~/Calendar$/
+    cal = Calendar.new @browser
+    add_event = cal.add
     add_event.message=@message
     add_event.title=@title
     add_event.month=@month
@@ -76,9 +77,9 @@ class EventObject
 
     end
 
-    calendar = add_event.save_event
+    cal = add_event.save_event
 
-    @link = calendar.event_href @title
+    @link = cal.event_href @title
 
   end
 

@@ -2,11 +2,11 @@
 # File Upload and Attachment pages.
 #
 # Not every method in this class will be appropriate for every attachment page.
-class AddFiles
+class AddFiles < BasePage
 
-  include PageObject
+  frame_element
 
-  thing(:files_table) { |b| b.frm.table(:class=>/listHier lines/) }
+  element(:files_table) { |b| b.frm.table(:class=>/listHier lines/) }
 
   # Returns an array of the displayed folder names.
   def folder_names
@@ -74,9 +74,7 @@ class AddFiles
   end
 
   # Clicks the Add button next to the URL field.
-  def add
-    frm.button(:value=>"Add").click
-  end
+  action(:add) { |b| b.frm.button(:value=>"Add").click }
 
   # Gets the value of the access level cell for the specified
   # file.
@@ -101,11 +99,13 @@ class AddFiles
     files_table.row(:text=>/#{Regexp.escape(folder_name)}/).link(:text=>"Create HTML Page").click
   end
 
+  element(:upload_file_field) { |b| b.frm.file_field(:id=>"upload") }
+
   # Enters the specified file into the file field name (assuming it's in the
   # data/sakai-cle-test-api folder or a subfolder therein)
   #
   def upload_file(filename, filepath="")
-    frm.file_field(:id=>"upload").set(filepath + filename)
+    upload_file_field.set(filepath + filename)
     if frm.div(:class=>"alertMessage").exist?
       sleep 2
       upload_file(filename)
@@ -118,7 +118,7 @@ class AddFiles
   # Use this method ONLY for instances where there's a file field on the page
   # with an "upload" id.
   def upload_local_file(filename, filepath="")
-    frm.file_field(:id=>"upload").set(filepath + filename)
+    upload_file_field.set(filepath + filename)
     if frm.div(:class=>"alertMessage").exist?
       sleep 2
       upload_local_file(filename)

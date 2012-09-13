@@ -72,23 +72,24 @@ class TestImportSite < Test::Unit::TestCase
     @module = make ModuleObject, :site=>@site1.name
     @module.create
 
-    @section1 = make SectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Compose content with editor",
+    @section1 = make ContentSectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Compose content with editor",
                      :editor_content=>@source_site_string
     @section1.create
 
-    @section2 = make SectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Upload or link to a file",
-                     :file_name=>"flower1.jpg", :file_path=>@file_path+"images/"
-    @section2.create
+    #@section2 = make ContentSectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Upload or link to a file",
+    #                 :file_name=>"flower01.jpg", :file_path=>@file_path+"images/"
+    #@section2.create
 
-    @section3 = make SectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Link to new or existing URL resource on server",
-                     :url=>@htmlpage.url, :url_title=>@htmlpage.name
+    @section3 = make ContentSectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Link to new or existing URL resource on server",
+                    :url=>@htmlpage.url, :url_title=>@htmlpage.name
     @section3.create
 
-    @section4 = make SectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Upload or link to a file in Resources",
-                     @file_name=>@nestedhtmlpage.name
+    @section4 = make ContentSectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Upload or link to a file in Resources",
+                      :file_name=>@nestedhtmlpage.name
+    @section4.create
 
-    @site2 = make SiteObject
-    @site2.create_and_reuse_site @site1.name
+    #@site2 = make SiteObject
+    #@site2.create_and_reuse_site @site1.name
 
   end
   

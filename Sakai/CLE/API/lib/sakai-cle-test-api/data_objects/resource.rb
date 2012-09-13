@@ -37,13 +37,12 @@ class FolderObject
     @name = options[:name]
     @parent_folder = options[:parent_folder]
     @site = options[:site]
+    raise "You must specify a Site for your Folder" if @site==nil
   end
 
   def create
-    unless @browser.title=~/#{@site} : Resources/
-      home = open_my_site_by_name @site
-      home.resources
-    end
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
     on_page Resources do |page|
       page.create_subfolders_in @parent_folder
     end
@@ -67,6 +66,8 @@ class WebLinkObject
 
     defaults = {}
     options = defaults.merge(opts)
+    @site = options[:site]
+    raise "You must specify a Site for your Web Link" if @site==nil
   end
 
   def create
@@ -98,13 +99,13 @@ class HTMLPageObject
     @site = options[:site]
     @folder = options[:folder]
     @html = options[:html]
+    @site = options[:site]
+    raise "You must specify a Site for your HTML Page" if @site==nil
   end
 
   def create
-    unless @browser.title=~/#{@site} : Resources/
-      home = open_my_site_by_name @site
-      home.resources
-    end
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
     on_page Resources do |page|
       page.create_html_page_in @folder
     end
@@ -138,10 +139,13 @@ class TextDocumentObject
 
     defaults = {}
     options = defaults.merge(opts)
+    @site = options[:site]
+    raise "You must specify a Site for your Text Document" if @site==nil
   end
 
   def create
-
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
   end
 
 end
@@ -158,10 +162,13 @@ class CitationListObject
 
     defaults = {}
     options = defaults.merge(opts)
+    @site = options[:site]
+    raise "You must specify a Site for your Citations List" if @site==nil
   end
 
   def create
-
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
   end
 
 end

@@ -476,8 +476,12 @@ class SiteEditor
     SiteEditor.new(@browser)
   end
 
+  def return_button
+    frm.button(:name=>"back")
+  end
+
   def return_to_sites_list
-    frm.button(:name=>"back").click
+    return_button.click
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
@@ -787,11 +791,15 @@ class ConfirmSiteToolsEdits
   
   include PageObject
   include ToolsMenu
-  
+
+  def finish_button
+    frm.button(:value=>"Finish")
+  end
+
   # Clicks the Finish button, then instantiates
   # the SiteSetupEdit class.
   def finish
-    frm.button(:value=>"Finish").click
+    finish_button.click
     SiteEditor.new(@browser)
   end
   
