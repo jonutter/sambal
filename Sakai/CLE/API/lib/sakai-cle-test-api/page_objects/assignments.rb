@@ -4,10 +4,12 @@
 #================
 
 # The page where you create a new assignment
-class AssignmentAdd
-  include PageObject
-  include ToolsMenu
+class AssignmentAdd < BasePage
+
   include FCKEditor
+
+  frame_element
+
   # Clicks the Post button, then
   # instantiates the AssignmentsList page class.
   def post
@@ -71,102 +73,100 @@ class AssignmentAdd
     AssignmentAttachments.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    hidden_field(:assignment_id, :name=>"assignmentId", :frame=>frame)
-    link(:assignment_list, :text=>"Assignment List", :frame=>frame)
-    link(:grade_report, :text=>"Grade Report", :frame=>frame)
-    link(:student_view, :text=>"Student View", :frame=>frame)
-    link(:permissions, :text=>"Permissions", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    text_field(:title, :id=>"new_assignment_title", :frame=>frame)
-    select_list(:open_month, :id=>"new_assignment_openmonth", :frame=>frame)
-    select_list(:open_day, :id=>"new_assignment_openday", :frame=>frame)
-    select_list(:open_year, :id=>"new_assignment_openyear", :frame=>frame)
-    select_list(:open_hour, :id=>"new_assignment_openhour", :frame=>frame)
-    select_list(:open_minute, :id=>"new_assignment_openmin", :frame=>frame)
-    select_list(:open_meridian, :id=>"new_assignment_openampm", :frame=>frame)
-    select_list(:due_month, :id=>"new_assignment_duemonth", :frame=>frame)
-    select_list(:due_day, :id=>"new_assignment_dueday", :frame=>frame)
-    select_list(:due_year, :id=>"new_assignment_dueyear", :frame=>frame)
-    select_list(:due_hour, :id=>"new_assignment_duehour", :frame=>frame)
-    select_list(:due_minute, :id=>"new_assignment_duemin", :frame=>frame)
-    select_list(:due_meridian, :id=>"new_assignment_dueampm", :frame=>frame)
-    select_list(:accept_month, :id=>"new_assignment_closemonth", :frame=>frame)
-    select_list(:accept_day, :id=>"new_assignment_closeday", :frame=>frame)
-    select_list(:accept_year, :id=>"new_assignment_closeyear", :frame=>frame)
-    select_list(:accept_hour, :id=>"new_assignment_closehour", :frame=>frame)
-    select_list(:accept_minute, :id=>"new_assignment_closemin", :frame=>frame)
-    select_list(:accept_meridian, :id=>"new_assignment_closeampm", :frame=>frame)
-    select_list(:student_submissions, :id=>"subType", :frame=>frame)
-    select_list(:grade_scale, :id=>"new_assignment_grade_type", :frame=>frame)
-    checkbox(:allow_resubmission, :id=>"allowResToggle", :frame=>frame)
-    select_list(:num_resubmissions, :id=>"allowResubmitNumber", :frame=>frame)
-    select_list(:resub_until_month, :id=>"allow_resubmit_closeMonth", :frame=>frame)
-    select_list(:resub_until_day, :id=>"allow_resubmit_closeDay", :frame=>frame)
-    select_list(:resub_until_year, :id=>"allow_resubmit_closeYear", :frame=>frame)
-    select_list(:resub_until_hour, :id=>"allow_resubmit_closeHour", :frame=>frame)
-    select_list(:resub_until_minute, :id=>"allow_resubmit_closeMin", :frame=>frame)
-    select_list(:resub_until_meridian, :id=>"allow_resubmit_closeAMPM", :frame=>frame)
-    text_field(:max_points, :name=>"new_assignment_grade_points", :frame=>frame)
-    checkbox(:add_due_date, :id=>"new_assignment_check_add_due_date", :frame=>frame)
-    checkbox(:add_open_announcement, :id=>"new_assignment_check_auto_announce", :frame=>frame)
-    checkbox(:add_honor_pledge, :id=>"new_assignment_check_add_honor_pledge", :frame=>frame)
+  element(:assignment_id) { |b| b.frm.hidden(:name=>"assignmentId") }
+  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
+  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
+  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
+  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
+  action(:options) { |b| b.frm.link(:text=>"Options").click }
+  element(:title) { |b| b.frm.text_field(:id=>"new_assignment_title") }
+  element(:open_month) { |b| b.frm.select(:id=>"new_assignment_openmonth") }
+  element(:open_day) { |b| b.frm.select(:id=>"new_assignment_openday") }
+  element(:open_year) { |b| b.frm.select(:id=>"new_assignment_openyear") }
+  element(:open_hour) { |b| b.frm.select(:id=>"new_assignment_openhour") }
+  element(:open_minute) { |b| b.frm.select(:id=>"new_assignment_openmin") }
+  element(:open_meridian) { |b| b.frm.select(:id=>"new_assignment_openampm") }
+  element(:due_month) { |b| b.frm.select(:id=>"new_assignment_duemonth") }
+  element(:due_day) { |b| b.frm.select(:id=>"new_assignment_dueday") }
+  element(:due_year) { |b| b.frm.select(:id=>"new_assignment_dueyear") }
+  element(:due_hour) { |b| b.frm.select(:id=>"new_assignment_duehour") }
+  element(:due_minute) { |b| b.frm.select(:id=>"new_assignment_duemin") }
+  element(:due_meridian) { |b| b.frm.select(:id=>"new_assignment_dueampm") }
+  element(:accept_month) { |b| b.frm.select(:id=>"new_assignment_closemonth") }
+  element(:accept_day) { |b| b.frm.select(:id=>"new_assignment_closeday") }
+  element(:accept_year) { |b| b.frm.select(:id=>"new_assignment_closeyear") }
+  element(:accept_hour) { |b| b.frm.select(:id=>"new_assignment_closehour") }
+  element(:accept_minute) { |b| b.frm.select(:id=>"new_assignment_closemin") }
+  element(:accept_meridian) { |b| b.frm.select(:id=>"new_assignment_closeampm") }
+  element(:student_submissions) { |b| b.frm.select(:id=>"subType") }
+  element(:grade_scale) { |b| b.frm.select(:id=>"new_assignment_grade_type") }
+  element(:allow_resubmission) { |b| b.frm.checkbox(:id=>"allowResToggle") }
+  element(:num_resubmissions) { |b| b.frm.select(:id=>"allowResubmitNumber") }
+  element(:resub_until_month) { |b| b.frm.select(:id=>"allow_resubmit_closeMonth") }
+  element(:resub_until_day) { |b| b.frm.select(:id=>"allow_resubmit_closeDay") }
+  element(:resub_until_year) { |b| b.frm.select(:id=>"allow_resubmit_closeYear") }
+  element(:resub_until_hour) { |b| b.frm.select(:id=>"allow_resubmit_closeHour") }
+  element(:resub_until_minute) { |b| b.frm.select(:id=>"allow_resubmit_closeMin") }
+  element(:resub_until_meridian) { |b| b.frm.select(:id=>"allow_resubmit_closeAMPM") }
+  element(:max_points) { |b| b.frm.text_field(:name=>"new_assignment_grade_points") }
+  element(:add_due_date) { |b| b.frm.checkbox(:id=>"new_assignment_check_add_due_date") }
+  element(:add_open_announcement) { |b| b.frm.checkbox(:id=>"new_assignment_check_auto_announce") }
+  element(:add_honor_pledge) { |b| b.frm.checkbox(:id=>"new_assignment_check_add_honor_pledge") }
 
-    checkbox(:use_turnitin, :id=>"new_assignment_use_review_service", :frame=>frame)
-    checkbox(:allow_students_to_view_report, :id=>"new_assignment_allow_student_view", :frame=>frame)
+  element(:use_turnitin) { |b| b.frm.checkbox(:id=>"new_assignment_use_review_service") }
+  element(:allow_students_to_view_report) { |b| b.frm.checkbox(:id=>"new_assignment_allow_student_view") }
 
-    radio_button(:do_not_add_to_gradebook, :id=>"no",:name=>"new_assignment_add_to_gradebook", :frame=>frame)
-    radio_button(:add_to_gradebook, :id=>"add", :name=>"new_assignment_add_to_gradebook", :frame=>frame)
-    radio_button(:do_not_send_notifications, :id=>"notsendnotif", :frame=>frame)
-    radio_button(:send_notifications, :id=>"sendnotif", :frame=>frame)
-    radio_button(:send_summary_email, :id=>"sendnotifsummary", :frame=>frame)
-    radio_button(:do_not_send_grade_notif, :id=>"notsendreleasegradenotif", :frame=>frame)
-    radio_button(:send_grade_notif, :id=>"sendreleasegradenotif", :frame=>frame)
-    link(:add_model_answer, :id=>"modelanswer_add", :frame=>frame)
-    link(:add_private_note, :id=>"note_add", :frame=>frame)
-    link(:add_all_purpose_item, :id=>"allPurpose_add", :frame=>frame)
+  element(:do_not_add_to_gradebook) { |b| b.frm.radio(:id=>"no",:name=>"new_assignment_add_to_gradebook") }
+  element(:add_to_gradebook) { |b| b.frm.radio(:name=>"new_assignment_add_to_gradebook") }
+  element(:do_not_send_notifications) { |b| b.frm.radio(:id=>"notsendnotif") }
+  element(:send_notifications) { |b| b.frm.radio(:id=>"sendnotif") }
+  element(:send_summary_email) { |b| b.frm.radio(:id=>"sendnotifsummary") }
+  element(:do_not_send_grade_notif) { |b| b.frm.radio(:id=>"notsendreleasegradenotif") }
+  element(:send_grade_notif) { |b| b.frm.radio(:id=>"sendreleasegradenotif") }
+  action(:add_model_answer) { |b| b.frm.link(:id=>"modelanswer_add").click }
+  action(:add_private_note) { |b| b.frm.link(:id=>"note_add").click }
+  action(:add_all_purpose_item) { |b| b.frm.link(:id=>"allPurpose_add").click }
 
-    text_area(:model_answer, :id=>"modelanswer_text", :frame=>frame)
-    button(:model_answer_attach, :name=>"modelAnswerAttach", :frame=>frame)
-    select_list(:show_model_answer, :id=>"modelanswer_to", :frame=>frame)
-    button(:save_model_answer, :id=>"modelanswer_save", :frame=>frame)
-    button(:cancel_model_answer, :id=>"modelanswer_cancel", :frame=>frame)
-    text_area(:private_note, :id=>"note_text", :frame=>frame)
-    select_list(:share_note_with, :id=>"note_to", :frame=>frame)
-    button(:save_note, :id=>"note_save", :frame=>frame)
-    button(:cancel_note, :id=>"note_cancel", :frame=>frame)
-    text_field(:all_purpose_title, :id=>"allPurpose_title", :frame=>frame)
-    text_area(:all_purpose_text, :id=>"allPurpose_text", :frame=>frame)
-    button(:add_all_purpose_attachments, :id=>"allPurposeAttach", :frame=>frame)
-    radio_button(:show_this_all_purpose_item, :id=>"allPurposeHide1", :frame=>frame)
-    radio_button(:hide_this_all_purpose_item, :id=>"allPurposeHide2", :frame=>frame)
-    checkbox(:show_from, :id=>"allPurposeShowFrom", :frame=>frame)
-    checkbox(:show_until, :id=>"allPurposeShowTo", :frame=>frame)
-    select_list(:show_from_month, :id=>"allPurpose_releaseMonth", :frame=>frame)
-    select_list(:show_from_day, :id=>"allPurpose_releaseDay", :frame=>frame)
-    select_list(:show_from_year, :id=>"allPurpose_releaseYear", :frame=>frame)
-    select_list(:show_from_hour, :id=>"allPurpose_releaseHour", :frame=>frame)
-    select_list(:show_from_minute, :id=>"allPurpose_releaseMin", :frame=>frame)
-    select_list(:show_from_meridian, :id=>"allPurpose_releaseAMPM", :frame=>frame)
-    select_list(:show_until_month, :id=>"allPurpose_retractMonth", :frame=>frame)
-    select_list(:show_until_day, :id=>"allPurpose_retractDay", :frame=>frame)
-    select_list(:show_until_year, :id=>"allPurpose_retractYear", :frame=>frame)
-    select_list(:show_until_hour, :id=>"allPurpose_retractHour", :frame=>frame)
-    select_list(:show_until_minute, :id=>"allPurpose_retractMin", :frame=>frame)
-    select_list(:show_until_meridian, :id=>"allPurpose_retractAMPM", :frame=>frame)
-    link(:expand_guest_list, :id=>"expand_1", :frame=>frame)
-    link(:collapse_guest_list, :id=>"collapse_1", :frame=>frame)
-    link(:expand_TA_list, :id=>"expand_2", :frame=>frame)
-    link(:collapse_TA_list, :id=>"collapse_2", :frame=>frame)
-    link(:expand_instructor_list, :id=>"expand_3", :frame=>frame)
-    link(:collapse_instructor_list, :is=>"collapse_3", :frame=>frame)
+  element(:model_answer) { |b| b.frm.text_field(:id=>"modelanswer_text") }
+  action(:model_answer_attach) { |b| b.frm.button(:name=>"modelAnswerAttach").click }
+  element(:show_model_answer) { |b| b.frm.select(:id=>"modelanswer_to") }
+  action(:save_model_answer) { |b| b.frm.button(:id=>"modelanswer_save").click }
+  action(:cancel_model_answer) { |b| b.frm.button(:id=>"modelanswer_cancel").click }
+  element(:private_note) { |b| b.frm.text_field(:id=>"note_text") }
+  element(:share_note_with) { |b| b.frm.select(:id=>"note_to") }
+  action(:save_note) { |b| b.frm.button(:id=>"note_save").click }
+  action(:cancel_note) { |b| b.frm.button(:id=>"note_cancel").click }
+  element(:all_purpose_title) { |b| b.frm.text_field(:id=>"allPurpose_title") }
+  element(:all_purpose_text) { |b| b.frm.text_field(:id=>"allPurpose_text") }
+  action(:add_all_purpose_attachments) { |b| b.frm.button(:id=>"allPurposeAttach").click }
+  element(:show_this_all_purpose_item) { |b| b.frm.radio(:id=>"allPurposeHide1") }
+  element(:hide_this_all_purpose_item) { |b| b.frm.radio(:id=>"allPurposeHide2") }
+  element(:show_from) { |b| b.frm.checkbox(:id=>"allPurposeShowFrom") }
+  element(:show_until) { |b| b.frm.checkbox(:id=>"allPurposeShowTo") }
+  element(:show_from_month) { |b| b.frm.select(:id=>"allPurpose_releaseMonth") }
+  element(:show_from_day) { |b| b.frm.select(:id=>"allPurpose_releaseDay") }
+  element(:show_from_year) { |b| b.frm.select(:id=>"allPurpose_releaseYear") }
+  element(:show_from_hour) { |b| b.frm.select(:id=>"allPurpose_releaseHour") }
+  element(:show_from_minute) { |b| b.frm.select(:id=>"allPurpose_releaseMin") }
+  element(:show_from_meridian) { |b| b.frm.select(:id=>"allPurpose_releaseAMPM") }
+  element(:show_until_month) { |b| b.frm.select(:id=>"allPurpose_retractMonth") }
+  element(:show_until_day) { |b| b.frm.select(:id=>"allPurpose_retractDay") }
+  element(:show_until_year) { |b| b.frm.select(:id=>"allPurpose_retractYear") }
+  element(:show_until_hour) { |b| b.frm.select(:id=>"allPurpose_retractHour") }
+  element(:show_until_minute) { |b| b.frm.select(:id=>"allPurpose_retractMin") }
+  element(:show_until_meridian) { |b| b.frm.select(:id=>"allPurpose_retractAMPM") }
+  action(:expand_guest_list) { |b| b.frm.link(:id=>"expand_1").click }
+  action(:collapse_guest_list) { |b| b.frm.link(:id=>"collapse_1").click }
+  action(:expand_TA_list) { |b| b.frm.link(:id=>"expand_2").click }
+  action(:collapse_TA_list) { |b| b.frm.link(:id=>"collapse_2").click }
+  action(:expand_instructor_list) { |b| b.frm.link(:id=>"expand_3").click }
+  action(:collapse_instructor_list) { |b| b.frm.link(:is=>"collapse_3").click }
 
-    # Note that only the "All" checkboxes are defined, since other items may or may not be there
-    checkbox(:all_guests, :id=>"allPurpose_Guest", :frame=>frame)
-    checkbox(:all_TAs, :id=>"allPurpose_Teaching Assistant", :frame=>frame)
-    checkbox(:all_instructors, :id=>"allPurpose_Instructor", :frame=>frame)
+  # Note that only the "All" checkboxes are defined, since other items may or may not be there
+  element(:all_guests) { |b| b.frm.checkbox(:id=>"allPurpose_Guest") }
+  element(:all_TAs) { |b| b.frm.checkbox(:id=>"allPurpose_Teaching Assistant") }
+  element(:all_instructors) { |b| b.frm.checkbox(:id=>"allPurpose_Instructor") }
 
-  end
 end
 
 # Page that appears when you first click the Assignments link
@@ -299,26 +299,23 @@ class AssignmentsList
     AssignmentSubmissionList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:grade_report, :text=>"Grade Report", :frame=>frame)
-    link(:student_view, :text=>"Student View", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    link(:sort_assignment_title, :text=>"Assignment title", :frame=>frame)
-    link(:sort_status, :text=>"Status", :frame=>frame)
-    link(:sort_open, :text=>"Open", :frame=>frame)
-    link(:sort_due, :text=>"Due", :frame=>frame)
-    link(:sort_in, :text=>"In", :frame=>frame)
-    link(:sort_new, :text=>"New", :frame=>frame)
-    link(:sort_scale, :text=>"Scale", :frame=>frame)
-    select_list(:view, :id=>"view", :frame=>frame)
-    select_list(:select_page_size, :id=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-    button(:update, :name=>"eventSubmit_doDelete_confirm_assignment", :frame=>frame)
-
-  end
+  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
+  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
+  action(:options) { |b| b.frm.link(:text=>"Options").click }
+  action(:sort_assignment_title) { |b| b.frm.link(:text=>"Assignment title").click }
+  action(:sort_status) { |b| b.frm.link(:text=>"Status").click }
+  action(:sort_open) { |b| b.frm.link(:text=>"Open").click }
+  action(:sort_due) { |b| b.frm.link(:text=>"Due").click }
+  action(:sort_in) { |b| b.frm.link(:text=>"In").click }
+  action(:sort_new) { |b| b.frm.link(:text=>"New").click }
+  action(:sort_scale) { |b| b.frm.link(:text=>"Scale").click }
+  element(:view) { |b| b.frm.select(:id=>"view") }
+  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  action(:update) { |b| b.frm.button(:name=>"eventSubmit_doDelete_confirm_assignment").click }
 
 end
 
@@ -327,6 +324,7 @@ end
 class AssignmentsPermissions
   include PageObject
   include ToolsMenu
+
   # Clicks the Save button, then instantiates
   # the AssignmentsList page class.
   def save
@@ -334,63 +332,61 @@ class AssignmentsPermissions
     AssignmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:evaluators_share_drafts, :id=>"Evaluatorasn.share.drafts", :frame=>frame)
-    checkbox(:organizers_share_drafts, :id=>"Organizerasn.share.drafts", :frame=>frame)
+  element(:evaluators_share_drafts) { |b| b.frm.checkbox(:id=>"Evaluatorasn.share.drafts") }
+  element(:organizers_share_drafts) { |b| b.frm.checkbox(:id=>"Organizerasn.share.drafts") }
 
-    checkbox(:guests_all_groups, :id=>"Guestasn.all.groups", :frame=>frame)
-    checkbox(:guests_create_assignments, :id=>"Guestasn.new", :frame=>frame)
-    checkbox(:guests_submit_to_assigments, :id=>"Guestasn.submit", :frame=>frame)
-    checkbox(:guests_delete_assignments, :id=>"Guestasn.delete", :frame=>frame)
-    checkbox(:guests_read_assignments, :id=>"Guestasn.read", :frame=>frame)
-    checkbox(:guests_revise_assignments, :id=>"Guestasn.revise", :frame=>frame)
-    checkbox(:guests_grade_assignments, :id=>"Guestasn.grade", :frame=>frame)
-    checkbox(:guests_receive_notifications, :id=>"Guestasn.receive.notifications", :frame=>frame)
-    checkbox(:guests_share_drafts, :id=>"Guestasn.share.drafts", :frame=>frame)
-    checkbox(:instructors_all_groups, :id=>"Instructorasn.all.groups", :frame=>frame)
-    checkbox(:instructors_create_assignments, :id=>"Instructorasn.new", :frame=>frame)
-    checkbox(:instructors_submit_to_assigments, :id=>"Instructorasn.submit", :frame=>frame)
-    checkbox(:instructors_delete_assignments, :id=>"Instructorasn.delete", :frame=>frame)
-    checkbox(:instructors_read_assignments, :id=>"Instructorasn.read", :frame=>frame)
-    checkbox(:instructors_revise_assignments, :id=>"Instructorasn.revise", :frame=>frame)
-    checkbox(:instructors_grade_assignments, :id=>"Instructorasn.grade", :frame=>frame)
-    checkbox(:instructors_receive_notifications, :id=>"Instructorasn.receive.notifications", :frame=>frame)
-    checkbox(:instructors_share_drafts, :id=>"Instructorasn.share.drafts", :frame=>frame)
-    checkbox(:students_all_groups, :id=>"Studentasn.all.groups", :frame=>frame)
-    checkbox(:students_create_assignments, :id=>"Studentasn.new", :frame=>frame)
-    checkbox(:students_submit_to_assigments, :id=>"Studentasn.submit", :frame=>frame)
-    checkbox(:students_delete_assignments, :id=>"Studentasn.delete", :frame=>frame)
-    checkbox(:students_read_assignments, :id=>"Studentasn.read", :frame=>frame)
-    checkbox(:students_revise_assignments, :id=>"Studentasn.revise", :frame=>frame)
-    checkbox(:students_grade_assignments, :id=>"Studentasn.grade", :frame=>frame)
-    checkbox(:students_receive_notifications, :id=>"Studentasn.receive.notifications", :frame=>frame)
-    checkbox(:students_share_drafts, :id=>"Studentasn.share.drafts", :frame=>frame)
-    checkbox(:tas_all_groups, :id=>"Teaching Assistantasn.all.groups", :frame=>frame)
-    checkbox(:tas_create_assignments, :id=>"Teaching Assistantasn.new", :frame=>frame)
-    checkbox(:tas_submit_to_assigments, :id=>"Teaching Assistantasn.submit", :frame=>frame)
-    checkbox(:tas_delete_assignments, :id=>"Teaching Assistantasn.delete", :frame=>frame)
-    checkbox(:tas_read_assignments, :id=>"Teaching Assistantasn.read", :frame=>frame)
-    checkbox(:tas_revise_assignments, :id=>"Teaching Assistantasn.revise", :frame=>frame)
-    checkbox(:tas_grade_assignments, :id=>"Teaching Assistantasn.grade", :frame=>frame)
-    checkbox(:tas_receive_notifications, :id=>"Teaching Assistantasn.receive.notifications", :frame=>frame)
-    checkbox(:tas_share_drafts, :id=>"Teaching Assistantasn.share.drafts", :frame=>frame)
-    link(:undo_changes, :text=>"Undo changes", :frame=>frame)
-    button(:cancel, :id=>"eventSubmit_doCancel", :frame=>frame)
-    link(:permission, :text=>"Permission", :frame=>frame)
-    link(:guest, :text=>"Guest", :frame=>frame)
-    link(:instructor, :text=>"Instructor", :frame=>frame)
-    link(:student, :text=>"Student", :frame=>frame)
-    link(:teaching_assistant, :text=>"Teaching Assistant", :frame=>frame)
-    link(:same_permissions_for_all_groups, :text=>"Same site level permissions for all groups inside the site", :frame=>frame)
-    link(:create_new_assignments, :text=>"Create new assignment(s)", :frame=>frame)
-    link(:submit_to_assignments, :text=>"Submit to assignment(s)", :frame=>frame)
-    link(:delete_assignments, :text=>"Delete assignment(s)", :frame=>frame)
-    link(:read_assignments, :text=>"Read Assignment(s)", :frame=>frame)
-    link(:revise_assignments, :text=>"Revise assignment(s)", :frame=>frame)
-    link(:grade_submissions, :text=>"Grade assignment submission(s)", :frame=>frame)
-    link(:receive_email_notifications, :text=>"Receive email notifications", :frame=>frame)
-    link(:view_drafts_from_others, :text=>"Able to view draft assignment(s) created by other users", :frame=>frame)
-  end
+  element(:guests_all_groups) { |b| b.frm.checkbox(:id=>"Guestasn.all.groups") }
+  element(:guests_create_assignments) { |b| b.frm.checkbox(:id=>"Guestasn.new") }
+  element(:guests_submit_to_assigments) { |b| b.frm.checkbox(:id=>"Guestasn.submit") }
+  element(:guests_delete_assignments) { |b| b.frm.checkbox(:id=>"Guestasn.delete") }
+  element(:guests_read_assignments) { |b| b.frm.checkbox(:id=>"Guestasn.read") }
+  element(:guests_revise_assignments) { |b| b.frm.checkbox(:id=>"Guestasn.revise") }
+  element(:guests_grade_assignments) { |b| b.frm.checkbox(:id=>"Guestasn.grade") }
+  element(:guests_receive_notifications) { |b| b.frm.checkbox(:id=>"Guestasn.receive.notifications") }
+  element(:guests_share_drafts) { |b| b.frm.checkbox(:id=>"Guestasn.share.drafts") }
+  element(:instructors_all_groups) { |b| b.frm.checkbox(:id=>"Instructorasn.all.groups") }
+  element(:instructors_create_assignments) { |b| b.frm.checkbox(:id=>"Instructorasn.new") }
+  element(:instructors_submit_to_assigments) { |b| b.frm.checkbox(:id=>"Instructorasn.submit") }
+  element(:instructors_delete_assignments) { |b| b.frm.checkbox(:id=>"Instructorasn.delete") }
+  element(:instructors_read_assignments) { |b| b.frm.checkbox(:id=>"Instructorasn.read") }
+  element(:instructors_revise_assignments) { |b| b.frm.checkbox(:id=>"Instructorasn.revise") }
+  element(:instructors_grade_assignments) { |b| b.frm.checkbox(:id=>"Instructorasn.grade") }
+  element(:instructors_receive_notifications) { |b| b.frm.checkbox(:id=>"Instructorasn.receive.notifications") }
+  element(:instructors_share_drafts) { |b| b.frm.checkbox(:id=>"Instructorasn.share.drafts") }
+  element(:students_all_groups) { |b| b.frm.checkbox(:id=>"Studentasn.all.groups") }
+  element(:students_create_assignments) { |b| b.frm.checkbox(:id=>"Studentasn.new") }
+  element(:students_submit_to_assigments) { |b| b.frm.checkbox(:id=>"Studentasn.submit") }
+  element(:students_delete_assignments) { |b| b.frm.checkbox(:id=>"Studentasn.delete") }
+  element(:students_read_assignments) { |b| b.frm.checkbox(:id=>"Studentasn.read") }
+  element(:students_revise_assignments) { |b| b.frm.checkbox(:id=>"Studentasn.revise") }
+  element(:students_grade_assignments) { |b| b.frm.checkbox(:id=>"Studentasn.grade") }
+  element(:students_receive_notifications) { |b| b.frm.checkbox(:id=>"Studentasn.receive.notifications") }
+  element(:students_share_drafts) { |b| b.frm.checkbox(:id=>"Studentasn.share.drafts") }
+  element(:tas_all_groups) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.all.groups") }
+  element(:tas_create_assignments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.new") }
+  element(:tas_submit_to_assigments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.submit") }
+  element(:tas_delete_assignments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.delete") }
+  element(:tas_read_assignments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.read") }
+  element(:tas_revise_assignments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.revise") }
+  element(:tas_grade_assignments) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.grade") }
+  element(:tas_receive_notifications) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.receive.notifications") }
+  element(:tas_share_drafts) { |b| b.frm.checkbox(:id=>"Teaching Assistantasn.share.drafts") }
+  action(:undo_changes) { |b| b.frm.link(:text=>"Undo changes").click }
+  action(:cancel) { |b| b.frm.button(:id=>"eventSubmit_doCancel").click }
+  action(:permission) { |b| b.frm.link(:text=>"Permission").click }
+  action(:guest) { |b| b.frm.link(:text=>"Guest").click }
+  action(:instructor) { |b| b.frm.link(:text=>"Instructor").click }
+  action(:student) { |b| b.frm.link(:text=>"Student").click }
+  action(:teaching_assistant) { |b| b.frm.link(:text=>"Teaching Assistant").click }
+  action(:same_permissions_for_all_groups) { |b| b.frm.link(:text=>"Same site level permissions for all groups inside the site").click }
+  action(:create_new_assignments) { |b| b.frm.link(:text=>"Create new assignment(s)").click }
+  action(:submit_to_assignments) { |b| b.frm.link(:text=>"Submit to assignment(s)").click }
+  action(:delete_assignments) { |b| b.frm.link(:text=>"Delete assignment(s)").click }
+  action(:read_assignments) { |b| b.frm.link(:text=>"Read Assignment(s)").click }
+  action(:revise_assignments) { |b| b.frm.link(:text=>"Revise assignment(s)").click }
+  action(:grade_submissions) { |b| b.frm.link(:text=>"Grade assignment submission(s)").click }
+  action(:receive_email_notifications) { |b| b.frm.link(:text=>"Receive email notifications").click }
+  action(:view_drafts_from_others) { |b| b.frm.link(:text=>"Able to view draft assignment(s) created by other users").click }
 
 end
 
@@ -443,20 +439,17 @@ class AssignmentsPreview
     AssignmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    hidden_field(:assignment_id, :name=>"assignmentId", :frame=>frame)
-    link(:assignment_list, :text=>"Assignment List", :frame=>frame)
-    link(:permissions, :text=>"Permissions", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    link(:hide_assignment, :href=>/doHide_preview_assignment_assignment/, :frame=>frame)
-    link(:show_assignment, :href=>/doShow_preview_assignment_assignment/, :frame=>frame)
-    link(:hide_student_view, :href=>/doHide_preview_assignment_student_view/, :frame=>frame)
-    link(:show_student_view, :href=>/doShow_preview_assignment_student_view/, :frame=>frame)
-    button(:edit, :name=>"revise", :frame=>frame)
-    button(:save_draft, :name=>"save", :frame=>frame)
-    button(:done, :name=>"done", :frame=>frame)
-
-  end
+  element(:assignment_id) { |b| b.frm.hidden(:name=>"assignmentId") }
+  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
+  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
+  action(:options) { |b| b.frm.link(:text=>"Options").click }
+  action(:hide_assignment) { |b| b.frm.link(:href=>/doHide_preview_assignment_assignment/).click }
+  action(:show_assignment) { |b| b.frm.link(:href=>/doShow_preview_assignment_assignment/).click }
+  action(:hide_student_view) { |b| b.frm.link(:href=>/doHide_preview_assignment_student_view/).click }
+  action(:show_student_view) { |b| b.frm.link(:href=>/doShow_preview_assignment_student_view/).click }
+  action(:edit) { |b| b.frm.button(:name=>"revise").click }
+  action(:save_draft) { |b| b.frm.button(:name=>"save").click }
+  action(:done) { |b| b.frm.button(:name=>"done").click }
 
 end
 
@@ -478,20 +471,18 @@ class AssignmentsReorder
     AssignmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add, :text=>"Add", :frame=>frame)
-    link(:assignment_list, :text=>"Assignment List", :frame=>frame)
-    link(:grade_report, :text=>"Grade Report", :frame=>frame)
-    link(:student_view, :text=>"Student View", :frame=>frame)
-    link(:permissions, :text=>"Permissions", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    link(:sort_by_title, :text=>"Sort by title", :frame=>frame)
-    link(:sort_by_open_date, :text=>"Sort by open date", :frame=>frame)
-    link(:sort_by_due_date, :text=>"Sort by due date", :frame=>frame)
-    link(:undo_last, :text=>"Undo last", :frame=>frame)
-    link(:undo_all, :text=>"Undo all", :frame=>frame)
+  action(:add) { |b| b.frm.link(:text=>"Add").click }
+  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
+  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
+  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
+  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
+  action(:options) { |b| b.frm.link(:text=>"Options").click }
+  action(:sort_by_title) { |b| b.frm.link(:text=>"Sort by title").click }
+  action(:sort_by_open_date) { |b| b.frm.link(:text=>"Sort by open date").click }
+  action(:sort_by_due_date) { |b| b.frm.link(:text=>"Sort by due date").click }
+  action(:undo_last) { |b| b.frm.link(:text=>"Undo last").click }
+  action(:undo_all) { |b| b.frm.link(:text=>"Undo all").click }
 
-  end
 end
 
 # A Student user's page for editing/submitting/view an assignment.
@@ -620,10 +611,8 @@ class AssignmentStudent
     AssignmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add_another_file, :id=>"addMoreAttachmentControls", :frame=>frame)
+  action(:add_another_file) { |b| b.frm.link(:id=>"addMoreAttachmentControls") }
 
-  end
 end
 
 # Page that appears when a Student User clicks to Preview an
@@ -731,42 +720,40 @@ class AssignmentSubmissionList
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(student_name)}/)[4].text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add, :text=>"Add", :frame=>frame)
-    link(:grade_report, :text=>"Grade Report", :frame=>frame)
-    link(:permissions, :text=>"Permissions", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    link(:student_view, :text=>"Student View", :frame=>frame)
-    link(:reorder, :text=>"Reorder", :frame=>frame)
-    text_field(:search_input, :id=>"search", :frame=>frame)
-    button(:find, :value=>"Find", :frame=>frame)
-    button(:clear, :value=>"Clear", :frame=>frame)
-    link(:download_all, :text=>"Download All", :frame=>frame)
-    link(:upload_all, :text=>"Upload All", :frame=>frame)
-    link(:release_grades, :text=>"Release Grades", :frame=>frame)
-    link(:sort_by_student, :text=>"Student", :frame=>frame)
-    link(:sort_by_submitted, :text=>"Submitted", :frame=>frame)
-    link(:sort_by_status, :text=>"Status", :frame=>frame)
-    link(:sort_by_grade, :text=>"Grade", :frame=>frame)
-    link(:sort_by_release, :text=>"Release", :frame=>frame)
-    select_list(:default_grade, :id=>"defaultGrade_1", :frame=>frame)
-    button(:apply, :name=>"apply", :frame=>frame)
-    select_list(:num_resubmissions, :id=>"allowResubmitNumber", :frame=>frame)
-    select_list(:accept_until_month, :id=>"allow_resubmit_closeMonth", :frame=>frame)
-    select_list(:accept_until_day, :id=>"allow_resubmit_closeDay", :frame=>frame)
-    select_list(:accept_until_year, :id=>"allow_resubmit_closeYear", :frame=>frame)
-    select_list(:accept_until_hour, :id=>"allow_resubmit_closeHour", :frame=>frame)
-    select_list(:accept_until_min, :id=>"allow_resubmit_closeMin", :frame=>frame)
-    select_list(:accept_until_meridian, :id=>"allow_resubmit_closeAMPM", :frame=>frame)
-    button(:update, :id=>"eventSubmit_doSave_resubmission_option", :frame=>frame)
-    select_list(:select_page_size, :id=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-    button(:update, :name=>"eventSubmit_doDelete_confirm_assignment", :frame=>frame)
+  action(:add) { |b| b.frm.link(:text=>"Add") }
+  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report") }
+  action(:permissions) { |b| b.frm.link(:text=>"Permissions") }
+  action(:options) { |b| b.frm.link(:text=>"Options") }
+  action(:student_view) { |b| b.frm.link(:text=>"Student View") }
+  action(:reorder) { |b| b.frm.link(:text=>"Reorder").click }
+  element(:search_input) { |b| b.frm.text_field(:id=>"search") }
+  action(:find) { |b| b.frm.button(:value=>"Find").click }
+  action(:clear) { |b| b.frm.button(:value=>"Clear").click }
+  action(:download_all) { |b| b.frm.link(:text=>"Download All").click }
+  action(:upload_all) { |b| b.frm.link(:text=>"Upload All").click }
+  action(:release_grades) { |b| b.frm.link(:text=>"Release Grades").click }
+  action(:sort_by_student) { |b| b.frm.link(:text=>"Student").click }
+  action(:sort_by_submitted) { |b| b.frm.link(:text=>"Submitted").click }
+  action(:sort_by_status) { |b| b.frm.link(:text=>"Status").click }
+  action(:sort_by_grade) { |b| b.frm.link(:text=>"Grade").click }
+  action(:sort_by_release) { |b| b.frm.link(:text=>"Release").click }
+  element(:default_grade) { |b| b.frm.select(:id=>"defaultGrade_1") }
+  action(:apply) { |b| b.frm.button(:name=>"apply").click }
+  element(:num_resubmissions) { |b| b.frm.select(:id=>"allowResubmitNumber") }
+  element(:accept_until_month) { |b| b.frm.select(:id=>"allow_resubmit_closeMonth") }
+  element(:accept_until_day) { |b| b.frm.select(:id=>"allow_resubmit_closeDay") }
+  element(:accept_until_year) { |b| b.frm.select(:id=>"allow_resubmit_closeYear") }
+  element(:accept_until_hour) { |b| b.frm.select(:id=>"allow_resubmit_closeHour") }
+  element(:accept_until_min) { |b| b.frm.select(:id=>"allow_resubmit_closeMin") }
+  element(:accept_until_meridian) { |b| b.frm.select(:id=>"allow_resubmit_closeAMPM") }
+  action(:update) { |b| b.frm.button(:id=>"eventSubmit_doSave_resubmission_option").click }
+  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  action(:update) { |b| b.frm.button(:name=>"eventSubmit_doDelete_confirm_assignment").click }
 
-  end
 end
 
 # The page that shows a student's submitted assignment to an instructor user.
@@ -802,68 +789,46 @@ class AssignmentSubmission
     AssignmentSubmissionList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:select_default_grade, :name=>"grade_submission_grade", :frame=>frame)
-    checkbox(:allow_resubmission, :id=>"allowResToggle", :frame=>frame)
-    select_list(:num_resubmissions, :id=>"allowResubmitNumberSelect", :frame=>frame)
-    select_list(:accept_until_month, :id=>"allow_resubmit_closeMonth", :frame=>frame)
-    select_list(:accept_until_day, :id=>"allow_resubmit_closeDay", :frame=>frame)
-    select_list(:accept_until_year, :id=>"allow_resubmit_closeYear", :frame=>frame)
-    select_list(:accept_until_hour, :id=>"allow_resubmit_closeHour", :frame=>frame)
-    select_list(:accept_until_min, :id=>"allow_resubmit_closeMin", :frame=>frame)
-    select_list(:accept_until_meridian, :id=>"allow_resubmit_closeAMPM", :frame=>frame)
-    button(:save_and_release, :value=>"Save and Release to Student", :frame=>frame)
-    button(:save_and_dont_release, :value=>"Save and Don't Release to Student", :frame=>frame)
-
-  end
+  element(:select_default_grade) { |b| b.frm.select(:name=>"grade_submission_grade") }
+  element(:allow_resubmission) { |b| b.frm.checkbox(:id=>"allowResToggle") }
+  element(:num_resubmissions) { |b| b.frm.select(:id=>"allowResubmitNumberSelect") }
+  element(:accept_until_month) { |b| b.frm.select(:id=>"allow_resubmit_closeMonth") }
+  element(:accept_until_day) { |b| b.frm.select(:id=>"allow_resubmit_closeDay") }
+  element(:accept_until_year) { |b| b.frm.select(:id=>"allow_resubmit_closeYear") }
+  element(:accept_until_hour) { |b| b.frm.select(:id=>"allow_resubmit_closeHour") }
+  element(:accept_until_min) { |b| b.frm.select(:id=>"allow_resubmit_closeMin") }
+  element(:accept_until_meridian) { |b| b.frm.select(:id=>"allow_resubmit_closeAMPM") }
+  action(:save_and_release) { |b| b.frm.button(:value=>"Save and Release to Student").click }
+  action(:save_and_dont_release) { |b| b.frm.button(:value=>"Save and Don't Release to Student").click }
 
 end
 
 # The Grade Report page accessed from the Assignments page
-class GradeReport
-  include PageObject
+class GradeReport < BasePage
+
+  frame_element
 
 end
 
 # The Student View page accessed from the Assignments page
-class StudentView
-  include PageObject
-  include ToolsMenu
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add, :text=>"Add", :frame=>frame)
-    link(:grade_report, :text=>"Grade Report", :frame=>frame)
-    link(:assignment_list, :text=>"Assignment List", :frame=>frame)
-    link(:permissions, :text=>"Permissions", :frame=>frame)
-    link(:options, :text=>"Options", :frame=>frame)
-    link(:sort_assignment_title, :text=>"Assignment title", :frame=>frame)
-    link(:sort_status, :text=>"Status", :frame=>frame)
-    link(:sort_open, :text=>"Open", :frame=>frame)
-    link(:sort_due, :text=>"Due", :frame=>frame)
-    link(:sort_scale, :text=>"Scale", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+class StudentView < BasePage
 
-  end
-end
+  frame_element
 
-# Page for attaching files to Assignments
-class AssignmentAttachments < AddFiles
-  include PageObject
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes = {
-        :this => "AssignmentAttachments",
-        :parent => "AssignmentAdd",
-        :second => "AssignmentStudent",
-        :third => "AssignmentSubmission"
-    }
-  end
+  action(:add) { |b| b.frm.link(:text=>"Add").click }
+  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
+  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
+  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
+  action(:options) { |b| b.frm.link(:text=>"Options").click }
+  action(:sort_assignment_title) { |b| b.frm.link(:text=>"Assignment title").click }
+  action(:sort_status) { |b| b.frm.link(:text=>"Status").click }
+  action(:sort_open) { |b| b.frm.link(:text=>"Open").click }
+  action(:sort_due) { |b| b.frm.link(:text=>"Due").click }
+  action(:sort_scale) { |b| b.frm.link(:text=>"Scale").click }
+  element(:select_page_size) { |b| b.frm.select(:name=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
 end
-
