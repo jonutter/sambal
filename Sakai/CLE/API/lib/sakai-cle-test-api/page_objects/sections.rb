@@ -156,25 +156,25 @@ class AddEditSections < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:category, :id=>/SectionsForm:category/, :frame=>frame)
-    text_field(:name, :id=>/SectionsForm:sectionTable:0:titleInput/, :frame=>frame)
-    checkbox(:monday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:monday/, :frame=>frame)
-    checkbox(:tuesday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:tuesday/, :frame=>frame)
-    checkbox(:wednesday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:wednesday/, :frame=>frame)
-    checkbox(:thursday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:thursday/, :frame=>frame)
-    checkbox(:friday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:friday/, :frame=>frame)
-    checkbox(:saturday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:saturday/, :frame=>frame)
-    checkbox(:sunday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:sunday/, :frame=>frame)
-    text_field(:start_time, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:startTime/, :frame=>frame)
-    text_field(:end_time, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:endTime/, :frame=>frame)
-    text_field(:location, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:location/, :frame=>frame)
-    radio_button(:startAM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:startTimeAm/, :index=>0, :frame=>frame) }
-    radio_button(:startPM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:startTimeAm/, :index=>1, :frame=>frame) }
-    radio_button(:endAM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:endTimeAm/, :index=>0, :frame=>frame) }
-    radio_button(:endPM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:endTimeAm/, :index=>1, :frame=>frame) }
-    radio_button(:unlimited_students) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:limit/, :index=>0, :frame=>frame) }
-    radio_button(:limited_students) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:limit/, :index=>1, :frame=>frame) }
-    text_field(:max_students, :id=>/SectionsForm:sectionTable:0:maxEnrollmentInput/, :frame=>frame)
+    select_list(:category, :id=>/SectionsForm:category/)
+    text_field(:name, :id=>/SectionsForm:sectionTable:0:titleInput/)
+    checkbox(:monday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:monday/)
+    checkbox(:tuesday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:tuesday/)
+    checkbox(:wednesday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:wednesday/)
+    checkbox(:thursday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:thursday/)
+    checkbox(:friday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:friday/)
+    checkbox(:saturday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:saturday/)
+    checkbox(:sunday, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:sunday/)
+    text_field(:start_time, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:startTime/)
+    text_field(:end_time, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:endTime/)
+    text_field(:location, :id=>/SectionsForm:sectionTable:0:meetingsTable:0:location/)
+    radio_button(:startAM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:startTimeAm/, :index=>0) }
+    radio_button(:startPM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:startTimeAm/, :index=>1) }
+    radio_button(:endAM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:endTimeAm/, :index=>0) }
+    radio_button(:endPM) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:meetingsTable:0:endTimeAm/, :index=>1) }
+    radio_button(:unlimited_students) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:limit/, :index=>0) }
+    radio_button(:limited_students) { |page| page.radio_button_element(:name=>/SectionsForm:sectionTable:0:limit/, :index=>1) }
+    text_field(:max_students, :id=>/SectionsForm:sectionTable:0:maxEnrollmentInput/)
   end
 
 end
@@ -190,12 +190,12 @@ class AssignTeachingAssistants < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:available_tas, :id=>"memberForm:availableUsers", :frame=>frame)
-    select_list(:assigned_tas, :id=>"memberForm:selectedUsers", :frame=>frame)
-    button(:assign, :value=>">", :frame=>frame)
-    button(:unassign, :value=>"<", :frame=>frame)
-    button(:assign_all, :value=>">>", :frame=>frame)
-    button(:unassign_all, :value=>"<<", :frame=>frame)
+    select_list(:available_tas, :id=>"memberForm:availableUsers")
+    select_list(:assigned_tas, :id=>"memberForm:selectedUsers")
+    button(:assign, :value=>">")
+    button(:unassign, :value=>"<")
+    button(:assign_all, :value=>">>")
+    button(:unassign_all, :value=>"<<")
   end
 end
 
@@ -210,12 +210,12 @@ class AssignStudents < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:available_students, :id=>"memberForm:availableUsers", :frame=>frame)
-    select_list(:assigned_students, :id=>"memberForm:selectedUsers", :frame=>frame)
-    button(:assign, :value=>">", :frame=>frame)
-    button(:unassign, :value=>"<", :frame=>frame)
-    button(:assign_all, :value=>">>", :frame=>frame)
-    button(:unassign_all, :value=>"<<", :frame=>frame)
+    select_list(:available_students, :id=>"memberForm:availableUsers")
+    select_list(:assigned_students, :id=>"memberForm:selectedUsers")
+    button(:assign, :value=>">")
+    button(:unassign, :value=>"<")
+    button(:assign_all, :value=>">>")
+    button(:unassign_all, :value=>"<<")
   end
 end
 
@@ -230,7 +230,7 @@ class SectionsOptions < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister", :frame=>frame)
-    checkbox(:students_can_switch, :id=>"optionsForm:selfSwitch", :frame=>frame)
+    checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister")
+    checkbox(:students_can_switch, :id=>"optionsForm:selfSwitch")
   end
 end
