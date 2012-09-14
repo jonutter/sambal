@@ -14,8 +14,4 @@ class Gradebook2 < BasePage
     return items
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-
-
-  end
 end

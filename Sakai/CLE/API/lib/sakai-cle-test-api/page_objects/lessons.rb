@@ -202,11 +202,9 @@ class LessonManageSort < BasePage
     end
   end
 
-  in_frame(:index=>1) do |frame|
-    link(:sort_modules, :id=>"SortSectionForm:sortmod", :frame=>frame)
-    link(:sort_sections, :id=>"SortModuleForm:sortsec", :frame=>frame)
+  action(:sort_modules) { |b| b.frm.link(:id=>"SortSectionForm:sortmod").click }
+  action(:sort_sections) { |b| b.frm.link(:id=>"SortModuleForm:sortsec").click }
 
-  end
 end
 
 # The Import/Export page in Manage Lessons for a Site
@@ -250,11 +248,10 @@ class LessonPreferences < BasePage
     Lessons.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    radio_button(:expanded) { |page| page.radio_button_element(:name=>"UserPreferenceForm:_id5", :index=>0, :frame=>frame) }
-    radio_button(:collapsed) { |page| page.radio_button_element(:name=>"UserPreferenceForm:_id5", :index=>1, :frame=>frame) }
-    link(:set, :id=>"UserPreferenceForm:SetButton", :frame=>frame)
-  end
+  element(:expanded) { |b| b.radio(:name=>"UserPreferenceForm:_id5", :index=>0) }
+  element(:collapsed) { |b| b.radio(:name=>"UserPreferenceForm:_id5", :index=>1) }
+  action(:set) { |b| b.frm.link(:id=>"UserPreferenceForm:SetButton").click }
+  
 end
 
 # This Class encompasses methods for both the Add and the Edit pages for Lesson Modules.
@@ -274,13 +271,12 @@ class AddEditModule < BasePage
     AddEditContentSection.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:title, :id=>/ModuleForm:title/, :frame=>frame)
-    text_area(:description, :id=>/ModuleForm:description/, :frame=>frame)
-    text_area(:keywords, :id=>/ModuleForm:keywords/, :frame=>frame)
-    text_field(:start_date, :id=>/ModuleForm:startDate/, :frame=>frame)
-    text_field(:end_date, :id=>/ModuleForm:endDate/, :frame=>frame)
-  end
+  element(:title) { |b| b.text_field(:id=>/ModuleForm:title/) }
+  element(:description) { |b| b.text_field(:id=>/ModuleForm:description/) }
+  element(:keywords) { |b| b.text_field(:id=>/ModuleForm:keywords/) }
+  element(:start_date) { |b| b.text_field(:id=>/ModuleForm:startDate/) }
+  element(:end_date) { |b| b.text_field( :id=>/ModuleForm:endDate/) }
+
 end
 
 # The confirmation page when you are saving a Lesson Module.
@@ -320,7 +316,7 @@ class AddEditContentSection < BasePage
   # Pointer to the Edit Text box of the FCKEditor
   # on the page.
   def content_editor
-    frm.frame(:id, "AddSectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame")
+    frm.frame(:id, /SectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame/)
   end
 
   def add_content=(text)
@@ -331,8 +327,8 @@ class AddEditContentSection < BasePage
     content_editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
   end
 
-  def clear_content
-    frm.frame(:id, "AddSectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame").div(:title=>"Select All").fire_event("onclick")
+  def clear_content  # FIXME - This is an extra method now that we have the FCKEditor module
+    content_editor.div(:title=>"Select All").fire_event("onclick")
     content_editor.send_keys :backspace
   end
 
@@ -357,18 +353,17 @@ class AddEditContentSection < BasePage
     frm.link(:id=>"AddSectionForm:ContentUploadView:serverViewButton").click
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:title, :id=>"AddSectionForm:title", :frame=>frame)
-    text_field(:instructions, :id=>"AddSectionForm:instr", :frame=>frame)
-    select_list(:content_type, :id=>"AddSectionForm:contentType", :frame=>frame)
-    select_list(:copyright_status, :id=>/SectionForm:ResourcePropertiesPanel:licenseCodes/, :frame=>frame)
-    checkbox(:auditory, :id=>"AddSectionForm:contentaudio", :frame=>frame)
-    checkbox(:textual, :id=>"AddSectionForm:contentext", :frame=>frame)
-    checkbox(:visual, :id=>"AddSectionForm:contentaudio", :frame=>frame)
-    text_field(:url_title, :id=>"AddSectionForm:ResourcePropertiesPanel:res_name", :frame=>frame)
-    text_field(:url_description, :id=>"AddSectionForm:ResourcePropertiesPanel:res_desc", :frame=>frame)
-    text_field(:file_description, :id=>"AddSectionForm:ResourcePropertiesPanel:res_desc", :frame=>frame)
-  end
+  element(:title) { |b| b.text_field(:id=>/SectionForm:title/) }
+  element(:instructions) { |b| b.text_field(:id=>/SectionForm:instr/) }
+  element(:content_type) { |b| b.select(:id=>/SectionForm:contentType/) }
+  element(:copyright_status) { |b| b.select(:id=>/SectionForm:ResourcePropertiesPanel:licenseCodes/) }
+  element(:auditory) { |b| b.checkbox(:id=>/SectionForm:contentaudio/) }
+  element(:textual) { |b| b.checkbox(:id=>/SectionForm:contentext/) }
+  element(:visual, ) { |b| b.checkbox(:id=>/SectionForm:contentaudio/) }
+  element(:url_title) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_name/) }
+  element(:url_description) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
+  element(:file_description) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
+
 end
 
 # Confirmation page for Adding (or Editing)
@@ -403,10 +398,9 @@ class SelectingContent < BasePage
     AddEditContentSection.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:new_url, :id=>"ServerViewForm:link", :frame=>frame)
-    text_field(:url_title, :id=>"ServerViewForm:link_title", :frame=>frame)
-  end
+  element(:new_url) { |b| b.text_field(:id=>"ServerViewForm:link") }
+  element(:url_title) { |b| b.text_field(:id=>"ServerViewForm:link_title") }
+
 end
 
 #
@@ -414,9 +408,7 @@ class LessonAddAttachment < BasePage
 
   frame_element
 
-  def continue
-    frm.link(:id=>"UploadServerViewForm:addButton").click
-  end
+  action(:continue) { |b| b.frm.link(:id=>"UploadServerViewForm:addButton").click }
 
   def upload_local_file(filename, filepath="")
     frm.file_field(:id=>"file1").set(filepath + filename)

@@ -233,11 +233,9 @@ class EditForum < BasePage
     ForumsAddAttachments.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"revise:forum_title", :frame=>frame)
-    text_area(:short_description, :id=>"revise:forum_shortDescription", :frame=>frame)
+  element(:title){ |b| b.frm.text_field(:id=>"revise:forum_title") }
+  element(:short_description){ |b| b.frm.text_field(:id=>"revise:forum_shortDescription") }
 
-  end
 end
 
 class AddEditTopic < BasePage
@@ -285,9 +283,7 @@ class AddEditTopic < BasePage
     end
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"revise:topic_title", :frame=>frame)
-    text_area(:short_description, :id=>"revise:topic_shortDescription", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"revise:topic_title") }
+  element(:short_description) { |b| b.frm.text_field(:id=>"revise:topic_shortDescription") }
 
-  end
 end
