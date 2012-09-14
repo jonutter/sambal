@@ -546,7 +546,6 @@ class DiscussionsMyProfile < BasePage
   def avatar(filename, filepath="")
     frm.file_field(:name=>"avatar").set(filepath + filename)
   end
-  
 
   element(:icq_uin) { |b| b.frm.text_field(:name=>"icq") }
   element(:aim) { |b| b.frm.text_field(:name=>"aim") }
