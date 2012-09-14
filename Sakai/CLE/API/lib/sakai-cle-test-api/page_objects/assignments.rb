@@ -151,9 +151,9 @@ class AssignmentAdd < BasePage
 end
 
 # Page that appears when you first click the Assignments link
-class AssignmentsList
-  include PageObject
-  include ToolsMenu
+class AssignmentsList < BasePage
+
+  frame_element
 
   # Returns an array of the displayed assignment titles.
   # Use for verification of test steps.
@@ -302,9 +302,9 @@ end
 
 
 # The Permissions Page in Assignments
-class AssignmentsPermissions
-  include PageObject
-  include ToolsMenu
+class AssignmentsPermissions < BasePage
+
+  frame_element
 
   # Clicks the Save button, next is
   # the AssignmentsList page class.
@@ -369,9 +369,10 @@ class AssignmentsPermissions
 end
 
 # Page that appears when you click to preview an Assignment
-class AssignmentsPreview
-  include PageObject
-  include ToolsMenu
+class AssignmentsPreview < BasePage
+
+  frame_element
+
   # Returns the text content of the page header
   def header
     frm.div(:class=>"portletBody").h3.text
@@ -432,9 +433,10 @@ class AssignmentsPreview
 end
 
 # The reorder page for Assignments
-class AssignmentsReorder
-  include PageObject
-  include ToolsMenu
+class AssignmentsReorder < BasePage
+
+  frame_element
+
   # Clicks the Save button, then instantiates
   # the AssignmentsList page class.
   def save
@@ -464,9 +466,10 @@ class AssignmentsReorder
 end
 
 # A Student user's page for editing/submitting/view an assignment.
-class AssignmentStudent
-  include PageObject
-  include ToolsMenu
+class AssignmentStudent < Base Page
+
+  frame_element
+
   # Returns the text content of the page header
   def header
     frm.div(:class=>"portletBody").h3.text
@@ -595,9 +598,10 @@ end
 
 # Page that appears when a Student User clicks to Preview an
 # assignment that is in progress.
-class AssignmentStudentPreview
-  include PageObject
-  include ToolsMenu
+class AssignmentStudentPreview < BasePage
+
+  frame_element
+
   # Clicks the Submit button, then
   # instantiates the SubmissionConfirmation
   # page class.
@@ -631,9 +635,10 @@ end
 
 # The page that appears when a Student user has fully submitted an assignment
 # or saves it as a draft.
-class SubmissionConfirmation
-  include PageObject
-  include ToolsMenu
+class SubmissionConfirmation < BasePage
+
+  frame_element
+
   # Returns the text of the success message on the page.
   def confirmation_text
     frm.div(:class=>"portletBody").div(:class=>"success").text
@@ -656,9 +661,10 @@ end
 # The page that appears when you click on an assignment's "Grade" or "View Submission" link
 # as an instructor. Shows the list of students and their
 # assignment submission status.
-class AssignmentSubmissionList
-  include PageObject
-  include ToolsMenu
+class AssignmentSubmissionList < BasePage
+
+  frame_element
+
   # Clicks the Assignment List link and instantiates the AssignmentsList Class.
   def assignment_list
     frm.link(:text=>"Assignment List").click
@@ -735,23 +741,29 @@ class AssignmentSubmissionList
 end
 
 # The page that shows a student's submitted assignment to an instructor user.
-class AssignmentSubmission
-  include PageObject
-  include ToolsMenu
+class AssignmentSubmission < BasePage
+
+  include FCKEditor
+  frame_element
+
+  expected_element :editor
+
+  element(:editor) { |b| b.frm.frame(:id, "grade_submission_feedback_text___Frame") }
+
   # Enters the specified text string in the FCKEditor box for the assignment text.
   def assignment_text=(text)
-    frm.frame(:id, "grade_submission_feedback_text___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
   # Removes all the contents of the FCKEditor Assignment Text box.
   def remove_assignment_text
-    frm.frame(:id, "grade_submission_feedback_text___Frame").div(:title=>"Select All").fire_event("onclick")
-    frm.frame(:id, "grade_submission_feedback_text___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys :backspace
+    editor.div(:title=>"Select All").fire_event("onclick")
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys :backspace
   end
 
   # Enters the specified string into the Instructor Comments FCKEditor box.
   def instructor_comments=(text)
-    frm.frame(:id, "grade_submission_feedback_comment___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
   # Clicks the Add Attachments button, then instantiates the AssignmentAttachments Class.
