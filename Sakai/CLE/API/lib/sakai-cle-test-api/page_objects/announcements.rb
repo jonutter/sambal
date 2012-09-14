@@ -102,7 +102,7 @@ class AddEditAnnouncements < BasePage
   include FCKEditor
   frame_element
 
-  expected_element editor
+  expected_element :editor
 
   element(:editor) { |b| b.frm.frame(:id, "body___Frame") }
 

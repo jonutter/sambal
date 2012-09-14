@@ -132,7 +132,7 @@ class ComposeForumMessage < BasePage
   include FCKEditor
   frame_element
 
-  expected_element editor
+  expected_element :editor
 
   def post_message
     frm.button(:text=>"Post Message").click

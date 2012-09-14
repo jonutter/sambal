@@ -1,23 +1,13 @@
 module CalendarTools
 
-  #
-  def add_event
-    frm.link(:text=>"Add").click
-    frm.frame(:id, "description___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present
-    AddEditEvent.new(@browser)
-  end
+  # AddEditEvent
+  action(:add_event) { |b| b.frm.link(:text=>"Add").click }
 
-  #
-  def fields
-    frm.link(:text=>"Fields").click
-    AddEditFields.new(@browser)
-  end
+  # AddEditFields
+  action(:fields) { |b| b.frm.link(:text=>"Fields").click }
 
-  #
-  def import
-    frm.link(:text=>"Import").click
-    ImportStepOne.new(@browser)
-  end
+  # ImportStepOne
+  action(:import) { |b| b.frm.link(:text=>"Import").click }
 
 end
 
@@ -259,7 +249,7 @@ class AddEditEvent < BasePage
 
   frame_element
 
-  expected_element message_editor
+  expected_element :message_editor
 
   # Calendar class
   action(:save_event) { |b| b.frm.button(:value=>"Save Event").click }
@@ -338,7 +328,6 @@ class EventFrequency < BasePage
     AddEditEvent.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
     select_list(:event_frequency, :id=>"frequencySelect", :frame=>frame)
     select_list(:interval, :id=>"interval", :frame=>frame)
     select_list(:ends_after, :name=>"count", :frame=>frame)
@@ -349,7 +338,6 @@ class EventFrequency < BasePage
     radio_button(:on, :id=>"till", :frame=>frame)
     radio_button(:never, :id=>"never", :frame=>frame)
 
-  end
 end
 
 class AddEditFields < BasePage
