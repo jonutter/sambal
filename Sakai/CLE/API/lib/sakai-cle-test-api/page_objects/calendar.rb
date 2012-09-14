@@ -292,24 +292,22 @@ class AddEditEvent < BasePage
     frm.text_field(:name=>field).set(text)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"activitytitle", :frame=>frame)
-    select_list(:month, :id=>"month", :frame=>frame)
-    select_list(:day, :id=>"day", :frame=>frame)
-    select_list(:year, :id=>"yearSelect", :frame=>frame)
-    select_list(:start_hour, :id=>"startHour", :frame=>frame)
-    select_list(:start_minute, :id=>"startMinute", :frame=>frame)
-    select_list(:start_meridian, :id=>"startAmpm", :frame=>frame)
-    select_list(:hours, :id=>"duHour", :frame=>frame)
-    select_list(:minutes, :id=>"duMinute", :frame=>frame)
-    select_list(:end_hour, :id=>"endHour", :frame=>frame)
-    select_list(:end_minute, :id=>"endMinute", :frame=>frame)
-    select_list(:end_meridian, :id=>"endAmpm", :frame=>frame)
-    radio_button(:display_to_site, :id=>"site", :frame=>frame)
-    select_list(:event_type, :id=>"eventType", :frame=>frame)
-    text_area(:location, :name=>"location", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"activitytitle") }
+  element(:month) { |b| b.frm.select(:id=>"month") }
+  element(:day) { |b| b.frm.select(:id=>"day") }
+  element(:year) { |b| b.frm.select(:id=>"yearSelect") }
+  element(:start_hour) { |b| b.frm.select(:id=>"startHour") }
+  element(:start_minute) { |b| b.frm.select(:id=>"startMinute") }
+  element(:start_meridian) { |b| b.frm.select(:id=>"startAmpm") }
+  element(:hours) { |b| b.frm.select(:id=>"duHour") }
+  element(:minutes) { |b| b.frm.select(:id=>"duMinute") }
+  element(:end_hour) { |b| b.frm.select(:id=>"endHour") }
+  element(:end_minute) { |b| b.frm.select(:id=>"endMinute") }
+  element(:end_meridian) { |b| b.frm.select(:id=>"endAmpm") }
+  element(:display_to_site) { |b| b.frm.radio(:id=>"site") }
+  element(:event_type) { |b| b.frm.select(:id=>"eventType") }
+  element(:location) { |b| b.frm.text_field(:name=>"location") }
 
-  end
 end
 
 # The page that appears when the Frequency button is clicked on the Add/Edit
@@ -328,15 +326,15 @@ class EventFrequency < BasePage
     AddEditEvent.new(@browser)
   end
 
-    select_list(:event_frequency, :id=>"frequencySelect", :frame=>frame)
-    select_list(:interval, :id=>"interval", :frame=>frame)
-    select_list(:ends_after, :name=>"count", :frame=>frame)
-    select_list(:ends_month, :id=>"endMonth", :frame=>frame)
-    select_list(:ends_day, :id=>"endDay", :frame=>frame)
-    select_list(:ends_year, :id=>"endYear", :frame=>frame)
-    radio_button(:after, :id=>"count", :frame=>frame)
-    radio_button(:on, :id=>"till", :frame=>frame)
-    radio_button(:never, :id=>"never", :frame=>frame)
+  element(:event_frequency) { |b| b.frm.select(:id=>"frequencySelect") }
+  element(:interval) { |b| b.frm.select(:id=>"interval") }
+  element(:ends_after) { |b| b.frm.select(:name=>"count") }
+  element(:ends_month) { |b| b.frm.select(:id=>"endMonth") }
+  element(:ends_day) { |b| b.frm.select(:id=>"endDay") }
+  element(:ends_year) { |b| b.frm.select(:id=>"endYear") }
+  element(:after) { |b| b.frm.radio(:id=>"count") }
+  element(:on) { |b| b.frm.radio(:id=>"till") }
+  element(:never) { |b| b.frm.radio(:id=>"never") }
 
 end
 
@@ -372,10 +370,8 @@ class AddEditFields < BasePage
     frm.table(:class=>/listHier lines/).row(:text=>/#{Regexp.escape(field_name)}/).checkbox.set
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:field_name, :id=>"textfield", :frame=>frame)
+  element(:field_name) { |b| b.frm.text_field(:id=>"textfield") }
 
-  end
 end
 
 class ImportStepOne < BasePage
@@ -387,22 +383,18 @@ class ImportStepOne < BasePage
     ImportStepTwo.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    radio_button(:microsoft_outlook, :id=>"importType_Outlook", :frame=>frame)
-    radio_button(:meeting_maker, :id=>"importType_MeetingMaker", :frame=>frame)
-    radio_button(:generic_calendar_import, :id=>"importType_Generic", :frame=>frame)
+  element(:microsoft_outlook) { |b| b.frm.radio(:id=>"importType_Outlook") }
+  element(:meeting_maker) { |b| b.frm.radio(:id=>"importType_MeetingMaker") }
+  element(:generic_calendar_import) { |b| b.frm.radio(:id=>"importType_Generic") }
 
-  end
 end
 
 class ImportStepTwo < BasePage
 
   frame_element
 
-  def continue
-    frm.button(:value=>"Continue").click
-    ImportStepThree.new(@browser)
-  end
+  # Goes to ImportStepThree
+  action(:continue) { |b| b.frm.button(:value=>"Continue").click }
 
   # Enters the specified filename in the file field.
   #
@@ -411,16 +403,17 @@ class ImportStepTwo < BasePage
   def import_file(filename, filepath="")
     frm.file_field(:name=>"importFile").set(filepath + filename)
   end
+
 end
 
 class ImportStepThree < BasePage
 
   frame_element
 
-  def import_events
-    frm.button(:value=>"Import Events").click
-    Calendar.new(@browser)
-  end
+  expected_element :import_events_for_site
+
+  # Goes to Calendar
+  action(:import_events) { |b| b.frm.button(:value=>"Import Events").click }
 
   # Returns an array containing the list of Activity names on the page.
   def events
@@ -449,9 +442,7 @@ class ImportStepThree < BasePage
     frm.table(:class=>/listHier lines/).row(:text=>/#{Regexp.escape(event_name)}/)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    radio_button(:import_events_for_site, :id=>"site", :frame=>frame)
-    radio_button(:import_events_for_selected_groups, :id=>"groups", :frame=>frame)
+  element(:import_events_for_site) { |b| b.frm.radio(:id=>"site") }
+  element(:import_events_for_selected_groups) { |b| b.frm.radio(:id=>"groups") }
 
-  end
 end
