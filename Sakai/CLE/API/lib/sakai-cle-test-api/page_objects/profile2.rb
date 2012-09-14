@@ -134,31 +134,30 @@ class Profile2 < BasePage
     end
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:say_something, :id=>"id1", :frame=>frame)
-    button(:say_it, :value=>"Say it", :frame=>frame)
+  element(:say_something) { |b| b.frm.text_field(:id=>"id1") }
+  action(:say_it) { |b| b.frm.button(:value=>"Say it").click }
     # Basic Information
-    text_field(:nickname, :name=>"nicknameContainer:nickname", :frame=>frame)
+  element(:nickname) { |b| b.frm.text_field(:name=>"nicknameContainer:nickname") }
     # Contact Information
-    text_field(:email, :name=>"emailContainer:email", :frame=>frame)
-    text_field(:home_page, :name=>"homepageContainer:homepage", :frame=>frame)
-    text_field(:work_phone, :name=>"workphoneContainer:workphone", :frame=>frame)
-    text_field(:home_phone, :name=>"homephoneContainer:homephone", :frame=>frame)
-    text_field(:mobile_phone, :name=>"mobilephoneContainer:mobilephone", :frame=>frame)
-    text_field(:facsimile, :name=>"facsimileContainer:facsimile", :frame=>frame)
-    # Someday Staff Info fields should go here...
+  element(:email) { |b| b.frm.text_field(:name=>"emailContainer:email") }
+  element(:home_page) { |b| b.frm.text_field(:name=>"homepageContainer:homepage") }
+  element(:work_phone) { |b| b.frm.text_field(:name=>"workphoneContainer:workphone") }
+  element(:home_phone) { |b| b.frm.text_field(:name=>"homephoneContainer:homephone") }
+  element(:mobile_phone) { |b| b.frm.text_field(:name=>"mobilephoneContainer:mobilephone") }
+  element(:facsimile) { |b| b.frm.text_field(:name=>"facsimileContainer:facsimile") }
+  # Someday Staff Info fields should go here...
 
     # Student Information
-    text_field(:degree_course, :name=>"courseContainer:course", :frame=>frame)
-    text_field(:subjects, :name=>"subjectsContainer:subjects", :frame=>frame)
+  element(:degree_course) { |b| b.frm.text_field(:name=>"courseContainer:course") }
+  element(:subjects) { |b| b.frm.text_field(:name=>"subjectsContainer:subjects") }
     # Social Networking
 
     # Personal Information
-    text_area(:favorite_books, :name=>"booksContainer:favouriteBooks", :frame=>frame)
-    text_area(:favorite_tv_shows, :name=>"tvContainer:favouriteTvShows", :frame=>frame)
-    text_area(:favorite_movies, :name=>"moviesContainer:favouriteMovies", :frame=>frame)
-    text_area(:favorite_quotes, :name=>"quotesContainer:favouriteQuotes", :frame=>frame)
-  end
+  element(:favorite_books) { |b| b.frm.text_field(:name=>"booksContainer:favouriteBooks") }
+  element(:favorite_tv_shows) { |b| b.frm.text_field(:name=>"tvContainer:favouriteTvShows") }
+  element(:favorite_movies) { |b| b.frm.text_field(:name=>"moviesContainer:favouriteMovies") }
+  element(:favorite_quotes) { |b| b.frm.text_field(:name=>"quotesContainer:favouriteQuotes") }
+
 end
 
 #
@@ -173,24 +172,22 @@ class Profile2Privacy < BasePage
 
   frame_element
   include Profile2Nav
-  in_frame(:class=>"portletMainIframe") do |frame|
 
-    select_list(:profile_image, :name=>"profileImageContainer:profileImage", :frame=>frame)
-    select_list(:basic_info, :name=>"basicInfoContainer:basicInfo", :frame=>frame)
-    select_list(:contact_info, :name=>"contactInfoContainer:contactInfo", :frame=>frame)
-    select_list(:staff_info, :name=>"staffInfoContainer:staffInfo", :frame=>frame)
-    select_list(:student_info, :name=>"studentInfoContainer:studentInfo", :frame=>frame)
-    select_list(:social_info, :name=>"socialNetworkingInfoContainer:socialNetworkingInfo", :frame=>frame)
-    select_list(:personal_info, :name=>"personalInfoContainer:personalInfo", :frame=>frame)
-    select_list(:view_connections, :name=>"myFriendsContainer:myFriends", :frame=>frame)
-    select_list(:see_status, :name=>"myStatusContainer:myStatus", :frame=>frame)
-    select_list(:view_pictures, :name=>"myPicturesContainer:myPictures", :frame=>frame)
-    select_list(:send_messages, :name=>"messagesContainer:messages", :frame=>frame)
-    select_list(:see_kudos_rating, :name=>"myKudosContainer:myKudos", :frame=>frame)
-    checkbox(:show_birth_year, :name=>"birthYearContainer:birthYear", :frame=>frame)
-    button(:save_settings, :value=>"Save settings", :frame=>frame)
+  element(:profile_image) { |b| b.frm.select(:name=>"profileImageContainer:profileImage") }
+  element(:basic_info) { |b| b.frm.select(:name=>"basicInfoContainer:basicInfo") }
+  element(:contact_info) { |b| b.frm.select(:name=>"contactInfoContainer:contactInfo") }
+  element(:staff_info) { |b| b.frm.select(:name=>"staffInfoContainer:staffInfo") }
+  element(:student_info) { |b| b.frm.select(:name=>"studentInfoContainer:studentInfo") }
+  element(:social_info) { |b| b.frm.select(:name=>"socialNetworkingInfoContainer:socialNetworkingInfo") }
+  element(:personal_info) { |b| b.frm.select(:name=>"personalInfoContainer:personalInfo") }
+  element(:view_connections) { |b| b.frm.select(:name=>"myFriendsContainer:myFriends") }
+  element(:see_status) { |b| b.frm.select(:name=>"myStatusContainer:myStatus") }
+  element(:view_pictures) { |b| b.frm.select(:name=>"myPicturesContainer:myPictures") }
+  element(:send_messages) { |b| b.frm.select(:name=>"messagesContainer:messages") }
+  element(:see_kudos_rating) { |b| b.frm.select(:name=>"myKudosContainer:myKudos") }
+  element(:show_birth_year) { |b| b.frm.checkbox(:name=>"birthYearContainer:birthYear") }
+  action(:save_settings) { |b| b.frm.button(:value=>"Save settings").click }
 
-  end
 end
 
 class Profile2Search < BasePage
@@ -240,11 +237,9 @@ class Profile2Search < BasePage
     Profile2Search.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:persons_name_or_email, :name=>"searchName", :frame=>frame)
-    text_field(:common_interest, :name=>"searchInterest", :frame=>frame)
+  element(:persons_name_or_email) { |b| b.frm.text_field(:name=>"searchName") }
+  element(:common_interest) { |b| b.frm.text_field(:name=>"searchInterest") }
 
-  end
 end
 
 class Profile2Connections < BasePage
@@ -271,9 +266,6 @@ class Profile2Connections < BasePage
     return results
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-
-  end
 end
 
 class Profile2View < BasePage
