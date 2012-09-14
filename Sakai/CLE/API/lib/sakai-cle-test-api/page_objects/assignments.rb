@@ -10,37 +10,26 @@ class AssignmentAdd < BasePage
 
   frame_element
 
+  expected_element :editor
+
   # Clicks the Post button, then
-  # instantiates the AssignmentsList page class.
-  def post
-    frm.button(:value=>"Post").click
-    AssignmentsList.new(@browser)
-  end
+  # next is the AssignmentsList page class.
+  action(:post) { |b| b.frm.button(:value=>"Post").click }
 
   # Clicks the Cancel button, then
-  # instantiates the AssignmentsList page class.
-  def cancel
-    frm.button(:value=>"Cancel", :index=>-1).click
-    AssignmentsList.new(@browser)
-  end
+  # next is the AssignmentsList page class.
+  action(:cancel) { |b| b.frm.button(:value=>"Cancel", :index=>-1).click }
 
   # Clicks the Save Draft button, then
-  # instantiates the AssignmentsList page class.
-  def save_draft
-    frm.button(:name=>"save").click
-    AssignmentsList.new(@browser)
-  end
+  # next is the AssignmentsList page class.
+  action(:save_draft) { |b| b.frm.button(:name=>"save").click }
 
   # Grabs the text contained in the alert box when
   # it is present on the page (will throw an error if
   # called when the box is not present).
-  def alert_text
-    frm.div(:class=>"portletBody").div(:class=>"alertMessage").text
-  end
+  value(:alert_text) { |b| b.frm.div(:class=>"portletBody").div(:class=>"alertMessage").text }
 
-  def editor
-    frm.frame(:id, "new_assignment_instructions___Frame")
-  end
+  element(:editor) { |b| b.frm.frame(:id, "new_assignment_instructions___Frame") }
 
   # Sends the specified text to the text box in the FCKEditor
   # on the page.
@@ -53,25 +42,17 @@ class AssignmentAdd < BasePage
     editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
   end
 
-  # Clicks the Preview button, then instantiates
+  # Clicks the Preview button, next is
   # the AssignmentsPreview page class.
-  def preview
-    frm.button(:value=>"Preview").click
-    AssignmentsPreview.new(@browser)
-  end
+  action(:preview) { |b| b.frm.button(:value=>"Preview").click }
 
   # This is the warning message that appears when you
   # select to add an assignment to the gradebook.
-  def gradebook_warning
-    frm.div(:class, "portletBody").span(:id, "gradebookListWarnAssoc")
-  end
+  element(:gradebook_warning) { |b| b.frm.div(:class, "portletBody").span(:id, "gradebookListWarnAssoc") }
 
   # Clicks the Add Attachments button, then
-  # instantiates the AssignmentAttachments page class.
-  def add_attachments
-    frm.button(:value=>"Add Attachments").click
-    AssignmentAttachments.new(@browser)
-  end
+  # next is the AssignmentAttachments page class.
+  action(:add_attachments) { |b| b.frm.button(:value=>"Add Attachments").click }
 
   element(:assignment_id) { |b| b.frm.hidden(:name=>"assignmentId") }
   action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
@@ -325,12 +306,9 @@ class AssignmentsPermissions
   include PageObject
   include ToolsMenu
 
-  # Clicks the Save button, then instantiates
+  # Clicks the Save button, next is
   # the AssignmentsList page class.
-  def save
-    frm.button(:value=>"Save").click
-    AssignmentsList.new(@browser)
-  end
+  action(:save) {|b| b.frm.button(:value=>"Save").click }
 
   element(:evaluators_share_drafts) { |b| b.frm.checkbox(:id=>"Evaluatorasn.share.drafts") }
   element(:organizers_share_drafts) { |b| b.frm.checkbox(:id=>"Organizerasn.share.drafts") }
