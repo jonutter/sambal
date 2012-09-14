@@ -120,14 +120,11 @@ class AddEditAnnouncements < BasePage
   # Sends the specified text block to the rich text editor
   # @param text [String] the text that you want to add to the editor.
   def body=(text)
-    frm.frame(:id, "body___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  # Clicks the Add attachments button and returns the Announcments Attach class.
-  def add_attachments
-    frm.button(:value=>"Add Attachments").click
-    AnnouncementsAttach.new(@browser)
-  end
+  # Clicks the Add attachments button. Next is the Announcments Attach class.
+  action(:add_attachments) { |b| b.frm.button(:value=>"Add Attachments").click }
 
   # Clicks the checkbox for the specified group name
   # when you've set the announcement access to display
@@ -144,50 +141,15 @@ class AddEditAnnouncements < BasePage
     frm.text_field(:id=>"subject").set(string)
   end
 
-  # Clicks the radio button for "Only members of this site can see this announcement"
-  def select_site_members
-    frm.radio(:id=>"site").set
-  end
-
-  # Clicks the radio button for "This announcement is publicly viewable"
-  def select_publicly_viewable
-    frm.radio(:id=>"pubview").set
-  end
-
-  # Clicks the radio button for "Displays this announcement to selected groups only."
-  def select_groups
-    frm.radio(:id=>"groups").set
-  end
-
-  # Clicks the radio button for "Show - (Post and display this announcement immediately)"
-  def select_show
-    frm.radio(:id=>"hidden_false").set
-  end
-
-  # Clicks the radio button for "Hide - (Draft mode - Do not display this announcement at this time)"
-  def select_hide
-    frm.radio(:id=>"hidden_true").set
-  end
-
-  # Clicks the radio button for "Specify Dates - (Choose when this announcement will be displayed)"
-  def select_specify_dates
-    frm.radio(:id=>"hidden_specify").set
-  end
-
-  # Checks the checkbox for "Beginning"
-  def check_beginning
-    frm.checkbox(:id=>"use_start_date").set
-  end
-
-  # Checks the checkbox for "Ending"
-  def check_ending
-    frm.checkbox(:id=>"use_end_date").set
-  end
-
-  # Checks the checkbox for selecting all Groups
-  def check_all
-    frm.checkbox(:id=>"selectall").set
-  end
+  element(:site_members) { |b| b.frm.radio(:id=>"site") }
+  element(:publicly_viewable) { |b| b.frm.radio(:id=>"pubview") }
+  element(:groups) { |b| b.frm.radio(:id=>"groups") }
+  element(:show) { |b| b.frm.radio(:id=>"hidden_false") }
+  element(:hide) { |b| b.frm.radio(:id=>"hidden_true") }
+  element(:specify_dates) { |b| b.frm.radio(:id=>"hidden_specify") }
+  element(:beginning) { |b| b.frm.checkbox(:id=>"use_start_date") }
+  element(:ending) { |b| b.frm.checkbox(:id=>"use_end_date") }
+  element(:all) { |b| b.frm.checkbox(:id=>"selectall") }
 
   # Sets the Beginning Month selection to the
   # specified string.
@@ -263,9 +225,7 @@ class AddEditAnnouncements < BasePage
 
   # Gets the text of the alert message when it appears on
   # the page
-  def alert_message
-    frm.div(:class=>"alertMessage").text
-  end
+  value(:alert_message) { |b| b.frm.div(:class=>"alertMessage").text }
 
 end
 
