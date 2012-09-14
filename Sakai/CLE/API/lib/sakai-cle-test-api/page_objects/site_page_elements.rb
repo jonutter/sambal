@@ -80,8 +80,8 @@ class Blogger < BasePage
   end
 
   element(:search_field) { |b| b.frm.text_field(:id=>"_id1:idSearch") }
-    checkbox(:show_comments, :id=>"_id1:showComments")
-    checkbox(:show_full_content, :id=>"_id1:showFullContent")
+  element(:show_comments) { |b| b.frm.checkbox(:id=>"_id1:showComments") }
+  element(:show_full_content) { |b| b.frm.checkbox(:id=>"_id1:showFullContent") }
 
 end
 
@@ -164,19 +164,17 @@ class CreateBloggerPostv
     Blogger.new(@browser)
   end
 
-
   element(:title) { |b| b.frm.text_field(:id=>"PostForm:idTitle") }
   element(:keywords) { |b| b.frm.text_field(:id=>"PostForm:keyWords") }
-    select_list(:access, :id=>"PostForm:selectVisibility")
-    checkbox(:read_only, :id=>"PostForm:readOnlyCheckBox")
-    checkbox(:allow_comments, :id=>"PostForm:allowCommentsCheckBox")
-    button(:text, :value=>"Text")
-    button(:images, :value=>"Images")
-    button(:links, :value=>"Links")
+  element(:access) { |b| b.frm.select(:id=>"PostForm:selectVisibility") }
+  element(:read_only) { |b| b.frm.checkbox(:id=>"PostForm:readOnlyCheckBox") }
+  element(:allow_comments) { |b| b.frm.checkbox(:id=>"PostForm:allowCommentsCheckBox") }
+  action(:text) { |b| b.frm.button(:value=>"Text").click }
+  action(:images) { |b| b.frm.button(:value=>"Images").click }
+  action(:links) { |b| b.frm.button(:value=>"Links").click }
   element(:description) { |b| b.frm.text_field(:id=>"PostForm:tab2:idLinkDescription") }
   element(:url) { |b| b.frm.text_field(:id=>"PostForm:tab2:idLinkExpression") }
-    button(:files, :value=>"Files")
-    
+  action(:files) { |b| b.frm.button(:value=>"Files").click }
 
 end
 
@@ -422,7 +420,7 @@ class ManageForums < BasePage
 
 
   element(:forum_name) { |b| b.frm.text_field(:name=>"forum_name") }
-    select_list(:category, :id=>"categories_id")
+  element(:category) { |b| b.frm.select(:id=>"categories_id") }
   element(:description) { |b| b.frm.text_field(:name=>"description") }
 
 end
@@ -476,8 +474,8 @@ class NewTopic < BasePage
 
 
   element(:subject) { |b| b.frm.text_field(:id=>"subject") }
-    button(:attach_files, :value=>"Attach Files")
-    button(:add_another_file, :value=>"Add another file")
+  action(:attach_files) { |b| b.frm.button(:value=>"Attach Files").click }
+  action(:add_another_file) { |b| b.frm.button(:value=>"Add another file").click }
 
 end
 
@@ -554,7 +552,7 @@ class DiscussionsMyProfile < BasePage
   element(:aim) { |b| b.frm.text_field(:name=>"aim") }
   element(:web_site) { |b| b.frm.text_field(:name=>"website") }
   element(:occupation) { |b| b.frm.text_field(:name=>"occupation") }
-    radio_button(:view_email) { |page| page.radio_button_element(:name=>"viewemail") }
+  element(:view_email) { |b| b.radio(:name=>"viewemail") }
 
 end
 
@@ -656,10 +654,10 @@ class NewPrivateMessage < BasePage
   end
 
 
-    select_list(:to_user, :name=>"toUsername")
+  element(:to_user) { |b| b.frm.select(:name=>"toUsername") }
   element(:subject) { |b| b.frm.text_field(:id=>"subject") }
-    button(:attach_files, :value=>"Attach Files")
-    button(:add_another_file, :value=>"Add another file")
+  action(:attach_files) { |b| b.frm.button(:value=>"Attach Files").click }
+  action(:add_another_file) { |b| b.frm.button(:value=>"Add another file").click }
 
   
 end
@@ -1153,13 +1151,13 @@ class EditCell < BasePage
   
   
   element(:title) { |b| b.frm.text_field(:id=>"title-id") }
-    checkbox(:use_default_reflection_form, :id=>"defaultReflectionForm")
-    select_list(:reflection, :id=>"reflectionDevice-id")
-    checkbox(:use_default_feedback_form, :id=>"defaultFeedbackForm")
-    select_list(:feedback, :id=>"reviewDevice-id")
-    checkbox(:use_default_evaluation_form, :id=>"defaultEvaluationForm")
-    select_list(:evaluation, :id=>"evaluationDevice-id")
-    checkbox(:use_default_evaluators, :id=>"defaultEvaluators")
+  element(:use_default_reflection_form) { |b| b.frm.checkbox(:id=>"defaultReflectionForm") }
+  element(:reflection) { |b| b.frm.select(:id=>"reflectionDevice-id") }
+  element(:use_default_feedback_form) { |b| b.frm.checkbox(:id=>"defaultFeedbackForm") }
+  element(:feedback) { |b| b.frm.select(:id=>"reviewDevice-id") }
+  element(:use_default_evaluation_form) { |b| b.frm.checkbox(:id=>"defaultEvaluationForm") }
+  element(:evaluation) { |b| b.frm.select(:id=>"evaluationDevice-id") }
+  element(:use_default_evaluators) { |b| b.frm.checkbox(:id=>"defaultEvaluators") }
 
 end
 
@@ -1176,14 +1174,14 @@ class SelectEvaluators < BasePage
   end
 
   
-    select_list(:users, :id=>"mainForm:availableUsers")
-    select_list(:selected_users, :id=>"mainForm:selectedUsers")
-    select_list(:roles, :id=>"mainForm:audSubV11:availableRoles")
-    select_list(:selected_roles, :id=>"mainForm:audSubV11:selectedRoles")
-    button(:add_users, :id=>"mainForm:add_user_button")
-    button(:remove_users, :id=>"mainForm:remove_user_button")
-    button(:add_roles, :id=>"mainForm:audSubV11:add_role_button")
-    button(:remove_roles, :id=>"mainForm:audSubV11:remove_role_button")
+  element(:users) { |b| b.frm.select(:id=>"mainForm:availableUsers") }
+  element(:selected_users) { |b| b.frm.select(:id=>"mainForm:selectedUsers") }
+  element(:roles) { |b| b.frm.select(:id=>"mainForm:audSubV11:availableRoles") }
+  element(:selected_roles) { |b| b.frm.select(:id=>"mainForm:audSubV11:selectedRoles") }
+  action(:add_users) { |b| b.frm.button(:id=>"mainForm:add_user_button").click }
+  action(:remove_users) { |b| b.frm.button(:id=>"mainForm:remove_user_button").click }
+  action(:add_roles) { |b| b.frm.button(:id=>"mainForm:audSubV11:add_role_button").click }
+  action(:remove_roles) { |b| b.frm.button(:id=>"mainForm:audSubV11:remove_role_button").click }
 
 end
 
@@ -1289,7 +1287,7 @@ class AddPortfolio < BasePage
 
   
   element(:name) { |b| b.frm.text_field(:name=>"presentationName") }
-    radio_button(:design_your_own_portfolio, :id=>"templateId-freeForm")
+  element(:design_your_own_portfolio) { |b| b.frm.radio(:id=>"templateId-freeForm") }
 
 end
 
@@ -1304,10 +1302,10 @@ class EditPortfolio < BasePage
   end
 
   
-    link(:edit_title, :text=>"Edit Title")
-    link(:save_changes, :text=>"Save Changes")
-    radio_button(:active, :id=>"btnActive")
-    radio_button(:inactive, :id=>"btnInactive")
+  action(:edit_title) { |b| b.frm.link(:text=>"Edit Title").click }
+  action(:save_changes) { |b| b.frm.link(:text=>"Save Changes").click }
+  element(:active) { |b| b.frm.radio(:id=>"btnActive") }
+  element(:inactive) { |b| b.frm.radio(:id=>"btnInactive") }
 
 end
 
@@ -1327,7 +1325,7 @@ class AddEditPortfolioContent < BasePage
   end
 
   
-    button(:save_changes, :value=>"Save Changes")
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
 
 end
 
@@ -1398,7 +1396,7 @@ class SharePortfolio < BasePage
   end
 
   
-    checkbox(:everyone_on_the_internet, :id=>"public_checkbox")
+  element(:everyone_on_the_internet) { |b| b.frm.checkbox(:id=>"public_checkbox") }
 
 end
 
@@ -1489,7 +1487,7 @@ class BuildTemplate < BasePage
     PortfolioContent.new(@browser)
   end
 
-    select_list(:outline_options_form_type, :id=>"propertyFormType-id")
+  element(:outline_options_form_type) { |b| b.frm.select(:id=>"propertyFormType-id") }
 
 end
 
@@ -1538,12 +1536,12 @@ class PortfolioContent < BasePage
   end
 
 
-    select_list(:type, :id=>"item.type")
+  element(:type) { |b| b.frm.select(:id=>"item.type") }
   element(:name) { |b| b.frm.text_field(:id=>"item.name-id") }
   element(:title) { |b| b.frm.text_field(:id=>"item.title-id") }
   element(:description) { |b| b.frm.text_field(:id=>"item.description-id") }
-    button(:add_to_list, :value=>"Add To List")
-    checkbox(:image, :id=>"image-id")
+  action(:add_to_list) { |b| b.frm.button(:value=>"Add To List").click }
+  element(:image) { |b| b.frm.checkbox(:id=>"image-id") }
 
 end
 
@@ -1567,7 +1565,7 @@ class SupportingFilesPortfolio < BasePage
   end
 
 
-    button(:add_to_list, :value=>"Add To List")
+  action(:add_to_list) { |b| b.frm.button(:value=>"Add To List").click }
   element(:name) { |b| b.frm.text_field(:id=>"fileRef.usage-id") }
 
 end
