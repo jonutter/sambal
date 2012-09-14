@@ -593,7 +593,7 @@ class DiscussionsMyProfile
     text_field(:aim, :name=>"aim", :frame=>frame)
     text_field(:web_site, :name=>"website", :frame=>frame)
     text_field(:occupation, :name=>"occupation", :frame=>frame)
-    radio_button(:view_email) { |page| page.radio_button_element(:name=>"viewemail", :index=>$frame_index, :frame=>frame) }
+    element(:view_email) { |b| b.frm.radio_button(:name=>"viewemail") }
   end
 end
 

@@ -35,14 +35,14 @@ class Aliases < BasePage
 
   frame_element
 
-  element(:new_alias) { |b| b.frm.link(:text=>"New Alias") }
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    link(:search_button, :text=>"Search", :frame=>frame)
-  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+element(:new_alias) { |b| b.frm.link(:text=>"New Alias") }
+  text_field(:search_field, :id=>"search")
+  action(:search_button) { |b| b.frm.link(:text=>"Search").click }
+element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
+  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  button(:previous) { |b| b.frm.button(name=>"eventSubmit_doList_prev").click }
+  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
 end
 
@@ -50,14 +50,12 @@ end
 class AliasesCreate < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:alias_name, :id=>"id", :frame=>frame)
-    text_field(:target, :id=>"target", :frame=>frame)
-    button(:save, :name=>"eventSubmit_doSave", :frame=>frame)
-    button(:cancel, :name=>"eventSubmit_doCancel", :frame=>frame)
-    
-  end
+
+
+  text_field(:alias_name, :id=>"id")
+  text_field(:target, :id=>"target")
+  button(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
+  button(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
 
 end
 
@@ -65,14 +63,11 @@ end
 class EditAlias < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:remove_alias, :text=>"Remove Alias", :frame=>frame)
-    text_field(:target, :id=>"target", :frame=>frame)
-    button(:save, :name=>"eventSubmit_doSave", :frame=>frame)
-    button(:cancel, :name=>"eventSubmit_doCancel", :frame=>frame)
-    
-  end
+
+  action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias").click }
+  text_field(:target, :id=>"target")
+  button(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
+  button(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
 
 end
 
@@ -85,7 +80,7 @@ end
 class Login < BasePage
 
   frame_element
-  
+
   def search_public_courses_and_projects
     @browser.frame(:index=>0).link(:text=>"Search Public Courses and Projects").click
     SearchPublic.new(@browser)
@@ -110,16 +105,16 @@ end
 class SearchPublic < BasePage
 
   frame_element
-  
+
   def home
     @browser.frame(:index=>0).link(:text=>"Home").click
     Login.new(@browser)
   end
-  
+
   def search_for=(string)
     @browser.frame(:index=>0).text_field(:id=>"searchbox").set(Regexp.escape(string))
   end
-  
+
   def search_for_sites
     @browser.frame(:index=>0).button(:value=>"Search for Sites").click
     SearchPublicResults.new(@browser)
@@ -131,7 +126,7 @@ end
 class SearchPublicResults < BasePage
 
   frame_element
-  
+
   def click_site(site_name)
     @browser.frame(:index=>0).link(:text=>site_name).click
     SiteSummaryPage.new(@browser)
@@ -149,7 +144,7 @@ end
 class SiteSummaryPage < BasePage
 
   frame_element
-  
+
   def return_to_list
     @browser.frame(:index=>0).button(:value=>"Return to List").click
     SearchPublicResults.new(@browser)
@@ -176,17 +171,14 @@ end
 class Realms < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:new_realm, :text=>"New Realm", :frame=>frame)
-    link(:search, :text=>"Search", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-    
-  end
+
+  action(:new_realm) { |b| b.frm.link(:text=>"New Realm").click }
+  action(:search) { |b| b.frm.link(:text=>"Search").click }
+  select_list(:select_page_size, :name=>"selectPageSize")
+  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
 end
 
@@ -198,130 +190,122 @@ end
 class AddSections < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:overview, :id=>"addSectionsForm:_idJsp3", :frame=>frame)
-    link(:student_memberships, :id=>"addSectionsForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"addSectionsForm:_idJsp17", :frame=>frame)
-    select_list(:num_to_add, :id=>"addSectionsForm:numToAdd", :frame=>frame)
-    select_list(:category, :id=>"addSectionsForm:category", :frame=>frame)
-    button(:add_sections, :id=>"addSectionsForm:_idJsp89", :frame=>frame)
-    button(:cancel, :id=>"addSectionsForm:_idJsp90", :frame=>frame)
-    
+
+  action(:overview) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp3").click }
+  action(:student_memberships) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp12").click }
+  action(:options) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp17").click }
+  select_list(:num_to_add, :id=>"addSectionsForm:numToAdd")
+  select_list(:category, :id=>"addSectionsForm:category")
+  button(:add_sections, :id=>"addSectionsForm:_idJsp89").click }
+  button(:cancel, :id=>"addSectionsForm:_idJsp90").click }
+
+
     # Note that the following field definitions are appropriate for
     # ONLY THE FIRST instance of each of the fields. The Add Sections page
     # allows for an arbitrary number of these fields to exist.
     # If you are going to test the addition of multiple sections
     # and/or meetings, then their elements will have to be
     # explicitly called or defined in the test scripts themselves.
-    text_field(:name, :id=>"addSectionsForm:sectionTable:0:titleInput", :frame=>frame)
-    radio_button(:unlimited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>0, :frame=>frame)
-    radio_button(:limited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>1, :frame=>frame)
-    text_field(:max_enrollment, :id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput", :frame=>frame)
-    checkbox(:monday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:monday", :frame=>frame)
-    checkbox(:tuesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:tuesday", :frame=>frame)
-    checkbox(:wednesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:wednesday", :frame=>frame)
-    checkbox(:thursday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:thursday", :frame=>frame)
-    checkbox(:friday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:friday", :frame=>frame)
-    checkbox(:saturday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:saturday", :frame=>frame)
-    checkbox(:sunday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:sunday", :frame=>frame)
-    text_field(:start_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime", :frame=>frame)
-    radio_button(:start_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0, :frame=>frame)
-    radio_button(:start_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1, :frame=>frame)
-    text_field(:end_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime", :frame=>frame)
-    radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
-    radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
-    text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    link(:add_days, :id=>"addSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
-    
-  end
+  text_field(:name, :id=>"addSectionsForm:sectionTable:0:titleInput")
+  radio_button(:unlimited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>0)
+  radio_button(:limited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>1)
+  text_field(:max_enrollment, :id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput")
+  checkbox(:monday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:monday")
+  checkbox(:tuesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:tuesday")
+  checkbox(:wednesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:wednesday")
+  checkbox(:thursday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:thursday")
+  checkbox(:friday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:friday")
+  checkbox(:saturday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:saturday")
+  checkbox(:sunday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:sunday")
+  text_field(:start_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime")
+  radio_button(:start_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0)
+  radio_button(:start_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1)
+  text_field(:end_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime")
+  radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0)
+  radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1)
+  text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location")
+  action(:add_days) { |b| b.frm.link(:id=>"addSectionsForm:sectionTable:0:addMeeting").click }
 
-end
+  end
 
 
 # Exactly like the Add Sections page, but used when editing an existing section
 class EditSections < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:overview, :id=>"editSectionsForm:_idJsp3", :frame=>frame)
-    link(:student_memberships, :id=>"editSectionsForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"editSectionsForm:_idJsp17", :frame=>frame)
-    select_list(:num_to_add, :id=>"editSectionsForm:numToAdd", :frame=>frame)
-    select_list(:category, :id=>"editSectionsForm:category", :frame=>frame)
-    button(:add_sections, :id=>"editSectionsForm:_idJsp89", :frame=>frame)
-    button(:cancel, :id=>"editSectionsForm:_idJsp90", :frame=>frame)
-    
-    # Note that the following field definitions are appropriate for
-    # ONLY THE FIRST instance of each of the fields. The Edit Sections page
-    # allows for an arbitrary number of these fields to exist.
-    # If you are going to test the editing of multiple sections
-    # and/or meetings, then their elements will have to be
-    # explicitly called or defined in the test scripts themselves.
-    text_field(:name, :id=>"editSectionsForm:sectionTable:0:titleInput", :frame=>frame)
-    radio_button(:unlimited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>0, :frame=>frame)
-    radio_button(:limited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>1, :frame=>frame)
-    text_field(:max_enrollment, :id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput", :frame=>frame)
-    checkbox(:monday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:monday", :frame=>frame)
-    checkbox(:tuesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:tuesday", :frame=>frame)
-    checkbox(:wednesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:wednesday", :frame=>frame)
-    checkbox(:thursday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:thursday", :frame=>frame)
-    checkbox(:friday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:friday", :frame=>frame)
-    checkbox(:saturday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:saturday", :frame=>frame)
-    checkbox(:sunday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:sunday", :frame=>frame)
-    text_field(:start_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime", :frame=>frame)
-    radio_button(:start_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0, :frame=>frame)
-    radio_button(:start_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1, :frame=>frame)
-    text_field(:end_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime", :frame=>frame)
-    radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
-    radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
-    text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    link(:add_days, :id=>"editSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
-    
+
+  action(:overview) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp3").click }
+  action(:student_memberships) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp12").click }
+  action(:options) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp17").click }
+  select_list(:num_to_add, :id=>"editSectionsForm:numToAdd")
+  select_list(:category, :id=>"editSectionsForm:category")
+  button(:add_sections) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp89").click }
+  button(:cancel) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp90").click }
+
+  # Note that the following field definitions are appropriate for
+  # ONLY THE FIRST instance of each of the fields. The Edit Sections page
+  # allows for an arbitrary number of these fields to exist.
+  # If you are going to test the editing of multiple sections
+  # and/or meetings, then their elements will have to be
+  # explicitly called or defined in the test scripts themselves.
+  text_field(:name, :id=>"editSectionsForm:sectionTable:0:titleInput")
+  radio_button(:unlimited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>0)
+  radio_button(:limited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>1)
+  text_field(:max_enrollment, :id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput")
+  checkbox(:monday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:monday")
+  checkbox(:tuesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:tuesday")
+  checkbox(:wednesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:wednesday")
+  checkbox(:thursday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:thursday")
+  checkbox(:friday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:friday")
+  checkbox(:saturday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:saturday")
+  checkbox(:sunday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:sunday")
+  text_field(:start_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime")
+  radio_button(:start_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0)
+  radio_button(:start_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1)
+  text_field(:end_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime")
+  radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0)
+  radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1)
+  text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location")
+  action(:add_days) { |b| b.frm.link(:id=>"editSectionsForm:sectionTable:0:addMeeting").click }
+
   end
 
-end
 
 # Options page for Sections
 class SectionsOptions < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister", :frame=>frame)
-    checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch", :frame=>frame)
-    button(:update, :id=>"optionsForm:_idJsp50", :frame=>frame)
-    button(:cancel, :id=>"optionsForm:_idJsp51", :frame=>frame)
-    link(:overview, :id=>"optionsForm:_idJsp3", :frame=>frame)
-    link(:add_sections, :id=>"optionsForm:_idJsp8", :frame=>frame)
-    link(:student_memberships, :id=>"optionsForm:_idJsp12", :frame=>frame)
-    
+
+  checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister")
+  checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch")
+  button(:update) { |b| b.frm.button(:id=>"optionsForm:_idJsp50").click }
+  button(:cancel) { |b| b.frm.button(:id=>"optionsForm:_idJsp51").click }
+  action(:overview) { |b| b.frm.link(:id=>"optionsForm:_idJsp3").click }
+  action(:add_sections) { |b| b.frm.link(:id=>"optionsForm:_idJsp8").click }
+  action(:student_memberships) { |b| b.frm.link(:id=>"optionsForm:_idJsp12").click }
+
   end
 
-end
 
 # The Sections page
 # found in the SITE MANAGEMENT menu for a Site
 class SectionsOverview < BasePage
 
   frame_element
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:add_sections, :id=>"overviewForm:_idJsp8", :frame=>frame)
-    link(:student_memberships, :id=>"overviewForm:_idJsp12", :frame=>frame)
-    link(:options, :id=>"overviewForm:_idJsp17", :frame=>frame)
-    link(:sort_name, :id=>"overviewForm:sectionsTable:_idJsp54", :frame=>frame)
-    link(:sort_ta, :id=>"overviewForm:sectionsTable:_idJsp73", :frame=>frame)
-    link(:sort_day, :id=>"overviewForm:sectionsTable:_idJsp78", :frame=>frame)
-    link(:sort_time, :id=>"overviewForm:sectionsTable:_idJsp83", :frame=>frame)
-    link(:sort_location, :id=>"overviewForm:sectionsTable:_idJsp88", :frame=>frame)
-    link(:sort_current_size, :id=>"overviewForm:sectionsTable:_idJsp93", :frame=>frame)
-    link(:sort_avail, :id=>"overviewForm:sectionsTable:_idJsp97", :frame=>frame)
-    
+
+  action(:add_sections) { |b| b.frm.link(:id=>"overviewForm:_idJsp8").click }
+  action(:student_memberships) { |b| b.frm.link(:id=>"overviewForm:_idJsp12").click }
+  action(:options) { |b| b.frm.link(:id=>"overviewForm:_idJsp17").click }
+  action(:sort_name) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp54").click }
+  action(:sort_ta) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp73").click }
+  action(:sort_day) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp78").click }
+  action(:sort_time) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp83").click }
+  action(:sort_location) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp88").click }
+  action(:sort_current_size) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp93").click }
+  action(:sort_avail) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp97").click }
+
   end
 
-end
 
 #================
 # Sites Page - from Administration Workspace
@@ -331,7 +315,7 @@ end
 class Sites < BasePage
 
   frame_element
-  
+
   # Clicks the first site Id link
   # listed. Useful when you've run a search and
   # you're certain you've got the result you want.
@@ -340,7 +324,7 @@ class Sites < BasePage
     frm.link(:href, /#{Regexp.escape("&panel=Main&sakai_action=doEdit")}/).click
     EditSiteInfo.new(@browser)
   end
-  
+
   # Clicks the specified Site in the list, using the
   # specified id value to determine which item to click.
   # It then instantiates the EditSiteInfo page class.
@@ -351,33 +335,31 @@ class Sites < BasePage
     frm.link(:text, id).click
     EditSiteInfo.new(@browser)
   end
-  
+
   # Clicks the New Site button, then instantiates
   # the EditSiteInfo page class.
   def new_site
     frm.link(:text, "New Site").click
     EditSiteInfo.new(@browser)
   end
-  
-  in_frame(:index=>0) do |frame|
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    link(:search_button, :text=>"Search", :frame=>frame)
-    text_field(:search_site_id, :id=>"search_site", :frame=>frame)
-    link(:search_site_id_button, :text=>"Site ID", :frame=>frame)
-    text_field(:search_user_id, :id=>"search_user", :frame=>frame)
-    link(:search_user_id_button, :text=>"User ID", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+
+  text_field(:search_field, :id=>"search")
+  action(:search_button) { |b| b.frm.link(text=>"Search").click }
+  text_field(:search_site_id, :id=>"search_site")
+  action(:search_site_id_button) { |b| b.frm.link(text=>"Site ID").click }
+  text_field(:search_user_id, :id=>"search_user")
+  action(:search_user_id_button) { |b| b.frm.link(text=>"User ID").click }
+  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  select_list(:select_page_size, :name=>"selectPageSize")
+  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
   end
 
-end
 
 # Page that appears when you've clicked a Site ID in the
 # Sites section of the Administration Workspace.
@@ -391,38 +373,38 @@ class EditSiteInfo < BasePage
     frm.link(:text, "Remove Site").click
     RemoveSite.new(@browser)
   end
-  
+
   # Clicks the Save button, then instantiates the Sites
   # page class.
   def save
     frm.button(:value=>"Save").click
     Sites.new(@browser)
   end
-  
+
   # Clicks the Save As link, then instantiates
   # the SiteSaveAs page class.
   def save_as
     frm.link(:text, "Save As").click
     SiteSaveAs.new(@browser)
   end
-  
+
   # Gets the Site ID from the page.
   def site_id_read_only
     @browser.frame(:index=>0).table(:class=>"itemSummary").td(:class=>"shorttext", :index=>0).text
   end
-  
+
   # Enters the specified text string in the text area of
   # the FCKEditor.
   def description=(text)
     editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
-  
+
   # The FCKEditor object. Use this object for
   # wait commands when the site is slow
   def editor
     @browser.frame(:index=>0).frame(:id, "description___Frame")
   end
-  
+
   # Clicks the Properties button on the page,
   # then instantiates the AddEditSiteProperties
   # page class.
@@ -430,25 +412,25 @@ class EditSiteInfo < BasePage
     frm.button(:value=>"Properties").click
     AddEditSiteProperties.new(@browser)
   end
-  
+
   # Clicks the Pages button, then instantiates
   # the AddEditPages page class.
   def pages
     frm.button(:value=>"Pages").click
     AddEditPages.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
     # Non-navigating, interactive page objects go here
-    text_field(:site_id, :id=>"id", :frame=>frame)
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_field(:type, :id=>"type", :frame=>frame)
-    text_area(:short_description, :id=>"shortDescription", :frame=>frame)
-    radio_button(:unpublished, :id=>"publishedfalse", :frame=>frame)
-    radio_button(:published, :id=>"publishedtrue", :frame=>frame)
-    radio_button(:public_view_yes, :id=>"pubViewtrue", :frame=>frame)
+    text_field(:site_id, :id=>"id")
+    text_field(:title, :id=>"title")
+    text_field(:type, :id=>"type")
+    text_area(:short_description, :id=>"shortDescription")
+    radio_button(:unpublished, :id=>"publishedfalse")
+    radio_button(:published, :id=>"publishedtrue")
+    radio_button(:public_view_yes, :id=>"pubViewtrue")
   end
-  
+
 end
 
 # The page you come to when editing a Site in Sites
@@ -456,7 +438,7 @@ end
 class AddEditPages < BasePage
 
   frame_element
-  
+
   # Clicks the link for New Page, then
   # instantiates the NewPage page class.
   def new_page
@@ -470,18 +452,18 @@ end
 class NewPage < BasePage
 
   frame_element
-  
+
   # Clicks the Tools button, then instantiates
   # the AddEditTools class.
   def tools
     frm.button(:value=>"Tools").click
     AddEditTools.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title", :frame=>frame)
+    text_field(:title, :id=>"title")
   end
 
 end
@@ -490,14 +472,14 @@ end
 class AddEditTools < BasePage
 
   frame_element
-  
+
   # Clicks the New Tool link, then instantiates
   # the NewTool class.
   def new_tool
     frm.link(:text=>"New Tool").click
     NewTool.new(@browser)
   end
-  
+
   # Clicks the Save button, then
   # instantiates the AddEditPages class.
   def save
@@ -511,83 +493,83 @@ end
 class NewTool < BasePage
 
   frame_element
-  
+
   # Clicks the Done button, the instantiates
   # The AddEditTools class.
   def done
     frm.button(:value=>"Done").click
     AddEditTools.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_field(:layout_hints, :id=>"layoutHints", :frame=>frame)
-    radio_button(:resources, :id=>"feature80", :frame=>frame)
+    text_field(:title, :id=>"title")
+    text_field(:layout_hints, :id=>"layoutHints")
+    radio_button(:resources, :id=>"feature80")
   end
-  
+
 end
 
 # Page that appears when you click "Remove Site" when editing a Site in Sites
 class RemoveSite < BasePage
 
   frame_element
-  
+
   # Clicks the Remove button, then
   # instantiates the Sites class.
   def remove
     frm.button(:value=>"Remove").click
     Sites.new(@browser)
   end
-  
+
 end
 
 # Page that appears when you click "Save As" when editing a Site in Sites
 class SiteSaveAs < BasePage
 
   frame_element
-  
+
   # Clicks the Save button, then
   # instantiates the Sites class.
   def save
     frm.button(:value, "Save").click
     Sites.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:site_id, :id=>"id", :frame=>frame)
+    text_field(:site_id, :id=>"id")
   end
-  
+
 end
 
 class AddEditSiteProperties < BasePage
 
   frame_element
-  
+
   # Clicks the New Property button
   def new_property
     frm.button(:value=>"New Property").click
     #Class.new(@browser)
   end
-  
+
   # Clicks the Done button, then instantiates
   # the EditSiteInfo class.
   def done
     frm.button(:value=>"Done").click
     EditSiteInfo.new(@browser)
   end
-  
+
   # Clicks the Save button, then instantiates
   # the Sites page class.
   def save
     frm.button(:value=>"Save").click
     Sites.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :id=>"new_name", :frame=>frame)
-    text_field(:value, :id=>"new_value", :frame=>frame)
+    text_field(:name, :id=>"new_name")
+    text_field(:value, :id=>"new_value")
   end
 end
 
@@ -601,7 +583,7 @@ end
 class EditAccount < BasePage
 
   frame_element
-  
+
   # Clicks the update details button then
   # makes sure there isn't any error message present.
   # If there is, it reinstantiates the Edit Account Class,
@@ -619,16 +601,16 @@ class EditAccount < BasePage
       Users.new(@browser)
     end
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:current_password, :id=>"pwcur", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
+    text_field(:first_name, :id=>"first-name")
+    text_field(:last_name, :id=>"last-name")
+    text_field(:email, :id=>"email")
+    text_field(:current_password, :id=>"pwcur")
+    text_field(:create_new_password, :id=>"pw")
+    text_field(:verify_new_password, :id=>"pw0")
   end
-  
+
 end
 
 # A Non-Admin User's Account page
@@ -652,52 +634,52 @@ class UserAccount < BasePage
     @browser.frame(:index=>0).button(:name=>"eventSubmit_doModify").click
     EditAccount.new(@browser)
   end
-  
+
   # Gets the text of the User ID field.
   def user_id
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>0)[0][1].text
   end
-  
+
   # Gets the text of the First Name field.
   def first_name
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>0)[1][1].text
   end
-  
+
   # Gets the text of the Last Name field.
   def last_name
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>0)[2][1].text
   end
-  
+
   # Gets the text of the Email field.
   def email
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>0)[3][1].text
   end
-  
+
   # Gets the text of the Type field.
   def type
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>0)[4][1].text
   end
-  
+
   # Gets the text of the Created By field.
   def created_by
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>1)[0][1].text
   end
-  
+
   # Gets the text of the Created field.
   def created
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>1)[1][1].text
   end
-  
+
   # Gets the text of the Modified By field.
   def modified_by
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>1)[2][1].text
   end
-  
+
   # Gets the text of the Modified (date) field.
   def modified
     @browser.frame(:index=>0).table(:class=>"itemSummary", :index=>1)[3][1].text
   end
-  
+
   # Clicks the Home buton in the left menu.
   # instantiates the Home Class.
   def home
@@ -721,86 +703,84 @@ class EditUser < BasePage
     sleep 1
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:remove_user, :text=>"Remove User", :frame=>frame)
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
-    button(:cancel_changes, :name=>"eventSubmit_doCancel", :frame=>frame)
+  action(:remove_user) { |b| b.frm.link(text=>"Remove User").click }
+  text_field(:first_name, :id=>"first-name")
+  text_field(:last_name, :id=>"last-name")
+  text_field(:email, :id=>"email")
+  text_field(:create_new_password, :id=>"pw")
+  text_field(:verify_new_password, :id=>"pw0")
+  button(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
   end
-  
-end
+
+
 
 # The Users page - "icon-sakai-users"
 class Users < BasePage
 
   frame_element
-  
+
   def new_user
     frm.link(:text=>"New User").click
     CreateNewUser.new @browser
   end
-  
+
   # Returns the contents of the Name cell
   # based on the specified user ID value.
   def name(user_id)
     frm.table(:class=>"listHier lines").row(:text=>/#{Regexp.escape(user_id)}/i)[1].text
   end
-  
+
   # Returns the contents of the Email cell
   # based on the specified user ID value.
   def email(user_id)
     frm.table(:class=>"listHier lines").row(:text=>/#{Regexp.escape(user_id)}/i)[2].text
   end
-  
+
   # Returns the contents of the Type cell
   # based on the specified user ID value.
   def type(user_id)
     frm.table(:class=>"listHier lines").row(:text=>/#{Regexp.escape(user_id)}/i)[3].text
   end
-  
+
   def search_button
     frm.link(:text=>"Search").click
     frm.table(:class=>"listHier lines").wait_until_present
     Users.new @browser
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
-    link(:clear_search, :text=>"Clear Search", :frame=>frame)
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+    action(:clear_search) { |b| b.frm.link(text=>"Clear Search").click }
+    text_field(:search_field, :id=>"search")
+    select_list(:select_page_size, :name=>"selectPageSize")
+    button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+    button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+    button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+    button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
   end
-  
+
 end
 
 # The Create New User page
 class CreateNewUser < BasePage
 
   frame_element
-  
+
   def save_details
     frm.button(:name=>"eventSubmit_doSave").click
     Users.new(@browser)
   end
-  
+
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:user_id, :id=>"eid", :frame=>frame)
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
-    select_list(:type, :name=>"type", :frame=>frame)
-    button(:cancel_changes, :name=>"eventSubmit_doCancel", :frame=>frame)
+    text_field(:user_id, :id=>"eid")
+    text_field(:first_name, :id=>"first-name")
+    text_field(:last_name, :id=>"last-name")
+    text_field(:email, :id=>"email")
+    text_field(:create_new_password, :id=>"pw")
+    text_field(:verify_new_password, :id=>"pw0")
+    select_list(:type, :name=>"type")
+    button(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
   end
-  
-end
+
 
 
 #================
@@ -811,7 +791,7 @@ end
 class UserMembership < BasePage
 
   frame_element
-  
+
   # Returns an array containing the user names displayed in the search results.
   def names
     names = []
@@ -821,14 +801,14 @@ class UserMembership < BasePage
     names.delete_at(0)
     return names
   end
-  
+
   # Returns the user id of the specified user (assuming that person
   # appears in the search results list, otherwise this method will
   # throw an error.)
   def user_id(name)
     frm.table(:class=>/listHier/).row(:text=>/#{Regexp.escape(name)}/)[0].text
   end
-  
+
   # Returns the user type of the specified user (assuming that person
   # appears in the search results list, otherwise this method will
   # throw an error.)
@@ -841,29 +821,27 @@ class UserMembership < BasePage
   def alert_text
     frm.p(:class=>"instruction").text
   end
-  
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:user_type, :id=>"userlistForm:selectType", :frame=>frame)
-    select_list(:user_authority, :id=>"userlistForm:selectAuthority", :frame=>frame)
-    text_field(:search_field, :id=>"userlistForm:inputSearchBox", :frame=>frame)
-    button(:search, :id=>"userlistForm:searchButton", :frame=>frame)
-    button(:clear_search, :id=>"userlistForm:clearSearchButton", :frame=>frame)
-    select_list(:page_size, :id=>"userlistForm:pager_pageSize", :frame=>frame)
-    button(:export_csv, :id=>"userlistForm:exportCsv", :frame=>frame)
-    button(:export_excel, :id=>"userlistForm:exportXls", :frame=>frame)
-    link(:sort_user_id, :id=>"userlistForm:_idJsp13:_idJsp14", :frame=>frame)
-    link(:sort_internal_user_id, :id=>"userlistForm:_idJsp13:_idJsp18", :frame=>frame)
-    link(:sort_name, :id=>"userlistForm:_idJsp13:_idJsp21", :frame=>frame)
-    link(:sort_email, :id=>"userlistForm:_idJsp13:_idJsp24", :frame=>frame)
-    link(:sort_type, :id=>"userlistForm:_idJsp13:_idJsp28", :frame=>frame)
-    link(:sort_authority, :id=>"userlistForm:_idJsp13:_idJsp31", :frame=>frame)
-    link(:sort_created_on, :id=>"userlistForm:_idJsp13:_idJsp34", :frame=>frame)
-    link(:sort_modified_on, :id=>"userlistForm:_idJsp13:_idJsp37", :frame=>frame)
-    #(:, =>"", :frame=>frame)
+
+  select_list(:user_type, :id=>"userlistForm:selectType")
+  select_list(:user_authority, :id=>"userlistForm:selectAuthority")
+  text_field(:search_field, :id=>"userlistForm:inputSearchBox")
+  button(:search) { |b| b.frm.button(:id=>"userlistForm:searchButton").click }
+  button(:clear_search) { |b| b.frm.button(:id=>"userlistForm:clearSearchButton").click }
+  select_list(:page_size, :id=>"userlistForm:pager_pageSize")
+  button(:export_csv) { |b| b.frm.button(:id=>"userlistForm:exportCsv").click }
+  button(:export_excel) { |b| b.frm.button(:id=>"userlistForm:exportXls").click }
+  action(:sort_user_id) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp14").click }
+  action(:sort_internal_user_id) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp18").click }
+  action(:sort_name) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp21").click }
+  action(:sort_email) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp24").click }
+  action(:sort_type) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp28".click }
+  action(:sort_authority) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp31").click }
+  action(:sort_created_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp34").click }
+  action(:sort_modified_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp37").click }
+  #(:, =>"")
     
   end
 
-end
 
 #================
 # Job Scheduler pages in Admin Workspace
@@ -924,8 +902,8 @@ class CreateNewJob < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:job_name, :id=>"_id2:job_name", :frame=>frame)
-    select_list(:type, :name=>"_id2:_id10", :frame=>frame)
+    text_field(:job_name, :id=>"_id2:job_name")
+    select_list(:type, :name=>"_id2:_id10")
   end
 end
 
@@ -964,8 +942,8 @@ class CreateTrigger < BasePage
   end
 
   in_frame(:index=>0) do |frame|
-    text_field(:name, :id=>"_id2:trigger_name", :frame=>frame)
-    text_field(:cron_expression, :id=>"_id2:trigger_expression", :frame=>frame)
+    text_field(:name, :id=>"_id2:trigger_name")
+    text_field(:cron_expression, :id=>"_id2:trigger_expression")
   end
 end
 
