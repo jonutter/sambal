@@ -31,10 +31,9 @@ require 'cgi'
 #================
 
 # The top page of a Site's Blogger feature.
-class Blogger
-  
-  include PageObject
-  include ToolsMenu
+class Blogger < BasePage
+
+  frame_element
   
   # Clicks the View All button, then reinstantiates the Class.
   def view_all
@@ -80,18 +79,16 @@ class Blogger
     return titles
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:search_field, :id=>"_id1:idSearch", :frame=>frame)
-    checkbox(:show_comments, :id=>"_id1:showComments", :frame=>frame)
-    checkbox(:show_full_content, :id=>"_id1:showFullContent", :frame=>frame)
-  end
+  element(:search_field) { |b| b.frm.text_field(:id=>"_id1:idSearch") }
+  element(:show_comments) { |b| b.frm.checkbox(:id=>"_id1:showComments") }
+  element(:show_full_content) { |b| b.frm.checkbox(:id=>"_id1:showFullContent") }
+
 end
 
 # The page showing contents of a user's Blog.
-class ViewMembersBlog
-  
-  include PageObject
-  include ToolsMenu
+class ViewMembersBlog < BasePage
+
+  frame_element
   
   # Clicks on the member name specified.
   # The name string obviously needs to match the
@@ -104,10 +101,7 @@ class ViewMembersBlog
 end
 
 # The page where users create a Post for their Blogger blog.
-class CreateBloggerPost
-  
-  include PageObject
-  include ToolsMenu
+class CreateBloggerPostv
 
   # Enters the specified string into the FCKEditor for the Abstract.
   def abstract=(text)
@@ -170,27 +164,24 @@ class CreateBloggerPost
     Blogger.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:title, :id=>"PostForm:idTitle", :frame=>frame)
-    text_field(:keywords, :id=>"PostForm:keyWords", :frame=>frame)
-    select_list(:access, :id=>"PostForm:selectVisibility", :frame=>frame)
-    checkbox(:read_only, :id=>"PostForm:readOnlyCheckBox", :frame=>frame)
-    checkbox(:allow_comments, :id=>"PostForm:allowCommentsCheckBox", :frame=>frame)
-    button(:text, :value=>"Text", :frame=>frame)
-    button(:images, :value=>"Images", :frame=>frame)
-    button(:links, :value=>"Links", :frame=>frame)
-    text_field(:description, :id=>"PostForm:tab2:idLinkDescription", :frame=>frame)
-    text_field(:url, :id=>"PostForm:tab2:idLinkExpression", :frame=>frame)
-    button(:files, :value=>"Files", :frame=>frame)
-    
-  end
+  element(:title) { |b| b.frm.text_field(:id=>"PostForm:idTitle") }
+  element(:keywords) { |b| b.frm.text_field(:id=>"PostForm:keyWords") }
+  element(:access) { |b| b.frm.select(:id=>"PostForm:selectVisibility") }
+  element(:read_only) { |b| b.frm.checkbox(:id=>"PostForm:readOnlyCheckBox") }
+  element(:allow_comments) { |b| b.frm.checkbox(:id=>"PostForm:allowCommentsCheckBox") }
+  action(:text) { |b| b.frm.button(:value=>"Text").click }
+  action(:images) { |b| b.frm.button(:value=>"Images").click }
+  action(:links) { |b| b.frm.button(:value=>"Links").click }
+  element(:description) { |b| b.frm.text_field(:id=>"PostForm:tab2:idLinkDescription") }
+  element(:url) { |b| b.frm.text_field(:id=>"PostForm:tab2:idLinkExpression") }
+  action(:files) { |b| b.frm.button(:value=>"Files").click }
+
 end
 
 # The Preview page for a Blog post.
-class PreviewBloggerPost
-  
-  include PageObject
-  include ToolsMenu
+class PreviewBloggerPost < BasePage
+
+  frame_element
   
   # Clicks the Back button and instantiates the CreateBloggerPost Class.
   def back
@@ -207,10 +198,9 @@ class PreviewBloggerPost
 end
 
 # The page for Viewing a blog post.
-class ViewBloggerPost
-  
-  include PageObject
-  include ToolsMenu
+class ViewBloggerPost < BasePage
+
+  frame_element
   
   # Clicks the button for adding a comment to a blog post, then
   # instantiates the AddBloggerComment Class.
@@ -222,10 +212,9 @@ class ViewBloggerPost
 end
 
 # The page for adding a comment to a Blog post.
-class AddBloggerComment
-  
-  include PageObject
-  include ToolsMenu
+class AddBloggerComment < BasePage
+
+  frame_element
   
   # Clicks the Save button and instantiates
   # The ViewBloggerPost Class.
@@ -239,26 +228,6 @@ class AddBloggerComment
     frm.frame(:id, "_id1:_id11_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-end
-
-
-#================
-# Chat Room Pages
-#================
-
-# 
-class ChatRoom
-  
-  include PageObject
-  include ToolsMenu
-  
-  def total_messages_shown
-    @browser.frame(:class=>"wcwmenu").div(:id=>"chat2_messages_shown_total").text
-  end
-
-  in_frame(:class=>"wcwmenu") do |frame|
-    
-  end
 end
 
 
@@ -322,10 +291,9 @@ module JForumsResources
 end
 
 # The topmost page in Discussion Forums
-class JForums
-  
-  include PageObject
-  include ToolsMenu
+class JForums < BasePage
+
+  frame_element
   include JForumsResources
 
   # Clicks on the supplied forum name
@@ -363,10 +331,9 @@ end
 
 # The page of a particular Discussion Forum, show the list
 # of Topics in the forum.
-class DiscussionForum
-  
-  include PageObject
-  include ToolsMenu
+class DiscussionForum < BasePage
+
+  frame_element
   include JForumsResources
   
   # Clicks the New Topic button,
@@ -387,10 +354,10 @@ class DiscussionForum
 end
 
 # The Discussion Forums Search page.
-class DiscussionSearch
-  
-  include PageObject
-  include ToolsMenu
+class DiscussionSearch < BasePage
+
+  frame_element
+
   include JForumsResources
 
   # Clicks the Search button on the page,
@@ -400,16 +367,16 @@ class DiscussionSearch
     JForums.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:keywords, :name=>"search_keywords", :frame=>frame)
-  end
+
+  element(:keywords) { |b| b.frm.text_field(:name=>"search_keywords") }
+
 end
 
 # The Manage Discussions page in Discussion Forums.
-class ManageDiscussions
-  
-  include PageObject
-  include ToolsMenu
+class ManageDiscussions < BasePage
+
+  frame_element
+
   include JForumsResources
   
   # Clicks the Manage Forums link,
@@ -428,17 +395,13 @@ class ManageDiscussions
     return forum_titles
   end
 
-  in_frame(:index=>1) do |frame|
-    
-  end
 end
 
 # The page for Managing Forums in the Discussion Forums
 # feature.
-class ManageForums
-  
-  include PageObject
-  include ToolsMenu
+class ManageForums < BasePage
+
+  frame_element
   include JForumsResources
   
   # Clicks the Add button, then
@@ -455,28 +418,26 @@ class ManageForums
     ManageDiscussions.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:forum_name, :name=>"forum_name", :frame=>frame)
-    select_list(:category, :id=>"categories_id", :frame=>frame)
-    text_area(:description, :name=>"description", :frame=>frame)
-  end
+
+  element(:forum_name) { |b| b.frm.text_field(:name=>"forum_name") }
+  element(:category) { |b| b.frm.select(:id=>"categories_id") }
+  element(:description) { |b| b.frm.text_field(:name=>"description") }
+
 end
 
 # Page for editing/creating Bookmarks in Discussion Forums.
-class MyBookmarks
-  
-  include PageObject
-  include ToolsMenu
+class MyBookmarks < BasePage
+
+  frame_element
   include JForumsResources
 
 
 end
 
 # The page for adding a new discussion topic.
-class NewTopic
-  
-  include PageObject
-  include ToolsMenu
+class NewTopic < BasePage
+
+  frame_element
   include JForumsResources
   
   # Enters the specified string into the FCKEditor for the Message.
@@ -511,18 +472,17 @@ class NewTopic
     frm.file_field(:name=>"file_1").set(File.expand_path(File.dirname(__FILE__)) + "/../../data/sakai-cle-test-api/" + filename)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:subject, :id=>"subject", :frame=>frame)
-    button(:attach_files, :value=>"Attach Files", :frame=>frame)
-    button(:add_another_file, :value=>"Add another file", :frame=>frame)
-  end
+
+  element(:subject) { |b| b.frm.text_field(:id=>"subject") }
+  action(:attach_files) { |b| b.frm.button(:value=>"Attach Files").click }
+  action(:add_another_file) { |b| b.frm.button(:value=>"Add another file").click }
+
 end
 
 # Viewing a Topic/Message
-class ViewTopic
-  
-  include PageObject
-  include ToolsMenu
+class ViewTopic < BasePage
+
+  frame_element
   include JForumsResources
   
   # Gets the text of the Topic title.
@@ -557,17 +517,16 @@ class ViewTopic
     ViewTopic.new(@browser)
   end
   
-  in_frame(:index=>1) do |frame|
-    text_area(:reply_text, :name=>"quickmessage", :frame=>frame)
-  end
+
+  element(:reply_text) { |b| b.frm.text_field(:name=>"quickmessage") }
+
   
 end
 
 # The Profile page for Discussion Forums
-class DiscussionsMyProfile
-  
-  include PageObject
-  include ToolsMenu
+class DiscussionsMyProfile < BasePage
+
+  frame_element
   include JForumsResources
   
   def submit
@@ -587,21 +546,19 @@ class DiscussionsMyProfile
   def avatar(filename, filepath="")
     frm.file_field(:name=>"avatar").set(filepath + filename)
   end
-  
-  in_frame(:index=>1) do |frame|
-    text_field(:icq_uin, :name=>"icq", :frame=>frame)
-    text_field(:aim, :name=>"aim", :frame=>frame)
-    text_field(:web_site, :name=>"website", :frame=>frame)
-    text_field(:occupation, :name=>"occupation", :frame=>frame)
-    element(:view_email) { |b| b.frm.radio_button(:name=>"viewemail") }
-  end
+
+  element(:icq_uin) { |b| b.frm.text_field(:name=>"icq") }
+  element(:aim) { |b| b.frm.text_field(:name=>"aim") }
+  element(:web_site) { |b| b.frm.text_field(:name=>"website") }
+  element(:occupation) { |b| b.frm.text_field(:name=>"occupation") }
+  element(:view_email) { |b| b.radio(:name=>"viewemail") }
+
 end
 
 # The List of Members of a Site's Discussion Forums
-class DiscussionMemberListing
-  
-  include PageObject
-  include ToolsMenu
+class DiscussionMemberListing < BasePage
+
+  frame_element
   include JForumsResources
 
   # Checks if the specified Member name appears
@@ -617,10 +574,9 @@ end
 
 # The page where users go to read their private messages in the Discussion
 # Forums.
-class PrivateMessages
-  
-  include PageObject
-  include ToolsMenu
+class PrivateMessages < BasePage
+
+  frame_element
   include JForumsResources
 
   # Clicks the "New PM" button, then
@@ -649,10 +605,9 @@ class PrivateMessages
 end
 
 # The page of Viewing a particular Private Message.
-class ViewPM
-  
-  include PageObject
-  include ToolsMenu
+class ViewPM < BasePage
+
+  frame_element
   
   # Clicks the Reply Quote button, then
   # instantiates the NewPrivateMessage Class.
@@ -664,10 +619,9 @@ class ViewPM
 end
 
 # New Private Message page in Discussion Forums.
-class NewPrivateMessage
-  
-  include PageObject
-  include ToolsMenu
+class NewPrivateMessage < BasePage
+
+  frame_element
   include JForumsResources
 
   # Enters text into the FCKEditor text area, after
@@ -698,21 +652,20 @@ class NewPrivateMessage
     frm.file_field(:name=>"file_1").set(File.expand_path(File.dirname(__FILE__)) + "/../../data/sakai-cle-test-api/" + filename)
   end
 
-  in_frame(:index=>1) do |frame|
-    select_list(:to_user, :name=>"toUsername", :frame=>frame)
-    text_field(:subject, :id=>"subject", :frame=>frame)
-    button(:attach_files, :value=>"Attach Files", :frame=>frame)
-    button(:add_another_file, :value=>"Add another file", :frame=>frame)
-  end
+
+  element(:to_user) { |b| b.frm.select(:name=>"toUsername") }
+  element(:subject) { |b| b.frm.text_field(:id=>"subject") }
+  action(:attach_files) { |b| b.frm.button(:value=>"Attach Files").click }
+  action(:add_another_file) { |b| b.frm.button(:value=>"Add another file").click }
+
   
 end
 
 # The page that appears when you've done something in discussions, like
 # sent a Private Message.
-class Information
-  
-  include PageObject
-  include ToolsMenu
+class Information < BasePage
+
+  frame_element
   include JForumsResources
 
   # Gets the information message on the page.
@@ -724,21 +677,14 @@ class Information
 end
 
 
-
-
-
-
-
-
 #================
 # Feedback pages
 #================
 
 # 
-class Feedback
-  
-  include PageObject
-  include ToolsMenu
+class Feedback < BasePage
+
+  frame_element
   
   def add
     frm.link(:text=>"Add").click
@@ -756,20 +702,16 @@ class Feedback
     return items
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
 end
 
 # 
-class AddUpdateFeedback
-  
-  include PageObject
-  include ToolsMenu
+class AddUpdateFeedback < BasePage
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"_idJsp1:title", :frame=>frame)
-  end
+  frame_element
+
+  
+  element(:title) { |b| b.frm.text_field(:id=>"_idJsp1:title") }
+
 end
 
 
@@ -779,10 +721,9 @@ end
 #================
 
 # The topmost page of Forms in a Portfolio Site.
-class Forms
-  
-  include PageObject
-  include ToolsMenu
+class Forms < BasePage
+
+  frame_element
   
   # Clicks the Add button and instantiates
   # the AddForm Class.
@@ -807,10 +748,9 @@ class Forms
   
 end
 
-class ImportForms
-  
-  include PageObject
-  include ToolsMenu
+class ImportForms < BasePage
+
+  frame_element
   
   def import
     frm.button(:value=>"Import").click
@@ -824,24 +764,9 @@ class ImportForms
   
 end
 
-class AttachFileFormImport < AddFiles
-  
-  include ToolsMenu
-  
-  def initialize(browser)
-    @browser = browser
-    @@classes = {
-      :this => "AttachFileFormImport",
-      :parent => "ImportForms"
-    }
-  end
+class AddForm < BasePage
 
-end
-
-class AddForm
-  
-  include PageObject
-  include ToolsMenu
+  frame_element
   
   def select_schema_file
     frm.link(:text=>"Select Schema File").click
@@ -857,16 +782,14 @@ class AddForm
     Forms.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:name, :id=>"description-id", :frame=>frame)
+  element(:name) { |b| b.frm.text_field(:id=>"description-id") }
     
-  end
+
 end
 
-class SelectSchemaFile
-  
-  include PageObject
-  include ToolsMenu
+class SelectSchemaFile < BasePage
+
+  frame_element
   
   def show_other_sites
     frm.link(:title=>"Show other sites").click
@@ -903,10 +826,9 @@ class SelectSchemaFile
 
 end
 
-class PublishForm
-  
-  include PageObject
-  include ToolsMenu
+class PublishForm < BasePage
+
+  frame_element
   
   def yes
     frm.button(:value=>"Yes").click
@@ -920,11 +842,10 @@ end
 # Glossary Pages - for a Portfolio Site
 #================
 
-class Glossary
-  
-  include PageObject
-  include ToolsMenu
-  
+class Glossary < BasePage
+
+  frame_element
+
   def add
     frm.link(:text=>"Add").click
     frm.frame(:id, "longDescription___Frame").td(:id, "xEditingArea").wait_until_present
@@ -965,10 +886,9 @@ class Glossary
 
 end
 
-class AddEditTerm
-  
-  include PageObject
-  include ToolsMenu
+class AddEditTerm < BasePage
+
+  frame_element
   
   def add_term
     frm.button(:value=>"Add Term").click
@@ -984,17 +904,16 @@ class AddEditTerm
     frm.frame(:id, "longDescription___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:term, :id=>"term-id", :frame=>frame)
-    text_area(:short_description, :id=>"description-id", :frame=>frame)
-  end
+
+  element(:term) { |b| b.frm.text_field(:id=>"term-id") }
+  element(:short_description) { |b| b.frm.text_field(:id=>"description-id") }
+
 end
 
 # Page for importing Glossary files into a Glossary
-class GlossaryImport
-  
-  include PageObject
-  include ToolsMenu
+class GlossaryImport < BasePage
+
+  frame_element
   
   def select_file
     frm.link(:text=>"Select file...").click
@@ -1009,9 +928,9 @@ class GlossaryImport
 end
 
 # The file upload page for Glossary importing
-class GlossaryFileUpload
-  
-  include ToolsMenu
+class GlossaryFileUpload < BasePage
+
+  frame_element
     
   @@filex=0
   
@@ -1037,38 +956,14 @@ class GlossaryFileUpload
   
 end
 
-# Page for uploading or grabbing files that will be imported to the Glossary.
-class GlossaryAttach < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-    
-    @@classes = {
-      :this => "GlossaryAttach",
-      :parent => "GlossaryImport",
-      :upload_files => "GlossaryFileUpload",
-      :create_folders => "",
-      :file_details => ""
-    }
-  end
-  
-end
-
-
-
-
-
 #================
 # Matrix Pages for a Portfolio Site
 #================
 
 # 
-class Matrices
-  
-  include PageObject
-  include ToolsMenu
+class Matrices < BasePage
+
+  frame_element
   
   # Clicks the Add link and instantiates
   # the AddEditMatrix Class.
@@ -1097,16 +992,13 @@ class Matrices
     ConfirmPublishMatrix.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
+
 end
 
 # 
-class AddEditMatrix
-  
-  include PageObject
-  include ToolsMenu
+class AddEditMatrix < BasePage
+
+  frame_element
   
   # Clicks the "Create Matrix" button and
   # instantiates the Matrices Class.
@@ -1143,16 +1035,15 @@ class AddEditMatrix
     AddEditRow.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"title-id", :frame=>frame)
-  end
+  
+  element(:title) { |b| b.frm.text_field(:id=>"title-id") }
+
 end
 
 # 
-class SelectMatrixStyle
-  
-  include PageObject
-  include ToolsMenu
+class SelectMatrixStyle < BasePage
+
+  frame_element
   
   # Clicks the "Go Back" button and
   # instantiates the AddEditMatrix Class.
@@ -1171,10 +1062,9 @@ class SelectMatrixStyle
 end
 
 # 
-class AddEditColumn
-  
-  include PageObject
-  include ToolsMenu
+class AddEditColumn < BasePage
+
+  frame_element
   
   # Clicks the "Update" button, then
   # instantiates the AddEditMatrix Class.
@@ -1183,16 +1073,15 @@ class AddEditColumn
     AddEditMatrix.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :name=>"description", :frame=>frame)
-  end
+  
+  element(:name) { |b| b.frm.text_field(:name=>"description") }
+
 end
 
 # 
-class AddEditRow
-  
-  include PageObject
-  include ToolsMenu
+class AddEditRow < BasePage
+
+  frame_element
   
   # Clicks the "Update" button, then
   # instantiates the AddEditMatrix Class.
@@ -1201,18 +1090,17 @@ class AddEditRow
     AddEditMatrix.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :name=>"description", :frame=>frame)
-    text_field(:background_color, :id=>"color-id", :frame=>frame)
-    text_field(:font_color, :id=>"textColor-id", :frame=>frame)
-  end
+  
+  element(:name) { |b| b.frm.text_field(:name=>"description") }
+  element(:background_color) { |b| b.frm.text_field(:id=>"color-id") }
+  element(:font_color) { |b| b.frm.text_field(:id=>"textColor-id") }
+
 end
 
 #
-class EditMatrixCells
-  
-  include PageObject
-  include ToolsMenu
+class EditMatrixCells < BasePage
+
+  frame_element
   
   # Clicks on the cell that is specified, based on
   # the row number, then the column number.
@@ -1239,10 +1127,9 @@ class EditMatrixCells
 end
 
 # 
-class EditCell
-  
-  include PageObject
-  include ToolsMenu
+class EditCell < BasePage
+
+  frame_element
 
   thing(:select_evaluators_link) { |b| b.frm.link(:text=>"Select Evaluators") }
 
@@ -1261,23 +1148,22 @@ class EditCell
     EditMatrixCells.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"title-id", :frame=>frame)
-    checkbox(:use_default_reflection_form, :id=>"defaultReflectionForm", :frame=>frame)
-    select_list(:reflection, :id=>"reflectionDevice-id", :frame=>frame)
-    checkbox(:use_default_feedback_form, :id=>"defaultFeedbackForm", :frame=>frame)
-    select_list(:feedback, :id=>"reviewDevice-id", :frame=>frame)
-    checkbox(:use_default_evaluation_form, :id=>"defaultEvaluationForm", :frame=>frame)
-    select_list(:evaluation, :id=>"evaluationDevice-id", :frame=>frame)
-    checkbox(:use_default_evaluators, :id=>"defaultEvaluators", :frame=>frame)
-  end
+  
+  element(:title) { |b| b.frm.text_field(:id=>"title-id") }
+  element(:use_default_reflection_form) { |b| b.frm.checkbox(:id=>"defaultReflectionForm") }
+  element(:reflection) { |b| b.frm.select(:id=>"reflectionDevice-id") }
+  element(:use_default_feedback_form) { |b| b.frm.checkbox(:id=>"defaultFeedbackForm") }
+  element(:feedback) { |b| b.frm.select(:id=>"reviewDevice-id") }
+  element(:use_default_evaluation_form) { |b| b.frm.checkbox(:id=>"defaultEvaluationForm") }
+  element(:evaluation) { |b| b.frm.select(:id=>"evaluationDevice-id") }
+  element(:use_default_evaluators) { |b| b.frm.checkbox(:id=>"defaultEvaluators") }
+
 end
 
 # 
-class SelectEvaluators
-  
-  include PageObject
-  include ToolsMenu
+class SelectEvaluators < BasePage
+
+  frame_element
   
   # Clicks the "Save" button and
   # instantiates the EditCell Class.
@@ -1286,22 +1172,22 @@ class SelectEvaluators
     EditCell.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:users, :id=>"mainForm:availableUsers", :frame=>frame)
-    select_list(:selected_users, :id=>"mainForm:selectedUsers", :frame=>frame)
-    select_list(:roles, :id=>"mainForm:audSubV11:availableRoles", :frame=>frame)
-    select_list(:selected_roles, :id=>"mainForm:audSubV11:selectedRoles", :frame=>frame)
-    button(:add_users, :id=>"mainForm:add_user_button", :frame=>frame)
-    button(:remove_users, :id=>"mainForm:remove_user_button", :frame=>frame)
-    button(:add_roles, :id=>"mainForm:audSubV11:add_role_button", :frame=>frame)
-    button(:remove_roles, :id=>"mainForm:audSubV11:remove_role_button", :frame=>frame)
-  end
+  
+  element(:users) { |b| b.frm.select(:id=>"mainForm:availableUsers") }
+  element(:selected_users) { |b| b.frm.select(:id=>"mainForm:selectedUsers") }
+  element(:roles) { |b| b.frm.select(:id=>"mainForm:audSubV11:availableRoles") }
+  element(:selected_roles) { |b| b.frm.select(:id=>"mainForm:audSubV11:selectedRoles") }
+  action(:add_users) { |b| b.frm.button(:id=>"mainForm:add_user_button").click }
+  action(:remove_users) { |b| b.frm.button(:id=>"mainForm:remove_user_button").click }
+  action(:add_roles) { |b| b.frm.button(:id=>"mainForm:audSubV11:add_role_button").click }
+  action(:remove_roles) { |b| b.frm.button(:id=>"mainForm:audSubV11:remove_role_button").click }
+
 end
 
 # 
-class ConfirmPublishMatrix
+class ConfirmPublishMatrix < BasePage
 
-  include ToolsMenu
+  frame_element
   
   # Clicks the "Continue" button and
   # instantiates the Matrices Class.
@@ -1318,34 +1204,25 @@ end
 #================
 
 # 
-class MediaGallery
-  
-  include PageObject
-  include ToolsMenu
+class MediaGallery < BasePage
 
-  in_frame(:class=>"portletMainIframe") do |frame|
+  frame_element
+
+  
     
-  end
+
 end
 
 
 
-
-
-
-
-
-
-
-#================
+#===============
 # Podcast pages
 #================
 
 # 
-class Podcasts
-  
-  include PageObject
-  include ToolsMenu
+class Podcasts < BasePage
+
+  frame_element
   
   def add
     frm.link(:text=>"Add").click
@@ -1362,9 +1239,8 @@ class Podcasts
     return titles
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
+  
+
 end
 
 #================
@@ -1372,10 +1248,9 @@ end
 #================
 
 # 
-class Portfolios
-  
-  include PageObject
-  include ToolsMenu
+class Portfolios < BasePage
+
+  frame_element
   
   def create_new_portfolio
     frm.link(:text=>"Create New Portfolio").click
@@ -1395,52 +1270,48 @@ class Portfolios
     frm.table(:class=>"listHier ospTable").row(:text=>/#{Regexp.escape(portfolio_name)}/)[5].text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
+  
+
 end
 
 # 
-class AddPortfolio
-  
-  include PageObject
-  include ToolsMenu
+class AddPortfolio < BasePage
+
+  frame_element
   
   def create
     frm.button(:value=>"Create").click
     EditPortfolio.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :name=>"presentationName", :frame=>frame)
-    radio_button(:design_your_own_portfolio, :id=>"templateId-freeForm", :frame=>frame)
-  end
+  
+  element(:name) { |b| b.frm.text_field(:name=>"presentationName") }
+  element(:design_your_own_portfolio) { |b| b.frm.radio(:id=>"templateId-freeForm") }
+
 end
 
 # 
-class EditPortfolio
-  
-  include PageObject
-  include ToolsMenu
-  
+class EditPortfolio < BasePage
+
+  frame_element
+
   def add_edit_content
     frm.link(:text=>"Add/Edit Content").click
     AddEditPortfolioContent.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:edit_title, :text=>"Edit Title", :frame=>frame)
-    link(:save_changes, :text=>"Save Changes", :frame=>frame)
-    radio_button(:active, :id=>"btnActive", :frame=>frame)
-    radio_button(:inactive, :id=>"btnInactive", :frame=>frame)
-  end
+  
+  action(:edit_title) { |b| b.frm.link(:text=>"Edit Title").click }
+  action(:save_changes) { |b| b.frm.link(:text=>"Save Changes").click }
+  element(:active) { |b| b.frm.radio(:id=>"btnActive") }
+  element(:inactive) { |b| b.frm.radio(:id=>"btnInactive") }
+
 end
 
 # 
-class AddEditPortfolioContent
-  
-  include PageObject
-  include ToolsMenu
+class AddEditPortfolioContent < BasePage
+
+  frame_element
   
   def add_page
     frm.link(:text=>"Add Page").click
@@ -1452,16 +1323,15 @@ class AddEditPortfolioContent
     SharePortfolio.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:save_changes, :value=>"Save Changes", :frame=>frame)
-  end
+  
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
+
 end
 
 # 
-class AddEditPortfolioPage
-  
-  include PageObject
-  include ToolsMenu
+class AddEditPortfolioPage < BasePage
+
+  frame_element
   
   def add_page
     frm.button(:value=>"Add Page").click
@@ -1484,19 +1354,18 @@ class AddEditPortfolioPage
     frm.frame(:id, "_id1:arrange:_id49_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"_id1:title", :frame=>frame)
-    text_area(:description, :id=>"_id1:description", :frame=>frame)
-    text_area(:keywords, :id=>"_id1:keywords", :frame=>frame)
+  
+  element(:title) { |b| b.frm.text_field(:id=>"_id1:title") }
+  element(:description) { |b| b.frm.text_field(:id=>"_id1:description") }
+  element(:keywords) { |b| b.frm.text_field(:id=>"_id1:keywords") }
     
-  end
+
 end
 
 # 
-class ManagePortfolioLayouts
-  
-  include PageObject
-  include ToolsMenu
+class ManagePortfolioLayouts < BasePage
+
+  frame_element
 
   def select(layout_name)
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(layout_name)}/).link(:text=>"Select").click
@@ -1508,16 +1377,12 @@ class ManagePortfolioLayouts
     AddEditPortfolioPage.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
 end
 
 #
-class SharePortfolio
-  
-  include PageObject
-  include ToolsMenu
+class SharePortfolio < BasePage
+
+  frame_element
   
   def click_here_to_share_with_others
     frm.link(:text=>"Click here to share with others").click
@@ -1529,20 +1394,16 @@ class SharePortfolio
     EditPortfolio.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:everyone_on_the_internet, :id=>"public_checkbox", :frame=>frame)
-  end
+  
+  element(:everyone_on_the_internet) { |b| b.frm.checkbox(:id=>"public_checkbox") }
+
 end
 
 # 
-class AddPeopleToShare
-  
-  include PageObject
-  include ToolsMenu
+class AddPeopleToShare < BasePage
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
-  end
+  frame_element
+
 end
 
 
@@ -1551,10 +1412,9 @@ end
 #================
 
 # 
-class PortfolioTemplates
-  
-  include PageObject
-  include ToolsMenu
+class PortfolioTemplates < BasePage
+
+  frame_element
   
   # Clicks the Add link and instantiates the
   # AddPortfolioTemplate class.
@@ -1591,10 +1451,9 @@ class PortfolioTemplates
 end
 
 # 
-class AddPortfolioTemplate
-  
-  include PageObject
-  include ToolsMenu
+class AddPortfolioTemplate < BasePage
+
+  frame_element
   
   # Clicks the Continue button and instantiates the BuildTemplate Class.
   def continue
@@ -1602,18 +1461,16 @@ class AddPortfolioTemplate
     BuildTemplate.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:name, :id=>"name-id", :frame=>frame)
-    text_area(:description, :id=>"description", :frame=>frame)
+  element(:name) { |b| b.frm.text_field(:id=>"name-id") }
+  element(:description) { |b| b.frm.text_field(:id=>"description") }
     
-  end
+
 end
 
 #
-class BuildTemplate
-  
-  include PageObject
-  include ToolsMenu
+class BuildTemplate < BasePage
+
+  frame_element
   
   # Clicks the Select File link and instantiates the
   # PortfolioAttachFiles Class.
@@ -1629,16 +1486,14 @@ class BuildTemplate
     PortfolioContent.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    select_list(:outline_options_form_type, :id=>"propertyFormType-id", :frame=>frame)
-  end
+  element(:outline_options_form_type) { |b| b.frm.select(:id=>"propertyFormType-id") }
+
 end
 
 #
-class PortfoliosUploadFiles # TODO - This class is not DRY. Identical methods in multiple classes
+class PortfoliosUploadFiles < BasePage # TODO - This class is not DRY. Identical methods in multiple classes
   
-  include PageObject
-  include ToolsMenu
+  frame_element
   
   @@filex=0
   
@@ -1668,10 +1523,9 @@ class PortfoliosUploadFiles # TODO - This class is not DRY. Identical methods in
 end
 
 # 
-class PortfolioContent
-  
-  include PageObject
-  include ToolsMenu
+class PortfolioContent < BasePage
+
+  frame_element
 
   # Clicks the Continue button and instantiates the
   # SupportingFilesPortfolio Class.
@@ -1680,21 +1534,20 @@ class PortfolioContent
     SupportingFilesPortfolio.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    select_list(:type, :id=>"item.type", :frame=>frame)
-    text_field(:name, :id=>"item.name-id", :frame=>frame)
-    text_field(:title, :id=>"item.title-id", :frame=>frame)
-    text_area(:description, :id=>"item.description-id", :frame=>frame)
-    button(:add_to_list, :value=>"Add To List", :frame=>frame)
-    checkbox(:image, :id=>"image-id", :frame=>frame)
-  end
+
+  element(:type) { |b| b.frm.select(:id=>"item.type") }
+  element(:name) { |b| b.frm.text_field(:id=>"item.name-id") }
+  element(:title) { |b| b.frm.text_field(:id=>"item.title-id") }
+  element(:description) { |b| b.frm.text_field(:id=>"item.description-id") }
+  action(:add_to_list) { |b| b.frm.button(:value=>"Add To List").click }
+  element(:image) { |b| b.frm.checkbox(:id=>"image-id") }
+
 end
 
 # 
-class SupportingFilesPortfolio
-  
-  include PageObject
-  include ToolsMenu
+class SupportingFilesPortfolio < BasePage
+
+  frame_element
   
   # Clicks the Finish button and instantiates
   # the PortfolioTemplates Class.
@@ -1710,30 +1563,10 @@ class SupportingFilesPortfolio
     PortfolioAttachFiles.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    button(:add_to_list, :value=>"Add To List", :frame=>frame)
-    text_field(:name, :id=>"fileRef.usage-id", :frame=>frame)
-  end
-end
 
-# 
-class PortfolioAttachFiles < AddFiles
+  action(:add_to_list) { |b| b.frm.button(:value=>"Add To List").click }
+  element(:name) { |b| b.frm.text_field(:id=>"fileRef.usage-id") }
 
-  include ToolsMenu
-  
-  def initialize(browser)
-    @browser = browser
-    
-    @@classes = {
-      :this =>          "PortfolioAttachFiles",
-      :parent =>        "BuildTemplate",
-      :second =>        "SupportingFilesPortfolio",
-      :upload_files =>  "PortfoliosUploadFiles",
-      :create_folders =>"",
-      :file_details =>  ""
-    }
-  end
-  
 end
 
 
@@ -1742,10 +1575,9 @@ end
 #================
 
 # 
-class Roster
-  
-  include PageObject
-  include ToolsMenu
+class Roster < BasePage
+
+  frame_element
 
   def find
     frm.button(:value=>"Find").click
@@ -1770,17 +1602,15 @@ class Roster
     RosterProfileView.new @browser
   end 
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name_or_id, :id=>"roster_form:search", :frame=>frame)
-    
-  end
+  
+  element(:name_or_id) { |b| b.frm.text_field(:id=>"roster_form:search") }
+
 end
 
 #
-class RosterProfileView
-  
-  include PageObject
-  include ToolsMenu
+class RosterProfileView < BasePage
+
+  frame_element
     
   def back
     frm.button(:value=>"Back").click
@@ -1816,10 +1646,9 @@ end
 #================
 
 # 
-class Styles
-  
-  include PageObject
-  include ToolsMenu
+class Styles < BasePage
+
+  frame_element
   
   # Clicks the Add link and
   # instantiates the AddStyle Class.
@@ -1828,16 +1657,12 @@ class Styles
     AddStyle.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    
-  end
 end
 
 # 
-class AddStyle
-  
-  include PageObject
-  include ToolsMenu
+class AddStyle < BasePage
+
+  frame_element
   
   # Clicks the Add Style button and
   # instantiates the Styles Class.
@@ -1853,17 +1678,15 @@ class AddStyle
     StylesAddAttachment.new(@browser)
   end
 
-  in_frame(:index=>1) do |frame|
-    text_field(:name, :id=>"name-id", :frame=>frame)
-    text_area(:description, :id=>"descriptionTextArea", :frame=>frame)
-    
-  end
+  element(:name) { |b| b.frm.text_field(:id=>"name-id") }
+  element(:description) { |b| b.frm.text_field(:id=>"descriptionTextArea") }
+
 end
 
-# 
-class StylesUploadFiles
-  
-  include ToolsMenu
+# TODO Dry this up because there can be a superclass here
+class StylesUploadFiles < BasePage
+
+  frame_element
   
   @@filex=0
   
@@ -1892,22 +1715,5 @@ class StylesUploadFiles
   
 end
 
-# 
-class StylesAddAttachment < AddFiles
 
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-    
-    @@classes = {
-      :this => "StylesAddAttachment",
-      :parent => "AddStyle",
-      :upload_files => "StylesUploadFiles",
-      :create_folders => "",
-      :file_details => ""
-    }
-  end
-  
-end
 

@@ -3,9 +3,10 @@
 #================
 
 # The topmost page in a Site's Gradebook
-class Gradebook
-  include PageObject
-  include ToolsMenu
+class Gradebook < BasePage
+
+  frame_element
+
   def items_titles
     titles = []
     items_table = frm.table(:class=>"listHier lines nolines")

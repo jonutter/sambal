@@ -1,6 +1,7 @@
-class Messages
-  include PageObject
-  include ToolsMenu
+class Messages < BasePage
+
+  frame_element
+
   # Clicks the Compose Message button,
   # then instantiates the
   # ComposeMessage class.
@@ -75,9 +76,10 @@ class Messages
   end
 end
 
-class MessagesSentList
-  include PageObject
-  include ToolsMenu
+class MessagesSentList < BasePage
+
+  frame_element
+
   # Clicks the "Messages" breadcrumb link to return
   # to the top level of Messages. Then instantiates
   # the Messages class.
@@ -121,14 +123,14 @@ class MessagesSentList
     frm.span(:class=>"success").text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:check_all, :text=>"Check All", :frame=>frame)
-  end
+  action(:check_all) { |b| b.frm.link(:text=>"Check All").click }
+
 end
 
-class MessagesReceivedList
-  include PageObject
-  include ToolsMenu
+class MessagesReceivedList < BasePage
+
+  frame_element
+
   # Returns a string consisting of the content of the
   # page header--or "breadcrumb", as it's called.
   def header
@@ -208,18 +210,17 @@ class MessagesReceivedList
     MoveMessageTo.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:view, :id=>"prefs_pvt_form:viewlist", :frame=>frame)
-    link(:check_all, :text=>"Check All", :frame=>frame)
-    link(:delete, :text=>"Delete", :frame=>frame)
+  element(:view) { |b| b.frm.select(:id=>"prefs_pvt_form:viewlist") }
+  action(:check_all) { |b| b.frm.link(:text=>"Check All").click }
+  action(:delete) { |b| b.frm.link(:text=>"Delete").click }
 
-  end
 end
 
 # Page for the Contents of a Custom Folder for Messages
-class FolderList #FIXME
-  include PageObject
-  include ToolsMenu
+class FolderList < BasePage
+
+  frame_element
+
   def compose_message
     frm.link(:text=>"Compose Message").click
     ComposeMessage.new(@browser)
@@ -289,19 +290,18 @@ class FolderList #FIXME
     MoveMessageTo.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:view, :id=>"prefs_pvt_form:viewlist", :frame=>frame)
-    link(:check_all, :text=>"Check All", :frame=>frame)
-    link(:delete, :text=>"Delete", :frame=>frame)
+  element(:view) { |b| b.frm.select(:id=>"prefs_pvt_form:viewlist") }
+  action(:check_all) { |b| b.frm.link(:text=>"Check All").click }
+  action(:delete) { |b| b.frm.link(:text=>"Delete").click }
 
-  end
 end
 
 # Page that appears when you want to move a message
 # from one folder to another.
-class MoveMessageTo
-  include PageObject
-  include ToolsMenu
+class MoveMessageTo < BasePage
+
+  frame_element
+
   def move_messages
     frm.button(:value=>"Move Messages").click
     Messages.new(@browser)
@@ -315,19 +315,18 @@ class MoveMessageTo
     frm.radio(:index=>num.to_i+3).set
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    radio_button(:received, :name=>"pvtMsgMove:_id16:0:privateForums:0:_id19", :frame=>frame)
-    radio_button(:sent, :name=>"pvtMsgMove:_id16:0:privateForums:1:_id19", :frame=>frame)
-    radio_button(:deleted, :name=>"pvtMsgMove:_id16:0:privateForums:2:_id19", :frame=>frame)
-    radio_button(:draft, :name=>"pvtMsgMove:_id16:0:privateForums:3:_id19", :frame=>frame)
+  element(:received) { |b| b.frm.radio(:name=>"pvtMsgMove:_id16:0:privateForums:0:_id19") }
+  element(:sent) { |b| b.frm.radio(:name=>"pvtMsgMove:_id16:0:privateForums:1:_id19") }
+  element(:deleted) { |b| b.frm.radio(:name=>"pvtMsgMove:_id16:0:privateForums:2:_id19") }
+  element(:draft) { |b| b.frm.radio(:name=>"pvtMsgMove:_id16:0:privateForums:3:_id19") }
 
-  end
 end
 
 # The page showing the list of deleted messages.
-class MessagesDeletedList
-  include PageObject
-  include ToolsMenu
+class MessagesDeletedList < BasePage
+
+  frame_element
+
   # Returns a string consisting of the content of the
   # page header--or "breadcrumb", as it's called.
   def header
@@ -388,16 +387,15 @@ class MessagesDeletedList
     MessageDeleteConfirmation.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:check_all, :text=>"Check All", :frame=>frame)
+  action(:check_all) { |b| b.frm.link(:text=>"Check All").click }
 
-  end
 end
 
 # The page showing the list of Draft messages.
-class MessagesDraftList
-  include PageObject
-  include ToolsMenu
+class MessagesDraftList < BasePage
+
+  frame_element
+
   def compose_message
     frm.link(:text=>"Compose Message").click
     ComposeMessage.new(@browser)
@@ -413,16 +411,15 @@ class MessagesDraftList
     frm.span(:class=>"success").text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:check_all, :text=>"Check All", :frame=>frame)
+  action(:check_all) { |b| b.frm.link(:text=>"Check All").click }
 
-  end
 end
 
 # The Page where you are reading a Message.
-class MessageView
-  include PageObject
-  include ToolsMenu
+class MessageView < BasePage
+
+  frame_element
+
   # Returns the contents of the message body.
   def message_text
     frm.div(:class=>"textPanel").text
@@ -452,9 +449,10 @@ class MessageView
   end
 end
 
-class ComposeMessage
-  include PageObject
-  include ToolsMenu
+class ComposeMessage < BasePage
+
+  frame_element
+
   def send
     frm.button(:value=>"Send ").click
     Messages.new(@browser)
@@ -476,22 +474,21 @@ class ComposeMessage
     MessagesPreview.new(@browser)
   end
 
-  def save_draft
-    frm.button(:value=>"Save Draft").click
-    xxxxxxxxx.new(@browser) #FIXME
-  end
+  action(:save_draft) {|b| b.frm.button(:value=>"Save Draft").click }
+  element(:send_to) { |b| b.frm.select(:id=>"compose:list1") }
+  element(:send_cc) { |b| b.frm.checkbox(:id=>"compose:send_email_out") }
+  element(:subject) { |b| b.frm.text_field(:id=>"compose:subject") }
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:send_to, :id=>"compose:list1", :frame=>frame)
-    checkbox(:send_cc, :id=>"compose:send_email_out", :frame=>frame)
-    text_field(:subject, :id=>"compose:subject", :frame=>frame)
-
-  end
 end
 
-class ReplyToMessage
-  include PageObject
-  include ToolsMenu
+class ReplyToMessage < BasePage
+  include FCKEditor
+  frame_element
+
+  expected_element editor
+
+  element(:editor) { |b| b.frm.frame(:id, "pvtMsgReply:df_compose_body_inputRichText___Frame") }
+
   def send
     frm.button(:value=>"Send ").click
     # Need logic here to ensure the
@@ -504,8 +501,8 @@ class ReplyToMessage
   end
 
   def message_text=(text)
-    frm.frame(:id, "pvtMsgReply:df_compose_body_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(:home)
-    frm.frame(:id, "pvtMsgReply:df_compose_body_inputRichText___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(:home)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
   def add_attachments
@@ -518,23 +515,18 @@ class ReplyToMessage
     MessagesPreview.new(@browser)
   end
 
-  def save_draft
-    frm.button(:value=>"Save Draft").click
+  action(:save_draft) {|b| b.frm.button(:value=>"Save Draft").click }
+  element(:select_additional_recipients) { |b| b.frm.select(:id=>"compose:list1") }
+  element(:send_cc) { |b| b.frm.checkbox(:id=>"compose:send_email_out") }
+  element(:subject) { |b| b.frm.text_field(:id=>"compose:subject") }
 
-  end
-
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:select_additional_recipients, :id=>"compose:list1", :frame=>frame)
-    checkbox(:send_cc, :id=>"compose:send_email_out", :frame=>frame)
-    text_field(:subject, :id=>"compose:subject", :frame=>frame)
-
-  end
 end
 
 # The page for composing a message
-class ForwardMessage
-  include PageObject
-  include ToolsMenu
+class ForwardMessage < BasePage
+
+  frame_element
+
   def send
     frm.button(:value=>"Send ").click
     MessagesReceivedList.new(@browser) #FIXME!
@@ -555,28 +547,21 @@ class ForwardMessage
     MessagesPreview.new(@browser)
   end
 
-  def save_draft
-    frm.button(:value=>"Save Draft").click
-    xxxxxxxxx.new(@browser) #FIXME
-  end
+  action(:save_draft) {|b| b.frm.button(:value=>"Save Draft").click }
+  element(:select_forward_recipients) { |b| b.frm.select(:id=>"pvtMsgForward:list1") }
+  element(:send_cc) { |b| b.frm.checkbox(:id=>"compose:send_email_out") }
+  element(:subject) { |b| b.frm.text_field(:id=>"compose:subject") }
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:select_forward_recipients, :id=>"pvtMsgForward:list1", :frame=>frame)
-    checkbox(:send_cc, :id=>"compose:send_email_out", :frame=>frame)
-    text_field(:subject, :id=>"compose:subject", :frame=>frame)
-
-  end
 end
 
 # The page that appears when you select to
 # Delete a message that is already inside
 # the Deleted folder.
-class MessageDeleteConfirmation
-  include PageObject
-  include ToolsMenu
-  def alert_message_text
-    frm.span(:class=>"alertMessage").text
-  end
+class MessageDeleteConfirmation < BasePage
+
+  frame_element
+
+  value(:alert_message_text) { |b| b.frm.span(:class=>"alertMessage").text }
 
   def delete_messages
     frm.button(:value=>"Delete Message(s)").click
@@ -589,24 +574,23 @@ class MessageDeleteConfirmation
 end
 
 # The page for creating a new folder for Messages
-class MessagesNewFolder
-  include PageObject
-  include ToolsMenu
+class MessagesNewFolder < BasePage
+
+  frame_element
+
   def add
     frm.button(:value=>"Add").click
     Messages.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"pvtMsgFolderAdd:title", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"pvtMsgFolderAdd:title") }
 
-  end
 end
 
 # The page for editing a Message Folder's settings
-class MessageFolderSettings
-  include PageObject
-  include ToolsMenu
+class MessageFolderSettings < BasePage
+
+  frame_element
 
   def rename_folder
     frm.button(:value=>"Rename Folder").click
@@ -626,30 +610,13 @@ class MessageFolderSettings
 end
 
 # Page that confirms you want to delete the custom messages folder.
-class FolderDeleteConfirm
-  include PageObject
-  include ToolsMenu
+class FolderDeleteConfirm < BasePage
+
+  frame_element
 
   def delete
     frm.button(:value=>"Delete").click
     Messages.new(@browser)
-  end
-
-end
-
-# The attachment page for Messages
-class MessagesAttachment < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @@classes = {
-        :this => "MessagesAttachment",
-        :parent => "ComposeMessage",
-        :second => "ReplyToMessage"
-    }
   end
 
 end

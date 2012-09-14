@@ -35,14 +35,14 @@ class Aliases < BasePage
 
   frame_element
 
-element(:new_alias) { |b| b.frm.link(:text=>"New Alias") }
-  text_field(:search_field, :id=>"search")
-  action(:search_button) { |b| b.frm.link(:text=>"Search").click }
-element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
-  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  button(:previous) { |b| b.frm.button(name=>"eventSubmit_doList_prev").click }
-  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  action(:new_alias) { |b| b.frm.link(:text=>"New Alias").click }
+  action(:search_button) { |b| b.frm.button(:text=>"Search").click }
+  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
 
 end
 
@@ -51,11 +51,10 @@ class AliasesCreate < BasePage
 
   frame_element
 
-
-  text_field(:alias_name, :id=>"id")
-  text_field(:target, :id=>"target")
-  button(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
-  button(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
+  element(:alias_name) { |b| b.frm.text_field(:id=>"id") }
+  element(:target) { |b| b.frm.text_field(:id=>"target") }
+  action(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
+  action(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
 
 end
 
@@ -63,13 +62,15 @@ end
 class EditAlias < BasePage
 
   frame_element
-
+  
   action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias").click }
-  text_field(:target, :id=>"target")
-  button(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
-  button(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
+  element(:target) { |b| b.frm.text_field(:id=>"target") }
+  action(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
+  action(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }  
+  element(:target) { |b| b.frm.text_field(:id=>"target") }
+    
+  end
 
-end
 
 
 #================
@@ -174,13 +175,14 @@ class Realms < BasePage
 
   action(:new_realm) { |b| b.frm.link(:text=>"New Realm").click }
   action(:search) { |b| b.frm.link(:text=>"Search").click }
-  select_list(:select_page_size, :name=>"selectPageSize")
-  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
-
-end
+  element(:select_page_size) { |b| b.frm.select_list(:name=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  
+    
+  end
 
 #================
 # Sections - Site Management
@@ -194,22 +196,20 @@ class AddSections < BasePage
   action(:overview) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp3").click }
   action(:student_memberships) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp12").click }
   action(:options) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp17").click }
-  select_list(:num_to_add, :id=>"addSectionsForm:numToAdd")
-  select_list(:category, :id=>"addSectionsForm:category")
-  button(:add_sections, :id=>"addSectionsForm:_idJsp89").click }
-  button(:cancel, :id=>"addSectionsForm:_idJsp90").click }
-
-
+  element(:num_to_add) { |b| b.frm.select_list(:id=>"addSectionsForm:numToAdd") }
+  element(:category) { |b| b.frm.select_list(:id=>"addSectionsForm:category") }
+  action(:add_sections) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp89").click }
+  action(:cancel) { |b| b.frm.button(:id=>"addSectionsForm:_idJsp90").click }
     # Note that the following field definitions are appropriate for
     # ONLY THE FIRST instance of each of the fields. The Add Sections page
     # allows for an arbitrary number of these fields to exist.
     # If you are going to test the addition of multiple sections
     # and/or meetings, then their elements will have to be
     # explicitly called or defined in the test scripts themselves.
-  text_field(:name, :id=>"addSectionsForm:sectionTable:0:titleInput")
-  radio_button(:unlimited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>0)
-  radio_button(:limited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>1)
-  text_field(:max_enrollment, :id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput")
+  element(:name) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:titleInput") }
+  element(:unlimited_size) { |b| b.frm.radio(:name=>"addSectionsForm:sectionTable:0:limit") }
+  element(:limited_size) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:limit") }
+  element(:max_enrollment) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput") }
   checkbox(:monday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:monday")
   checkbox(:tuesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:tuesday")
   checkbox(:wednesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:wednesday")
@@ -217,15 +217,15 @@ class AddSections < BasePage
   checkbox(:friday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:friday")
   checkbox(:saturday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:saturday")
   checkbox(:sunday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:sunday")
-  text_field(:start_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime")
-  radio_button(:start_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0)
-  radio_button(:start_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1)
-  text_field(:end_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime")
-  radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0)
-  radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1)
-  text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location")
+  element(:start_time) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime") }
+  element(:start_am) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm") }
+  element(:start_pm) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm") }
+  element(:end_time) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime") }
+  element(:end_am) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm") }
+  element(:end_pm) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm") }
+  element(:location) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location")  }
   action(:add_days) { |b| b.frm.link(:id=>"addSectionsForm:sectionTable:0:addMeeting").click }
-
+    
   end
 
 
@@ -237,21 +237,20 @@ class EditSections < BasePage
   action(:overview) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp3").click }
   action(:student_memberships) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp12").click }
   action(:options) { |b| b.frm.link(:id=>"editSectionsForm:_idJsp17").click }
-  select_list(:num_to_add, :id=>"editSectionsForm:numToAdd")
-  select_list(:category, :id=>"editSectionsForm:category")
-  button(:add_sections) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp89").click }
-  button(:cancel) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp90").click }
-
+  element(:num_to_add) { |b| b.frm.select_list(:id=>"editSectionsForm:numToAdd") }
+  element(:category) { |b| b.frm.select_list(:id=>"editSectionsForm:category") }
+  action(:add_sections) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp89").click }
+  action(:cancel) { |b| b.frm.button(:id=>"editSectionsForm:_idJsp90").click }
   # Note that the following field definitions are appropriate for
   # ONLY THE FIRST instance of each of the fields. The Edit Sections page
   # allows for an arbitrary number of these fields to exist.
   # If you are going to test the editing of multiple sections
   # and/or meetings, then their elements will have to be
   # explicitly called or defined in the test scripts themselves.
-  text_field(:name, :id=>"editSectionsForm:sectionTable:0:titleInput")
-  radio_button(:unlimited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>0)
-  radio_button(:limited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>1)
-  text_field(:max_enrollment, :id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput")
+  element(:name) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:titleInput") }
+  element(:unlimited_size) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:limit") }
+  element(:limited_size) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:limit") }
+  element(:max_enrollment) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput") }
   checkbox(:monday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:monday")
   checkbox(:tuesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:tuesday")
   checkbox(:wednesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:wednesday")
@@ -259,13 +258,13 @@ class EditSections < BasePage
   checkbox(:friday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:friday")
   checkbox(:saturday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:saturday")
   checkbox(:sunday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:sunday")
-  text_field(:start_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime")
-  radio_button(:start_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0)
-  radio_button(:start_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1)
-  text_field(:end_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime")
-  radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0)
-  radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1)
-  text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location")
+  element(:start_time) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime") }
+  element(:start_am) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm") }
+  element(:start_pm) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm") }
+  element(:end_time) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime") }
+  element(:end_am) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm") }
+  element(:end_pm) { |b| b.frm.select_list(:name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm") }
+  element(:location) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location") }
   action(:add_days) { |b| b.frm.link(:id=>"editSectionsForm:sectionTable:0:addMeeting").click }
 
   end
@@ -278,11 +277,12 @@ class SectionsOptions < BasePage
 
   checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister")
   checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch")
-  button(:update) { |b| b.frm.button(:id=>"optionsForm:_idJsp50").click }
-  button(:cancel) { |b| b.frm.button(:id=>"optionsForm:_idJsp51").click }
+  action(:update) { |b| b.frm.button(:id=>"optionsForm:_idJsp50").click }
+  action(:cancel) { |b| b.frm.button(:id=>"optionsForm:_idJsp51").click }
   action(:overview) { |b| b.frm.link(:id=>"optionsForm:_idJsp3").click }
   action(:add_sections) { |b| b.frm.link(:id=>"optionsForm:_idJsp8").click }
   action(:student_memberships) { |b| b.frm.link(:id=>"optionsForm:_idJsp12").click }
+  
 
   end
 
@@ -302,7 +302,7 @@ class SectionsOverview < BasePage
   action(:sort_time) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp83").click }
   action(:sort_location) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp88").click }
   action(:sort_current_size) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp93").click }
-  action(:sort_avail) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp97").click }
+  action(:sort_avail) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp97").click } 
 
   end
 
@@ -343,21 +343,22 @@ class Sites < BasePage
     EditSiteInfo.new(@browser)
   end
 
-  text_field(:search_field, :id=>"search")
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
   action(:search_button) { |b| b.frm.link(text=>"Search").click }
-  text_field(:search_site_id, :id=>"search_site")
+  element(:search_site_id) { |b| b.frm.text_field(:id=>"search_site") }
   action(:search_site_id_button) { |b| b.frm.link(text=>"Site ID").click }
-  text_field(:search_user_id, :id=>"search_user")
+  element(:search_user_id) { |b| b.frm.text_field(:id=>"search_user") }
   action(:search_user_id_button) { |b| b.frm.link(text=>"User ID").click }
-  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
-  select_list(:select_page_size, :name=>"selectPageSize")
-  button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  element(:select_page_size) { |b| b.frm.select_list(:name=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+
   end
 
 
@@ -420,18 +421,17 @@ class EditSiteInfo < BasePage
     AddEditPages.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    # Non-navigating, interactive page objects go here
-    text_field(:site_id, :id=>"id")
-    text_field(:title, :id=>"title")
-    text_field(:type, :id=>"type")
-    text_area(:short_description, :id=>"shortDescription")
-    radio_button(:unpublished, :id=>"publishedfalse")
-    radio_button(:published, :id=>"publishedtrue")
-    radio_button(:public_view_yes, :id=>"pubViewtrue")
+  # Non-navigating, interactive page objects go here
+  element(:site_id) { |b| b.frm.text_field(:id=>"id") }
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+  element(:type) { |b| b.frm.text_field(:id=>"type") }
+  text_area(:short_description, :id=>"shortDescription")
+  element(:unpublished) { |b| b.frm.select_list(:id=>"publishedfalse") }
+  element(:published) { |b| b.frm.select_list(:id=>"publishedtrue") }
+  element(:public_view_yes) { |b| b.frm.select_list(:id=>"pubViewtrue") }
   end
 
-end
+
 
 # The page you come to when editing a Site in Sites
 # and you click on the Pages button
@@ -460,13 +460,12 @@ class NewPage < BasePage
     AddEditTools.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title")
+    element(:title) { |b| b.frm.text_field(:id=>"title") }
   end
 
-end
+
 
 # Page when editing a Site and adding/editing tools for pages.
 class AddEditTools < BasePage
@@ -501,15 +500,13 @@ class NewTool < BasePage
     AddEditTools.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title")
-    text_field(:layout_hints, :id=>"layoutHints")
-    radio_button(:resources, :id=>"feature80")
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+  element(:layout_hints) { |b| b.frm.text_field(:id=>"layoutHints") }
+  element(:resources) { |b| b.frm.select_list(:id=>"feature80") }
   end
 
-end
 
 # Page that appears when you click "Remove Site" when editing a Site in Sites
 class RemoveSite < BasePage
@@ -523,7 +520,6 @@ class RemoveSite < BasePage
     Sites.new(@browser)
   end
 
-end
 
 # Page that appears when you click "Save As" when editing a Site in Sites
 class SiteSaveAs < BasePage
@@ -537,8 +533,7 @@ class SiteSaveAs < BasePage
     Sites.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:site_id, :id=>"id")
+    element(:site_id) { |b| b.frm.text_field(:id=>"id") }
   end
 
 end
@@ -567,11 +562,9 @@ class AddEditSiteProperties < BasePage
     Sites.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :id=>"new_name")
-    text_field(:value, :id=>"new_value")
+    element(:name) { |b| b.frm.text_field(:id=>"new_name") }
+    element(:value) { |b| b.frm.text_field(:id=>"new_value") }
   end
-end
 
 
 
@@ -602,16 +595,14 @@ class EditAccount < BasePage
     end
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:first_name, :id=>"first-name")
-    text_field(:last_name, :id=>"last-name")
-    text_field(:email, :id=>"email")
-    text_field(:current_password, :id=>"pwcur")
-    text_field(:create_new_password, :id=>"pw")
-    text_field(:verify_new_password, :id=>"pw0")
+  element(:first_name) { |b| b.frm.text_field(:id=>"first-name") }
+  element(:last_name) { |b| b.frm.text_field(:id=>"last-name") }
+  element(:email) { |b| b.frm.text_field(:id=>"email") }
+  element(:current_password) { |b| b.frm.text_field(:id=>"pwcur") }
+  element(:create_new_password) { |b| b.frm.text_field(:id=>"pw") }
+  element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
   end
 
-end
 
 # A Non-Admin User's Account page
 # Accessible via the "Account" link in "MY SETTINGS"
@@ -704,12 +695,13 @@ class EditUser < BasePage
   end
 
   action(:remove_user) { |b| b.frm.link(text=>"Remove User").click }
-  text_field(:first_name, :id=>"first-name")
-  text_field(:last_name, :id=>"last-name")
-  text_field(:email, :id=>"email")
-  text_field(:create_new_password, :id=>"pw")
-  text_field(:verify_new_password, :id=>"pw0")
-  button(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
+  element(:first_name) { |b| b.frm.text_field(:id=>"first-name") }
+  element(:last_name) { |b| b.frm.text_field(:id=>"last-name") }
+  element(:email) { |b| b.frm.text_field(:id=>"email") }
+  element(:create_new_password) { |b| b.frm.text_field(:id=>"pw") }
+  element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
+  action(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
+
   end
 
 
@@ -748,17 +740,16 @@ class Users < BasePage
     Users.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    action(:clear_search) { |b| b.frm.link(text=>"Clear Search").click }
-    text_field(:search_field, :id=>"search")
-    select_list(:select_page_size, :name=>"selectPageSize")
-    button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-    button(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-    button(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-    button(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+  action(:clear_search) { |b| b.frm.link(text=>"Clear Search").click }
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
+  element(:select_page_size) { |b| b.frm.select_list(:name=>"selectPageSize") }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+
   end
 
-end
 
 # The Create New User page
 class CreateNewUser < BasePage
@@ -770,15 +761,14 @@ class CreateNewUser < BasePage
     Users.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:user_id, :id=>"eid")
-    text_field(:first_name, :id=>"first-name")
-    text_field(:last_name, :id=>"last-name")
-    text_field(:email, :id=>"email")
-    text_field(:create_new_password, :id=>"pw")
-    text_field(:verify_new_password, :id=>"pw0")
-    select_list(:type, :name=>"type")
-    button(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
+  element(:user_id) { |b| b.frm.text_field(:id=>"eid") }
+  element(:first_name) { |b| b.frm.text_field(:id=>"first-name") }
+  element(:last_name) { |b| b.frm.text_field(:id=>"last-name") }
+  element(:email) { |b| b.frm.text_field(:id=>"email") }
+  element(:create_new_password) { |b| b.frm.text_field(:id=>"pw") }
+  element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
+  element(:type) { |b| b.frm.select_list(:name=>"type") }
+  action(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
   end
 
 
@@ -822,19 +812,19 @@ class UserMembership < BasePage
     frm.p(:class=>"instruction").text
   end
 
-  select_list(:user_type, :id=>"userlistForm:selectType")
-  select_list(:user_authority, :id=>"userlistForm:selectAuthority")
-  text_field(:search_field, :id=>"userlistForm:inputSearchBox")
-  button(:search) { |b| b.frm.button(:id=>"userlistForm:searchButton").click }
-  button(:clear_search) { |b| b.frm.button(:id=>"userlistForm:clearSearchButton").click }
-  select_list(:page_size, :id=>"userlistForm:pager_pageSize")
-  button(:export_csv) { |b| b.frm.button(:id=>"userlistForm:exportCsv").click }
-  button(:export_excel) { |b| b.frm.button(:id=>"userlistForm:exportXls").click }
+  element(:user_type) { |b| b.frm.select_list(:id=>"userlistForm:selectType") }
+  element(:user_authority) { |b| b.frm.select_list(:id=>"userlistForm:selectAuthority") }
+  element(:search_field) { |b| b.frm.text_field(:id=>"userlistForm:inputSearchBox") }
+  action(:search) { |b| b.frm.button(:id=>"userlistForm:searchButton").click }
+  action(:clear_search) { |b| b.frm.button(:id=>"userlistForm:clearSearchButton").click }
+  element(:page_size) { |b| b.frm.select_list(:id=>"userlistForm:pager_pageSize") }
+  action(:export_csv) { |b| b.frm.button(:id=>"userlistForm:exportCsv").click }
+  action(:export_excel) { |b| b.frm.button(:id=>"userlistForm:exportXls").click }
   action(:sort_user_id) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp14").click }
   action(:sort_internal_user_id) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp18").click }
   action(:sort_name) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp21").click }
   action(:sort_email) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp24").click }
-  action(:sort_type) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp28".click }
+  action(:sort_type) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp28").click }
   action(:sort_authority) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp31").click }
   action(:sort_created_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp34").click }
   action(:sort_modified_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp37").click }
@@ -901,11 +891,9 @@ class CreateNewJob < BasePage
     JobList.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:job_name, :id=>"_id2:job_name")
-    select_list(:type, :name=>"_id2:_id10")
+    element(:job_name) { |b| b.frm.text_field(:id=>"_id2:job_name") }
+    element(:type) { |b| b.frm.select_list(:name=>"_id2:_id10") }
   end
-end
 
 # The page for Editing Triggers
 class EditTriggers < BasePage
@@ -941,11 +929,9 @@ class CreateTrigger < BasePage
     EditTriggers.new(@browser)
   end
 
-  in_frame(:index=>0) do |frame|
-    text_field(:name, :id=>"_id2:trigger_name")
-    text_field(:cron_expression, :id=>"_id2:trigger_expression")
+    element(:name) { |b| b.frm.text_field(:id=>"_id2:trigger_name") }
+    element(:cron_expression) { |b| b.frm.text_field(:id=>"_id2:trigger_expression") }
   end
-end
 
 
 # The page for confirming you want to run a job

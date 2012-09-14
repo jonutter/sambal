@@ -5,9 +5,10 @@
 # The topmost page in the Syllabus feature.
 # If there are no syllabus items it will appear
 # differently than if there are.
-class Syllabus
-  include PageObject
-  include ToolsMenu
+class Syllabus < BasePage
+
+  frame_element
+
   # Clicks the "Create/Edit" button on the page,
   # then instantiates the SyllabusEdit class.
   def create_edit
@@ -33,9 +34,10 @@ end
 # This is the page that lists Syllabus sections, allows for
 # moving them up or down in the list, and allows for removing
 # items from the syllabus.
-class SyllabusEdit
-  include PageObject
-  include ToolsMenu
+class SyllabusEdit < BasePage
+
+  frame_element
+
   # Clicks the "Add" button, then
   # instantiates the AddEditSyllabusItem Class.
   def add
@@ -97,9 +99,13 @@ class SyllabusEdit
 end
 
 #
-class AddEditSyllabusItem
-  include PageObject
-  include ToolsMenu
+class AddEditSyllabusItem < BasePage
+
+  frame_element
+  include FCKEditor
+
+  expected_element editor
+
   # Clicks the "Post" button and instantiates
   # the Syllabus Class.
   def post
@@ -144,76 +150,42 @@ class AddEditSyllabusItem
     SyllabusPreview.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"_id4:title", :frame=>frame)
-    radio_button(:only_members_of_this_site) { |page| page.radio_button_element(:name=>/_id\d+:_id\d+/, :value=>"no", :frame=>frame) }
-    radio_button(:publicly_viewable) { |page| page.radio_button_element(:name=>/_id\d+:_id\d+/, :value=>"yes", :frame=>frame) }
+  element(:title)  { |b| b.frm.text_field(:id=>"_id4:title") }
+  element(:only_members_of_this_site) { |b| b.frm.radio_button(:name=>/_id\d+:_id\d+/, :value=>"no") }
+  element(:publicly_viewable) { |b| b.frm.radio_button(:name=>/_id\d+:_id\d+/, :value=>"yes") }
 
-  end
 end
 
 # The page for previewing a syllabus.
-class SyllabusPreview
-  include PageObject
-  include ToolsMenu
-  def edit
-    frm.button(:value=>"Edit").click
-    AddEditSyllabusItem.new(@browser)
-  end
+class SyllabusPreview < BasePage
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-  end
+  frame_element
+
+  action(:edit) { |b| b.frm.button(:value=>"Edit").click }
+
 end
 
 #
-class SyllabusRedirect
-  include PageObject
-  include ToolsMenu
-  def save
-    frm.button(:value=>"Save").click
-    SyllabusEdit.new(@browser)
-  end
+class SyllabusRedirect < BasePage
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:url, :id=>"redirectForm:urlValue", :frame=>frame)
-  end
+  frame_element
+
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
+  element(:url) { |b| b.frm.text_field(:id=>"redirectForm:urlValue") }
+
 end
 
 # The page where Syllabus Items can be deleted.
-class DeleteSyllabusItems
-  include PageObject
-  include ToolsMenu
-  def delete
-    frm.button(:value=>"Delete").click
-    CreateEditSyllabus.new(@browser)
-  end
+class DeleteSyllabusItems < BasePage
+
+  frame_element
+
+  action(:delete) { |b| b.frm.button(:value=>"Delete").click }
 
 end
 
-class CreateEditSyllabus
-  include PageObject
-  include ToolsMenu
+class CreateEditSyllabus < BasePage
 
-end
-
-# TODO: This needs to be fixed!
-# The page for attaching files to a Syllabus record.
-class SyllabusAttach < AddFiles
-
-  include ToolsMenu
-
-  def initialize(browser)
-    @browser = browser
-
-    @the_classes = {
-        :this => "SyllabusAttach",
-        :parent => "AddEditSyllabusItem",
-        :upload_files => "",
-        :create_folders => "",
-        :file_details => ""
-    }
-
-    set_classes_hash(@the_classes)
-  end
+  frame_element
 
 end

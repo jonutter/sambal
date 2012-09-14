@@ -3,19 +3,11 @@
 #================
 
 #
-class Polls
-  include PageObject
-  include ToolsMenu
-  def add
-    frm.link(:text=>"Add").click
-    frm.frame(:id, "newpolldescr::input___Frame").td(:id, "xEditingArea").wait_until_present
-    AddEditPoll.new(@browser)
-  end
+class Polls < BasePage
 
-  #
-  def edit(poll)
+  frame_element
 
-  end
+  action(:add) { |b| b.frm.link(:text=>"Add").click }
 
   def questions
     questions = []
@@ -35,52 +27,43 @@ class Polls
     return list
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-
-  end
 end
 
 #
-class AddEditPoll
-  include PageObject
-  include ToolsMenu
+class AddEditPoll < BasePage
+
+  frame_element
+  include FCKEditor
+
+  expected_element editor
+
+  element(:editor) { |b| b.frm.frame(:id, "newpolldescr::input___Frame") }
 
   def additional_instructions=(text)
-    frm.frame(:id, "newpolldescr::input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  def save_and_add_options
-    frm.button(:value=>"Save and add options").click
-    AddAnOption.new(@browser)
-  end
-
-  def save
-    frm.button(:value=>"Save").click
-    Polls.new(@browser)
-  end
-
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:question, :id=>"new-poll-text", :frame=>frame)
-
-  end
+  action(:save_and_add_options) { |b| b.frm.button(:value=>"Save and add options").click }
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
+  element(:question) { |b| b.frm.text_field(:id=>"new-poll-text") }
 
 end
 
 #
-class AddAnOption
-  include PageObject
-  include ToolsMenu
+class AddAnOption < BasePage
+
+  frame_element
+  include FCKEditor
+
+  expected_element editor
+
+  element(:editor) { |b| b.frm.frame(:id, "optText::input___Frame") }
+
   def answer_option=(text)
-    frm.frame(:id, "optText::input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  def save
-    frm.button(:value=>"Save").click
-    AddEditPoll.new(@browser)
-  end
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
+  action(:save_and_add_options) { |b| b.frm.button(:value=>"Save and add options").click }
 
-  def save_and_add_options
-    frm.button(:value=>"Save and add options").click
-    AddAnOption.new(@browser)
-  end
 end

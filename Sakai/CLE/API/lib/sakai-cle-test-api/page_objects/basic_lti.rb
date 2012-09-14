@@ -1,9 +1,6 @@
 #
-class BasicLTI
-  include ToolsMenu
-  include PageObject
-  in_frame(:class=>"portletMainIframe") do |frame|
+class BasicLTI < BasePage
 
+  frame_element
 
-  end
 end

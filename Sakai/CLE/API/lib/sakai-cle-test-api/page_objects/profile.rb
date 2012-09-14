@@ -3,9 +3,10 @@
 #================
 
 #
-class Profile
-  include PageObject
-  include ToolsMenu
+class Profile < BasePage
+
+  frame_element
+
   def edit_my_profile
     frm.link(:text=>"Edit my Profile").click
     EditProfile.new(@browser)
@@ -27,9 +28,10 @@ class Profile
 end
 
 #
-class EditProfile
-  include PageObject
-  include ToolsMenu
+class EditProfile < BasePage
+
+  frame_element
+
   def save
     frm.button(:value=>"Save").click
     Profile.new(@browser)
@@ -39,13 +41,11 @@ class EditProfile
     frm.file_field(:name=>"editProfileForm:uploadFile.uploadId").set(filepath + filename)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:first_name, :id=>"editProfileForm:first_name", :frame=>frame)
-    text_field(:last_name, :id=>"editProfileForm:lname", :frame=>frame)
-    text_field(:nickname, :id=>"editProfileForm:nickname", :frame=>frame)
-    text_field(:position, :id=>"editProfileForm:position", :frame=>frame)
-    text_field(:email, :id=>"editProfileForm:email", :frame=>frame)
-    radio_button(:upload_new_picture, :value=>"pictureUpload", :frame=>frame)
+  element(:first_name) { |b| b.frm.text_field(:id=>"editProfileForm:first_name") }
+  element(:last_name) { |b| b.frm.text_field(:id=>"editProfileForm:lname") }
+  element(:nickname) { |b| b.frm.text_field(:id=>"editProfileForm:nickname") }
+  element(:position) { |b| b.frm.text_field(:id=>"editProfileForm:position") }
+  element(:email) { |b| b.frm.text_field(:id=>"editProfileForm:email") }
+  element(:upload_new_picture) { |b| b.frm.radio(:value=>"pictureUpload") }
 
-  end
 end

@@ -5,16 +5,14 @@
 # Resources page for a given Site, in the Course Tools menu
 class Resources < AddFiles
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
 end
 
 # New class template. For quick class creation...
-class ResourcesUploadFiles
+class ResourcesUploadFiles < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   @@filex=0 # TODO: This is almost certainly not going to work right.
 
@@ -49,10 +47,9 @@ class ResourcesUploadFiles
 
 end
 
-class EditFileDetails
+class EditFileDetails < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   # Clicks the Update button, then instantiates
   # the Resources page class.
@@ -100,20 +97,18 @@ class EditFileDetails
   end
 end
 
-class CreateFolders
+class CreateFolders < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   thing(:folder_name) { |b| b.frm.text_field(:id=>"content_0") }
   action(:create_folders_now) { |b| b.frm.button(:value=>"Create Folders Now").click }
 
 end
 
-class CreateHTMLPageContent
+class CreateHTMLPageContent < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
   include FCKEditor
 
   thing(:editor) { |b| b.frm.frame(:id=>"content___Frame") }
@@ -125,10 +120,9 @@ class CreateHTMLPageContent
 
 end
 
-class CreateHTMLPageProperties
+class CreateHTMLPageProperties < BasePage
 
-  include PageObject
-  include ToolsMenu
+  frame_element
 
   thing(:name) { |b| b.frm.text_field(id: "displayName_0") }
   thing(:description) { |b| b.frm.text_field(id: "description_0") }

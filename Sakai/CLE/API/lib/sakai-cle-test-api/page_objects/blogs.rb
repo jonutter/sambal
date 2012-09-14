@@ -1,16 +1,14 @@
 module BlogsMenuButtons
-  include PageObject
 
-  def add_blog_entry
-    frm.link(:text=>"Add blog entry").click
-    AddBlogEntry.new @browser
-  end
+  # AddBlogEntry
+  action(:add_blog_entry) { |b| b.frm.link(:text=>"Add blog entry").click }
 
 end
 
-class Blogs
-  include ToolsMenu
-  include BlogsMenuButtons
+class Blogs < BasePage
+
+  frame_element
+
   # Returns an array containing the list of Bloggers
   # in the "All the blogs" table.
   def blogger_list
@@ -23,10 +21,11 @@ class Blogs
   end
 end
 
-class AddBlogEntry
-  include ToolsMenu
+class AddBlogEntry < BasePage
+
+  frame_element
   include BlogsMenuButtons
-  include PageObject
+
   def blog_text=(text)
     frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present
     frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
@@ -50,8 +49,10 @@ class AddBlogEntry
   end
 end
 
-class BlogsList
-  include ToolsMenu
+class BlogsList < BasePage
+
+  frame_element
 
   include BlogsMenuButtons
+
 end
