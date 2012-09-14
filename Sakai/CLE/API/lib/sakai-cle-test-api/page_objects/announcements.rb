@@ -3,12 +3,8 @@ class Announcements < BasePage
 
   frame_element
 
-  # Clicks the add button, instantiates the AddEditAnnouncements class.
-  def add
-    frm.div(:class=>"portletBody").link(:title=>"Add").click
-    frm.frame(:id, "body___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present(60)
-    AddEditAnnouncements.new(@browser)
-  end
+  # Clicks the add button, goes to the AddEditAnnouncements class.
+  action(:add) { |b| b.frm.div(:class=>"portletBody").link(:title=>"Add").click }
 
   # Edits the specified announcement in the list.
   # @param subject [String] the text of the announcement listing link.
@@ -61,11 +57,8 @@ class Announcements < BasePage
     frm.select(:id=>"view").set(list_item)
   end
 
-  # Clicks the Merge link and instantiates the AnnouncementsMerge class.
-  def merge
-    frm.link(:text=>"Merge").click
-    AnnouncementsMerge.new(@browser)
-  end
+  # Clicks the Merge link and goes to the AnnouncementsMerge class.
+  action(:merge) { |b| b.frm.link(:text=>"Merge").click }
 
 end
 
@@ -81,11 +74,8 @@ class AnnouncementsMerge < BasePage
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(site_name)}/).checkbox(:id=>/site/).set
   end
 
-  # Clicks the Save button and returns the Announcements class.
-  def save
-    frm.button(:value=>"Save").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Save button and goes to the Announcements class.
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
 
 end
 
@@ -95,53 +85,37 @@ class PreviewAnnouncements < BasePage
 
   frame_element
 
-  # Clicks the Return to list button and returns the Announcements class.
-  def return_to_list
-    frm.button(:value=>"Return to List").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Return to list button and goes to the Announcements class.
+  action(:return_to_list){ |b| b.frm.button(:value=>"Return to List").click }
 
-  # Clicks the Save changes button and returns the Announcements class.
-  def save_changes
-    frm.button(:value=>"Save Changes").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Save changes button and goes to the Announcements class.
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
 
-  # Clicks the Edit button and returns the AddEditAnnouncements class.
-  def edit
-    frm.button(:value=>"Edit").click
-    AddEditAnnouncements.new(@browser)
-  end
+  # Clicks the Edit button and goes to the AddEditAnnouncements class.
+  action(:edit) { |b| b.frm.button(:value=>"Edit").click }
 
 end
 
 # The page where an announcement is created or edited.
 class AddEditAnnouncements < BasePage
 
+  include FCKEditor
   frame_element
 
-  # Clicks the Add Announcement button and then determines whether to return
-  # AddEditAnnouncements or Announcements class.
-  def add_announcement
-    frm.button(:value=>"Add Announcement").click
-    if frm.div(:class=>"portletBody").h3.text=~/Add Announcement/
-      AddEditAnnouncements.new(@browser)
-    else
-      Announcements.new(@browser)
-    end
-  end
+  expected_element editor
 
-  # Clicks the Save changes button and returns the Announcements class.
-  def save_changes
-    frm.button(:value=>"Save Changes").click
-    Announcements.new(@browser)
-  end
+  element(:editor) { |b| b.frm.frame(:id, "body___Frame") }
 
-  # Clicks the Preview button and returns the PreviewAnnouncements class.
-  def preview
-    frm.button(:value=>"Preview").click
-    PreviewAnnouncements.new(@browser)
-  end
+  # Clicks the Add Announcement button. The next class is either
+  # AddEditAnnouncements or Announcements.
+  action(:add_announcement) { |b| b.frm.button(:value=>"Add Announcement").click }
+
+  # Clicks the Save changes button. Next is the Announcements class.
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
+
+  # Clicks the Preview button. Next is the PreviewAnnouncements class.
+  action(:preview){ |b| b.frm.button(:value=>"Preview").click }
+
 
   # Sends the specified text block to the rich text editor
   # @param text [String] the text that you want to add to the editor.

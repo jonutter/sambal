@@ -36,12 +36,12 @@ class Aliases < BasePage
   frame_element
 
   action(:new_alias) { |b| b.frm.link(:text=>"New Alias").click }
-    text_field(:search_field, :id=>"search", :frame=>frame)
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
   action(:search_button) { |b| b.frm.button(:text=>"Search").click }
   element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
+    button(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last") }
+    button(:previous, :name=>"eventSubmit_doList_prev") }
     button(:first, :name=>"eventSubmit_doList_first").click }
 
 end
@@ -52,10 +52,10 @@ class AliasesCreate < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:alias_name, :id=>"id", :frame=>frame)
-    text_field(:target, :id=>"target", :frame=>frame)
-    button(:save, :name=>"eventSubmit_doSave", :frame=>frame)
-    button(:cancel, :name=>"eventSubmit_doCancel", :frame=>frame)
+  element(:alias_name) { |b| b.frm.text_field(:id=>"id") }
+  element(:target) { |b| b.frm.text_field(:id=>"target") }
+    button(:save, :name=>"eventSubmit_doSave") }
+    button(:cancel, :name=>"eventSubmit_doCancel") }
     
   end
 
@@ -67,10 +67,10 @@ class EditAlias < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias", :frame=>frame)
-    text_field(:target, :id=>"target", :frame=>frame)
-    button(:save, :name=>"eventSubmit_doSave", :frame=>frame)
-    button(:cancel, :name=>"eventSubmit_doCancel", :frame=>frame)
+    action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias") }
+  element(:target) { |b| b.frm.text_field(:id=>"target") }
+    button(:save, :name=>"eventSubmit_doSave") }
+    button(:cancel, :name=>"eventSubmit_doCancel") }
     
   end
 
@@ -178,13 +178,13 @@ class Realms < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:new_realm) { |b| b.frm.link(:text=>"New Realm", :frame=>frame)
-    action(:search) { |b| b.frm.link(:text=>"Search", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+    action(:new_realm) { |b| b.frm.link(:text=>"New Realm") }
+    action(:search) { |b| b.frm.link(:text=>"Search") }
+    select_list(:select_page_size, :name=>"selectPageSize") }
+    button(:next, :name=>"eventSubmit_doList_next") }
+    button(:last, :name=>"eventSubmit_doList_last") }
+    button(:previous, :name=>"eventSubmit_doList_prev") }
+    button(:first, :name=>"eventSubmit_doList_first") }
     
   end
 
@@ -200,13 +200,13 @@ class AddSections < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:overview, :id=>"addSectionsForm:_idJsp3", :frame=>frame)
-    action(:student_memberships, :id=>"addSectionsForm:_idJsp12", :frame=>frame)
-    action(:options, :id=>"addSectionsForm:_idJsp17", :frame=>frame)
-    select_list(:num_to_add, :id=>"addSectionsForm:numToAdd", :frame=>frame)
-    select_list(:category, :id=>"addSectionsForm:category", :frame=>frame)
-    button(:add_sections, :id=>"addSectionsForm:_idJsp89", :frame=>frame)
-    button(:cancel, :id=>"addSectionsForm:_idJsp90", :frame=>frame)
+    action(:overview, :id=>"addSectionsForm:_idJsp3") }
+    action(:student_memberships, :id=>"addSectionsForm:_idJsp12") }
+    action(:options, :id=>"addSectionsForm:_idJsp17") }
+    select_list(:num_to_add, :id=>"addSectionsForm:numToAdd") }
+    select_list(:category, :id=>"addSectionsForm:category") }
+    button(:add_sections, :id=>"addSectionsForm:_idJsp89") }
+    button(:cancel, :id=>"addSectionsForm:_idJsp90") }
     
     # Note that the following field definitions are appropriate for
     # ONLY THE FIRST instance of each of the fields. The Add Sections page
@@ -214,25 +214,25 @@ class AddSections < BasePage
     # If you are going to test the addition of multiple sections
     # and/or meetings, then their elements will have to be
     # explicitly called or defined in the test scripts themselves.
-    text_field(:name, :id=>"addSectionsForm:sectionTable:0:titleInput", :frame=>frame)
-    radio_button(:unlimited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>0, :frame=>frame)
-    radio_button(:limited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>1, :frame=>frame)
-    text_field(:max_enrollment, :id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput", :frame=>frame)
-    checkbox(:monday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:monday", :frame=>frame)
-    checkbox(:tuesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:tuesday", :frame=>frame)
-    checkbox(:wednesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:wednesday", :frame=>frame)
-    checkbox(:thursday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:thursday", :frame=>frame)
-    checkbox(:friday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:friday", :frame=>frame)
-    checkbox(:saturday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:saturday", :frame=>frame)
-    checkbox(:sunday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:sunday", :frame=>frame)
-    text_field(:start_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime", :frame=>frame)
-    radio_button(:start_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0, :frame=>frame)
-    radio_button(:start_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1, :frame=>frame)
-    text_field(:end_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime", :frame=>frame)
-    radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
-    radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
-    text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    action(:add_days, :id=>"addSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
+  element(:name) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:titleInput") }
+    radio_button(:unlimited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>0) }
+    radio_button(:limited_size, :name=>"addSectionsForm:sectionTable:0:limit", :index=>1) }
+    text_field(:max_enrollment) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:maxEnrollmentInput") }
+    checkbox(:monday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:monday") }
+    checkbox(:tuesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:tuesday") }
+    checkbox(:wednesday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:wednesday") }
+    checkbox(:thursday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:thursday") }
+    checkbox(:friday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:friday") }
+    checkbox(:saturday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:saturday") }
+    checkbox(:sunday, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:sunday") }
+    text_field(:start_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTime") }
+    radio_button(:start_am) { |b| b.frm.radio(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0) }
+    radio_button(:start_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1) }
+    text_field(:end_time, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTime") }
+    radio_button(:end_am, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0) }
+    radio_button(:end_pm, :name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1) }
+    text_field(:location, :id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location") }
+    action(:add_days, :id=>"addSectionsForm:sectionTable:0:addMeeting") }
     
   end
 
@@ -245,13 +245,13 @@ class EditSections < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:overview, :id=>"editSectionsForm:_idJsp3", :frame=>frame)
-    action(:student_memberships, :id=>"editSectionsForm:_idJsp12", :frame=>frame)
-    action(:options, :id=>"editSectionsForm:_idJsp17", :frame=>frame)
-    select_list(:num_to_add, :id=>"editSectionsForm:numToAdd", :frame=>frame)
-    select_list(:category, :id=>"editSectionsForm:category", :frame=>frame)
-    button(:add_sections, :id=>"editSectionsForm:_idJsp89", :frame=>frame)
-    button(:cancel, :id=>"editSectionsForm:_idJsp90", :frame=>frame)
+    action(:overview, :id=>"editSectionsForm:_idJsp3") }
+    action(:student_memberships, :id=>"editSectionsForm:_idJsp12") }
+    action(:options, :id=>"editSectionsForm:_idJsp17") }
+    select_list(:num_to_add, :id=>"editSectionsForm:numToAdd") }
+    select_list(:category, :id=>"editSectionsForm:category") }
+    button(:add_sections, :id=>"editSectionsForm:_idJsp89") }
+    button(:cancel, :id=>"editSectionsForm:_idJsp90") }
     
     # Note that the following field definitions are appropriate for
     # ONLY THE FIRST instance of each of the fields. The Edit Sections page
@@ -259,25 +259,25 @@ class EditSections < BasePage
     # If you are going to test the editing of multiple sections
     # and/or meetings, then their elements will have to be
     # explicitly called or defined in the test scripts themselves.
-    text_field(:name, :id=>"editSectionsForm:sectionTable:0:titleInput", :frame=>frame)
-    radio_button(:unlimited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>0, :frame=>frame)
-    radio_button(:limited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>1, :frame=>frame)
-    text_field(:max_enrollment, :id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput", :frame=>frame)
-    checkbox(:monday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:monday", :frame=>frame)
-    checkbox(:tuesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:tuesday", :frame=>frame)
-    checkbox(:wednesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:wednesday", :frame=>frame)
-    checkbox(:thursday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:thursday", :frame=>frame)
-    checkbox(:friday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:friday", :frame=>frame)
-    checkbox(:saturday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:saturday", :frame=>frame)
-    checkbox(:sunday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:sunday", :frame=>frame)
-    text_field(:start_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime", :frame=>frame)
-    radio_button(:start_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0, :frame=>frame)
-    radio_button(:start_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1, :frame=>frame)
-    text_field(:end_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime", :frame=>frame)
-    radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0, :frame=>frame)
-    radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1, :frame=>frame)
-    text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location", :frame=>frame)
-    action(:add_days, :id=>"editSectionsForm:sectionTable:0:addMeeting", :frame=>frame)
+    text_field(:name, :id=>"editSectionsForm:sectionTable:0:titleInput") }
+    radio_button(:unlimited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>0) }
+    radio_button(:limited_size, :name=>"editSectionsForm:sectionTable:0:limit", :index=>1) }
+    text_field(:max_enrollment, :id=>"editSectionsForm:sectionTable:0:maxEnrollmentInput") }
+    checkbox(:monday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:monday") }
+    checkbox(:tuesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:tuesday") }
+    checkbox(:wednesday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:wednesday") }
+    checkbox(:thursday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:thursday") }
+    checkbox(:friday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:friday") }
+    checkbox(:saturday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:saturday") }
+    checkbox(:sunday, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:sunday") }
+    text_field(:start_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTime") }
+    radio_button(:start_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>0) }
+    radio_button(:start_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:startTimeAm", :index=>1) }
+    text_field(:end_time, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTime") }
+    radio_button(:end_am, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>0) }
+    radio_button(:end_pm, :name=>"editSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm", :index=>1) }
+    text_field(:location, :id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location") }
+    action(:add_days, :id=>"editSectionsForm:sectionTable:0:addMeeting") }
     
   end
 
@@ -289,13 +289,13 @@ class SectionsOptions < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister", :frame=>frame)
-    checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch", :frame=>frame)
-    button(:update, :id=>"optionsForm:_idJsp50", :frame=>frame)
-    button(:cancel, :id=>"optionsForm:_idJsp51", :frame=>frame)
-    action(:overview, :id=>"optionsForm:_idJsp3", :frame=>frame)
-    action(:add_sections, :id=>"optionsForm:_idJsp8", :frame=>frame)
-    action(:student_memberships, :id=>"optionsForm:_idJsp12", :frame=>frame)
+    checkbox(:students_can_sign_up, :id=>"optionsForm:selfRegister") }
+    checkbox(:students_can_switch_sections, :id=>"optionsForm:selfSwitch") }
+    button(:update, :id=>"optionsForm:_idJsp50") }
+    button(:cancel, :id=>"optionsForm:_idJsp51") }
+    action(:overview, :id=>"optionsForm:_idJsp3") }
+    action(:add_sections, :id=>"optionsForm:_idJsp8") }
+    action(:student_memberships, :id=>"optionsForm:_idJsp12") }
     
   end
 
@@ -308,16 +308,16 @@ class SectionsOverview < BasePage
   frame_element
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:add_sections, :id=>"overviewForm:_idJsp8", :frame=>frame)
-    action(:student_memberships, :id=>"overviewForm:_idJsp12", :frame=>frame)
-    action(:options, :id=>"overviewForm:_idJsp17", :frame=>frame)
-    action(:sort_name, :id=>"overviewForm:sectionsTable:_idJsp54", :frame=>frame)
-    action(:sort_ta, :id=>"overviewForm:sectionsTable:_idJsp73", :frame=>frame)
-    action(:sort_day, :id=>"overviewForm:sectionsTable:_idJsp78", :frame=>frame)
-    action(:sort_time, :id=>"overviewForm:sectionsTable:_idJsp83", :frame=>frame)
-    action(:sort_location, :id=>"overviewForm:sectionsTable:_idJsp88", :frame=>frame)
-    action(:sort_current_size, :id=>"overviewForm:sectionsTable:_idJsp93", :frame=>frame)
-    action(:sort_avail, :id=>"overviewForm:sectionsTable:_idJsp97", :frame=>frame)
+    action(:add_sections, :id=>"overviewForm:_idJsp8") }
+    action(:student_memberships, :id=>"overviewForm:_idJsp12") }
+    action(:options, :id=>"overviewForm:_idJsp17") }
+    action(:sort_name, :id=>"overviewForm:sectionsTable:_idJsp54") }
+    action(:sort_ta, :id=>"overviewForm:sectionsTable:_idJsp73") }
+    action(:sort_day, :id=>"overviewForm:sectionsTable:_idJsp78") }
+    action(:sort_time, :id=>"overviewForm:sectionsTable:_idJsp83") }
+    action(:sort_location, :id=>"overviewForm:sectionsTable:_idJsp88") }
+    action(:sort_current_size, :id=>"overviewForm:sectionsTable:_idJsp93") }
+    action(:sort_avail, :id=>"overviewForm:sectionsTable:_idJsp97") }
     
   end
 
@@ -360,21 +360,21 @@ class Sites < BasePage
   end
   
   in_frame(:index=>0) do |frame|
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    action(:search_button, :text=>"Search", :frame=>frame)
-    text_field(:search_site_id, :id=>"search_site", :frame=>frame)
-    action(:search_site_id_button, :text=>"Site ID", :frame=>frame)
-    text_field(:search_user_id, :id=>"search_user", :frame=>frame)
-    action(:search_user_id_button, :text=>"User ID", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+    text_field(:search_field, :id=>"search") }
+    action(:search_button, :text=>"Search") }
+    text_field(:search_site_id, :id=>"search_site") }
+    action(:search_site_id_button, :text=>"Site ID") }
+    text_field(:search_user_id, :id=>"search_user") }
+    action(:search_user_id_button, :text=>"User ID") }
+    button(:next, :name=>"eventSubmit_doList_next") }
+    button(:last, :name=>"eventSubmit_doList_last") }
+    button(:previous, :name=>"eventSubmit_doList_prev") }
+    button(:first, :name=>"eventSubmit_doList_first") }
+    select_list(:select_page_size, :name=>"selectPageSize") }
+    button(:next, :name=>"eventSubmit_doList_next") }
+    button(:last, :name=>"eventSubmit_doList_last") }
+    button(:previous, :name=>"eventSubmit_doList_prev") }
+    button(:first, :name=>"eventSubmit_doList_first") }
   end
 
 end
@@ -440,13 +440,13 @@ class EditSiteInfo < BasePage
   
   in_frame(:class=>"portletMainIframe") do |frame|
     # Non-navigating, interactive page objects go here
-    text_field(:site_id, :id=>"id", :frame=>frame)
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_field(:type, :id=>"type", :frame=>frame)
-    text_area(:short_description, :id=>"shortDescription", :frame=>frame)
-    radio_button(:unpublished, :id=>"publishedfalse", :frame=>frame)
-    radio_button(:published, :id=>"publishedtrue", :frame=>frame)
-    radio_button(:public_view_yes, :id=>"pubViewtrue", :frame=>frame)
+    text_field(:site_id, :id=>"id") }
+    text_field(:title, :id=>"title") }
+    text_field(:type, :id=>"type") }
+    text_area(:short_description, :id=>"shortDescription") }
+    radio_button(:unpublished, :id=>"publishedfalse") }
+    radio_button(:published, :id=>"publishedtrue") }
+    radio_button(:public_view_yes, :id=>"pubViewtrue") }
   end
   
 end
@@ -481,7 +481,7 @@ class NewPage < BasePage
   in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title", :frame=>frame)
+    text_field(:title, :id=>"title") }
   end
 
 end
@@ -522,9 +522,9 @@ class NewTool < BasePage
   in_frame(:class=>"portletMainIframe") do |frame|
     # Interactive page objects that do no navigation
     # or page refreshes go here.
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_field(:layout_hints, :id=>"layoutHints", :frame=>frame)
-    radio_button(:resources, :id=>"feature80", :frame=>frame)
+    text_field(:title, :id=>"title") }
+    text_field(:layout_hints, :id=>"layoutHints") }
+    radio_button(:resources, :id=>"feature80") }
   end
   
 end
@@ -556,7 +556,7 @@ class SiteSaveAs < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:site_id, :id=>"id", :frame=>frame)
+    text_field(:site_id, :id=>"id") }
   end
   
 end
@@ -586,8 +586,8 @@ class AddEditSiteProperties < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:name, :id=>"new_name", :frame=>frame)
-    text_field(:value, :id=>"new_value", :frame=>frame)
+    text_field(:name, :id=>"new_name") }
+    text_field(:value, :id=>"new_value") }
   end
 end
 
@@ -621,12 +621,12 @@ class EditAccount < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:current_password, :id=>"pwcur", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
+    text_field(:first_name, :id=>"first-name") }
+    text_field(:last_name, :id=>"last-name") }
+    text_field(:email, :id=>"email") }
+    text_field(:current_password, :id=>"pwcur") }
+    text_field(:create_new_password, :id=>"pw") }
+    text_field(:verify_new_password, :id=>"pw0") }
   end
   
 end
@@ -722,13 +722,13 @@ class EditUser < BasePage
   end
 
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:remove_user, :text=>"Remove User", :frame=>frame)
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
-    button(:cancel_changes, :name=>"eventSubmit_doCancel", :frame=>frame)
+    action(:remove_user, :text=>"Remove User") }
+    text_field(:first_name, :id=>"first-name") }
+    text_field(:last_name, :id=>"last-name") }
+    text_field(:email, :id=>"email") }
+    text_field(:create_new_password, :id=>"pw") }
+    text_field(:verify_new_password, :id=>"pw0") }
+    button(:cancel_changes, :name=>"eventSubmit_doCancel") }
   end
   
 end
@@ -768,13 +768,13 @@ class Users < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    action(:clear_search, :text=>"Clear Search", :frame=>frame)
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+    action(:clear_search, :text=>"Clear Search") }
+    text_field(:search_field, :id=>"search") }
+    select_list(:select_page_size, :name=>"selectPageSize") }
+    button(:next, :name=>"eventSubmit_doList_next") }
+    button(:last, :name=>"eventSubmit_doList_last") }
+    button(:previous, :name=>"eventSubmit_doList_prev") }
+    button(:first, :name=>"eventSubmit_doList_first") }
   end
   
 end
@@ -790,14 +790,14 @@ class CreateNewUser < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:user_id, :id=>"eid", :frame=>frame)
-    text_field(:first_name, :id=>"first-name", :frame=>frame)
-    text_field(:last_name, :id=>"last-name", :frame=>frame)
-    text_field(:email, :id=>"email", :frame=>frame)
-    text_field(:create_new_password, :id=>"pw", :frame=>frame)
-    text_field(:verify_new_password, :id=>"pw0", :frame=>frame)
-    select_list(:type, :name=>"type", :frame=>frame)
-    button(:cancel_changes, :name=>"eventSubmit_doCancel", :frame=>frame)
+    text_field(:user_id, :id=>"eid") }
+    text_field(:first_name, :id=>"first-name") }
+    text_field(:last_name, :id=>"last-name") }
+    text_field(:email, :id=>"email") }
+    text_field(:create_new_password, :id=>"pw") }
+    text_field(:verify_new_password, :id=>"pw0") }
+    select_list(:type, :name=>"type") }
+    button(:cancel_changes, :name=>"eventSubmit_doCancel") }
   end
   
 end
@@ -843,23 +843,23 @@ class UserMembership < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:user_type, :id=>"userlistForm:selectType", :frame=>frame)
-    select_list(:user_authority, :id=>"userlistForm:selectAuthority", :frame=>frame)
-    text_field(:search_field, :id=>"userlistForm:inputSearchBox", :frame=>frame)
-    button(:search, :id=>"userlistForm:searchButton", :frame=>frame)
-    button(:clear_search, :id=>"userlistForm:clearSearchButton", :frame=>frame)
-    select_list(:page_size, :id=>"userlistForm:pager_pageSize", :frame=>frame)
-    button(:export_csv, :id=>"userlistForm:exportCsv", :frame=>frame)
-    button(:export_excel, :id=>"userlistForm:exportXls", :frame=>frame)
-    action(:sort_user_id, :id=>"userlistForm:_idJsp13:_idJsp14", :frame=>frame)
-    action(:sort_internal_user_id, :id=>"userlistForm:_idJsp13:_idJsp18", :frame=>frame)
-    action(:sort_name, :id=>"userlistForm:_idJsp13:_idJsp21", :frame=>frame)
-    action(:sort_email, :id=>"userlistForm:_idJsp13:_idJsp24", :frame=>frame)
-    action(:sort_type, :id=>"userlistForm:_idJsp13:_idJsp28", :frame=>frame)
-    action(:sort_authority, :id=>"userlistForm:_idJsp13:_idJsp31", :frame=>frame)
-    action(:sort_created_on, :id=>"userlistForm:_idJsp13:_idJsp34", :frame=>frame)
-    action(:sort_modified_on, :id=>"userlistForm:_idJsp13:_idJsp37", :frame=>frame)
-    #(:, =>"", :frame=>frame)
+    select_list(:user_type, :id=>"userlistForm:selectType") }
+    select_list(:user_authority, :id=>"userlistForm:selectAuthority") }
+    text_field(:search_field, :id=>"userlistForm:inputSearchBox") }
+    button(:search, :id=>"userlistForm:searchButton") }
+    button(:clear_search, :id=>"userlistForm:clearSearchButton") }
+    select_list(:page_size, :id=>"userlistForm:pager_pageSize") }
+    button(:export_csv, :id=>"userlistForm:exportCsv") }
+    button(:export_excel, :id=>"userlistForm:exportXls") }
+    action(:sort_user_id, :id=>"userlistForm:_idJsp13:_idJsp14") }
+    action(:sort_internal_user_id, :id=>"userlistForm:_idJsp13:_idJsp18") }
+    action(:sort_name, :id=>"userlistForm:_idJsp13:_idJsp21") }
+    action(:sort_email, :id=>"userlistForm:_idJsp13:_idJsp24") }
+    action(:sort_type, :id=>"userlistForm:_idJsp13:_idJsp28") }
+    action(:sort_authority, :id=>"userlistForm:_idJsp13:_idJsp31") }
+    action(:sort_created_on, :id=>"userlistForm:_idJsp13:_idJsp34") }
+    action(:sort_modified_on, :id=>"userlistForm:_idJsp13:_idJsp37") }
+    #(:, =>"") }
     
   end
 
@@ -924,8 +924,8 @@ class CreateNewJob < BasePage
   end
   
   in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:job_name, :id=>"_id2:job_name", :frame=>frame)
-    select_list(:type, :name=>"_id2:_id10", :frame=>frame)
+    text_field(:job_name, :id=>"_id2:job_name") }
+    select_list(:type, :name=>"_id2:_id10") }
   end
 end
 
@@ -964,8 +964,8 @@ class CreateTrigger < BasePage
   end
 
   in_frame(:index=>0) do |frame|
-    text_field(:name, :id=>"_id2:trigger_name", :frame=>frame)
-    text_field(:cron_expression, :id=>"_id2:trigger_expression", :frame=>frame)
+    text_field(:name, :id=>"_id2:trigger_name") }
+    text_field(:cron_expression, :id=>"_id2:trigger_expression") }
   end
 end
 
