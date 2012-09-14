@@ -20,28 +20,24 @@
 class EvaluationSystem < BasePage
 
   frame_element
-  
-  def my_templates
-    frm.link(:text=>"My Templates").click
-    MyTemplates.new(@browser)
-  end
-  
-  def add_template
-    frm.link(:text=>"Add Template").click
-    AddTemplateTitle.new(@browser)
-  end
 
+  # MyTemplates
+  action(:my_templates) { |b| b.frm.link(:text=>"My Templates").click }
+
+  # AddTemplateTitle
+  action(:add_template) { |b| b.frm.link(:text=>"Add Template").click }
+
+  # TakeEvaluation
   def take_evaluation(evaluation_name)
     frm.div(:class=>"summaryBox").table(:text=>/#{Regexp.escape(evaluation_name)}/).link.click
     TakeEvaluation.new(@browser)
   end
   
   def status_of(evaluation_name)
-    return frm.div(:class=>"summaryBox").table(:text=>/#{Regexp.escape(evaluation_name)}/)[1][1].text
+    frm.div(:class=>"summaryBox").table(:text=>/#{Regexp.escape(evaluation_name)}/)[1][1].text
   end
 
-
-  end
+end
 
 # 
 class AddTemplateTitle < BasePage
@@ -55,7 +51,8 @@ class AddTemplateTitle < BasePage
 
   element(:title) { |b| b.frm.text_field(:id=>"title") }
   element(:description) { |b| b.frm.text_area(:id=>"description") }
-  end
+
+end
 
 
 # 
@@ -67,11 +64,7 @@ class EditTemplate < BasePage
     frm.frame(:id, "item-text___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  def new_evaluation
-    frm.link(:text=>"New evaluation").click
-    frm.frame(:id, "instructions:1:input___Frame").td(:id, "xEditingArea").wait_until_present
-    NewEvaluation.new(@browser)
-  end
+  action(:new_evaluation) { |b| b.frm.link(:text=>"New evaluation").click }
 
   def add
     frm.button(:value=>"Add").click
@@ -91,8 +84,13 @@ class EditTemplate < BasePage
 # 
 class NewEvaluation < BasePage
 
+  include FCKEditor
   frame_element
-  
+
+  expected_element :editor
+
+  element(:editor) { |b| b.frm.frame(:id, "instructions:1:input___Frame") }
+
   def continue_to_settings
     frm.button(:value=>"Continue to Settings").click
     EvaluationSettings.new(@browser)
@@ -102,8 +100,9 @@ class NewEvaluation < BasePage
     frm.frame(:id, "instructions:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-    element(:title) { |b| b.frm.text_field(:id=>"title") }
-  end
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+
+end
 
 
 # 
@@ -117,7 +116,7 @@ class EvaluationSettings < BasePage
   end
 
 
-  end
+end
 
 
 # 
@@ -136,7 +135,7 @@ class EditEvaluationAssignment < BasePage
   end
 
     action(:assign_to_evaluation_groups) { |b| b.frm.link(:text=>"Assign to Evaluation Groups").click }
-  end
+end
 
 
 #
@@ -157,7 +156,7 @@ class MyEvaluations < BasePage
   frame_element
 
 
-  end
+end
 
 # 
 class TakeEvaluation < BasePage
