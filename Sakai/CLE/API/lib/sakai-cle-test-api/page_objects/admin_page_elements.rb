@@ -62,14 +62,14 @@ end
 class EditAlias < BasePage
 
   frame_element
-  
+
   action(:remove_alias) { |b| b.frm.link(:text=>"Remove Alias").click }
   element(:target) { |b| b.frm.text_field(:id=>"target") }
   action(:save) { |b| b.frm.button(:name=>"eventSubmit_doSave").click }
-  action(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }  
+  action(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
   element(:target) { |b| b.frm.text_field(:id=>"target") }
-    
-  end
+
+end
 
 
 
@@ -180,9 +180,9 @@ class Realms < BasePage
   action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
   action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
   action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
-  
-    
-  end
+
+
+end
 
 #================
 # Sections - Site Management
@@ -200,12 +200,12 @@ class AddSections < BasePage
   element(:category) { |b| b.frm.select_list(:id=>"addSectionsForm:category") }
   action(:add_sections) { |b| b.frm.link(:id=>"addSectionsForm:_idJsp89").click }
   action(:cancel) { |b| b.frm.button(:id=>"addSectionsForm:_idJsp90").click }
-    # Note that the following field definitions are appropriate for
-    # ONLY THE FIRST instance of each of the fields. The Add Sections page
-    # allows for an arbitrary number of these fields to exist.
-    # If you are going to test the addition of multiple sections
-    # and/or meetings, then their elements will have to be
-    # explicitly called or defined in the test scripts themselves.
+  # Note that the following field definitions are appropriate for
+  # ONLY THE FIRST instance of each of the fields. The Add Sections page
+  # allows for an arbitrary number of these fields to exist.
+  # If you are going to test the addition of multiple sections
+  # and/or meetings, then their elements will have to be
+  # explicitly called or defined in the test scripts themselves.
   element(:name) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:titleInput") }
   element(:unlimited_size) { |b| b.frm.radio(:name=>"addSectionsForm:sectionTable:0:limit") }
   element(:limited_size) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:limit") }
@@ -225,8 +225,8 @@ class AddSections < BasePage
   element(:end_pm) { |b| b.frm.select_list(:name=>"addSectionsForm:sectionTable:0:meetingsTable:0:endTimeAm") }
   element(:location) { |b| b.frm.text_field(:id=>"addSectionsForm:sectionTable:0:meetingsTable:0:location")  }
   action(:add_days) { |b| b.frm.link(:id=>"addSectionsForm:sectionTable:0:addMeeting").click }
-    
-  end
+
+end
 
 
 # Exactly like the Add Sections page, but used when editing an existing section
@@ -267,7 +267,7 @@ class EditSections < BasePage
   element(:location) { |b| b.frm.text_field(:id=>"editSectionsForm:sectionTable:0:meetingsTable:0:location") }
   action(:add_days) { |b| b.frm.link(:id=>"editSectionsForm:sectionTable:0:addMeeting").click }
 
-  end
+end
 
 
 # Options page for Sections
@@ -282,9 +282,9 @@ class SectionsOptions < BasePage
   action(:overview) { |b| b.frm.link(:id=>"optionsForm:_idJsp3").click }
   action(:add_sections) { |b| b.frm.link(:id=>"optionsForm:_idJsp8").click }
   action(:student_memberships) { |b| b.frm.link(:id=>"optionsForm:_idJsp12").click }
-  
 
-  end
+
+end
 
 
 # The Sections page
@@ -302,9 +302,9 @@ class SectionsOverview < BasePage
   action(:sort_time) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp83").click }
   action(:sort_location) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp88").click }
   action(:sort_current_size) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp93").click }
-  action(:sort_avail) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp97").click } 
+  action(:sort_avail) { |b| b.frm.link(id=>"overviewForm:sectionsTable:_idJsp97").click }
 
-  end
+end
 
 
 #================
@@ -359,7 +359,7 @@ class Sites < BasePage
   action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
   action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
-  end
+end
 
 
 # Page that appears when you've clicked a Site ID in the
@@ -429,7 +429,7 @@ class EditSiteInfo < BasePage
   element(:unpublished) { |b| b.frm.select_list(:id=>"publishedfalse") }
   element(:published) { |b| b.frm.select_list(:id=>"publishedtrue") }
   element(:public_view_yes) { |b| b.frm.select_list(:id=>"pubViewtrue") }
-  end
+end
 
 
 
@@ -460,10 +460,10 @@ class NewPage < BasePage
     AddEditTools.new(@browser)
   end
 
-    # Interactive page objects that do no navigation
-    # or page refreshes go here.
-    element(:title) { |b| b.frm.text_field(:id=>"title") }
-  end
+  # Interactive page objects that do no navigation
+  # or page refreshes go here.
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+end
 
 
 
@@ -500,12 +500,12 @@ class NewTool < BasePage
     AddEditTools.new(@browser)
   end
 
-    # Interactive page objects that do no navigation
-    # or page refreshes go here.
+  # Interactive page objects that do no navigation
+  # or page refreshes go here.
   element(:title) { |b| b.frm.text_field(:id=>"title") }
   element(:layout_hints) { |b| b.frm.text_field(:id=>"layoutHints") }
   element(:resources) { |b| b.frm.select_list(:id=>"feature80") }
-  end
+end
 
 
 # Page that appears when you click "Remove Site" when editing a Site in Sites
@@ -522,16 +522,16 @@ class RemoveSite < BasePage
 
 
 # Page that appears when you click "Save As" when editing a Site in Sites
-class SiteSaveAs < BasePage
+  class SiteSaveAs < BasePage
 
-  frame_element
+    frame_element
 
-  # Clicks the Save button, then
-  # instantiates the Sites class.
-  def save
-    frm.button(:value, "Save").click
-    Sites.new(@browser)
-  end
+    # Clicks the Save button, then
+    # instantiates the Sites class.
+    def save
+      frm.button(:value, "Save").click
+      Sites.new(@browser)
+    end
 
     element(:site_id) { |b| b.frm.text_field(:id=>"id") }
   end
@@ -562,11 +562,9 @@ class AddEditSiteProperties < BasePage
     Sites.new(@browser)
   end
 
-    element(:name) { |b| b.frm.text_field(:id=>"new_name") }
-    element(:value) { |b| b.frm.text_field(:id=>"new_value") }
-  end
-
-
+  element(:name) { |b| b.frm.text_field(:id=>"new_name") }
+  element(:value) { |b| b.frm.text_field(:id=>"new_value") }
+end
 
 #================
 # User's Account Page - in "My Settings"
@@ -601,7 +599,7 @@ class EditAccount < BasePage
   element(:current_password) { |b| b.frm.text_field(:id=>"pwcur") }
   element(:create_new_password) { |b| b.frm.text_field(:id=>"pw") }
   element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
-  end
+end
 
 
 # A Non-Admin User's Account page
@@ -702,9 +700,7 @@ class EditUser < BasePage
   element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
   action(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
 
-  end
-
-
+end
 
 # The Users page - "icon-sakai-users"
 class Users < BasePage
@@ -748,7 +744,7 @@ class Users < BasePage
   action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
   action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
-  end
+end
 
 
 # The Create New User page
@@ -769,7 +765,7 @@ class CreateNewUser < BasePage
   element(:verify_new_password) { |b| b.frm.text_field(:id=>"pw0") }
   element(:type) { |b| b.frm.select_list(:name=>"type") }
   action(:cancel_changes) { |b| b.frm.button(:name=>"eventSubmit_doCancel").click }
-  end
+end
 
 
 
@@ -828,9 +824,8 @@ class UserMembership < BasePage
   action(:sort_authority) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp31").click }
   action(:sort_created_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp34").click }
   action(:sort_modified_on) { |b| b.frm.link(id=>"userlistForm:_idJsp13:_idJsp37").click }
-  #(:, =>"")
-    
-  end
+
+end
 
 
 #================
@@ -841,28 +836,28 @@ class UserMembership < BasePage
 class JobScheduler < BasePage
 
   frame_element
-  
+
   # Clicks the Jobs link, then instantiates
   # the JobList Class.
   def jobs
     frm.link(:text=>"Jobs").click
     JobList.new(@browser)
   end
-  
+
 end
 
 # The list of Jobs (click the Jobs button on Job Scheduler)
 class JobList < BasePage
 
   frame_element
-  
+
   # Clicks the New Job link, then
   # instantiates the CreateNewJob Class.
   def new_job
     frm.link(:text=>"New Job").click
     CreateNewJob.new(@browser)
   end
-  
+
   # Clicks the link with the text "Triggers" associated with the
   # specified job name, 
   # then instantiates the EditTriggers Class.
@@ -871,12 +866,12 @@ class JobList < BasePage
     sleep 1
     EditTriggers.new(@browser)
   end
-  
+
   def event_log
     frm.link(:text=>"Event Log").click
     EventLog.new(@browser)
   end
-  
+
 end
 
 # The Create New Job page
@@ -890,28 +885,28 @@ class CreateNewJob < BasePage
     frm.button(:value=>"Post").click
     JobList.new(@browser)
   end
-  
-    element(:job_name) { |b| b.frm.text_field(:id=>"_id2:job_name") }
-    element(:type) { |b| b.frm.select_list(:name=>"_id2:_id10") }
-  end
+
+  element(:job_name) { |b| b.frm.text_field(:id=>"_id2:job_name") }
+  element(:type) { |b| b.frm.select_list(:name=>"_id2:_id10") }
+end
 
 # The page for Editing Triggers
 class EditTriggers < BasePage
 
   frame_element
-  
+
   # Clicks the "Run Job Now" link, then
   # instantiates the RunJobConfirmation Class.
   def run_job_now
     frm.div(:class=>"portletBody").link(:text=>"Run Job Now").click
     RunJobConfirmation.new(@browser)
   end
-  
+
   def return_to_jobs
     frm.link(:text=>"Return_to_Jobs").click
     JobList.new(@browser)
   end
-  
+
   def new_trigger
     frm.link(:text=>"New Trigger").click
     CreateTrigger.new(@browser)
@@ -923,22 +918,22 @@ end
 class CreateTrigger < BasePage
 
   frame_element
-  
+
   def post
     frm.button(:value=>"Post").click
     EditTriggers.new(@browser)
   end
 
-    element(:name) { |b| b.frm.text_field(:id=>"_id2:trigger_name") }
-    element(:cron_expression) { |b| b.frm.text_field(:id=>"_id2:trigger_expression") }
-  end
+  element(:name) { |b| b.frm.text_field(:id=>"_id2:trigger_name") }
+  element(:cron_expression) { |b| b.frm.text_field(:id=>"_id2:trigger_expression") }
+end
 
 
 # The page for confirming you want to run a job
 class RunJobConfirmation < BasePage
 
   frame_element
-  
+
   # Clicks the "Run Now" button, then
   # instantiates the JobList Class.
   def run_now
@@ -949,9 +944,8 @@ class RunJobConfirmation < BasePage
 end
 
 # The page containing the Event Log
-class EventLog
-  
-  include PageObject
-  include ToolsMenu
+class EventLog < BasePage
+
+  frame_element
 
 end

@@ -29,30 +29,15 @@ class AssessmentsList < BasePage
 
   frame_element
 
-  # This method reads the type of assessment selected for creation,
-  # then clicks the Create button and instantiates the proper class.
-  #
+  expected_element :title
+
   # If the assessment is going to be made in the builder, then
-  # EditAssessment is called. If from Markup text...
-  def create
-    builder_or_text = frm.radio(:value=>"1", :name=>"authorIndexForm:_id29").set?
+  # use EditAssessment. There's no page class for markup text, yet.
+  action(:create) { |b| b.frm.button(:value=>"Create").click }
 
-    frm.button(:value=>"Create").click
-
-    if builder_or_text == true
-      EditAssessment.new(@browser)
-    else
-      # Need to add Markup page class, then add the reference here.
-    end
-
-  end
-
-  # Clicks the Question Pools link, then instantiates
+  # Clicks the Question Pools link, goes to
   # the QuestionPoolsList class.
-  def question_pools
-    frm.link(:text=>"Question Pools").click
-    QuestionPoolsList.new(@browser)
-  end
+  action(:question_pools) { |b| b.frm.link(:text=>"Question Pools").click }
 
   # Collects the titles of the Assessments listed as "Pending"
   # then returns them as an Array.
@@ -94,7 +79,6 @@ class AssessmentsList < BasePage
     frm.tbody(:id=>"authorIndexForm:_id88:tbody_element").row(:text=>/#{Regexp.escape(test_title)}/).link(:id=>/authorIndexToScore/).click
     AssessmentTotalScores.new(@browser)
   end
-
   
   action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
   element(:title) { |b| b.frm.text_field(:id=>"authorIndexForm:title") }

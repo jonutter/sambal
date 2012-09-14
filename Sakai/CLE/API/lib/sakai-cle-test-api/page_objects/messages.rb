@@ -485,7 +485,7 @@ class ReplyToMessage < BasePage
   include FCKEditor
   frame_element
 
-  expected_element editor
+  expected_element :editor
 
   element(:editor) { |b| b.frm.frame(:id, "pvtMsgReply:df_compose_body_inputRichText___Frame") }
 

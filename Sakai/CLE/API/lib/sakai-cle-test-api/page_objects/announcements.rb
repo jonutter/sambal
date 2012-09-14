@@ -3,12 +3,8 @@ class Announcements < BasePage
 
   frame_element
 
-  # Clicks the add button, instantiates the AddEditAnnouncements class.
-  def add
-    frm.div(:class=>"portletBody").link(:title=>"Add").click
-    frm.frame(:id, "body___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present(60)
-    AddEditAnnouncements.new(@browser)
-  end
+  # Clicks the add button, goes to the AddEditAnnouncements class.
+  action(:add) { |b| b.frm.div(:class=>"portletBody").link(:title=>"Add").click }
 
   # Edits the specified announcement in the list.
   # @param subject [String] the text of the announcement listing link.
@@ -61,11 +57,8 @@ class Announcements < BasePage
     frm.select(:id=>"view").set(list_item)
   end
 
-  # Clicks the Merge link and instantiates the AnnouncementsMerge class.
-  def merge
-    frm.link(:text=>"Merge").click
-    AnnouncementsMerge.new(@browser)
-  end
+  # Clicks the Merge link and goes to the AnnouncementsMerge class.
+  action(:merge) { |b| b.frm.link(:text=>"Merge").click }
 
 end
 
@@ -81,11 +74,8 @@ class AnnouncementsMerge < BasePage
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(site_name)}/).checkbox(:id=>/site/).set
   end
 
-  # Clicks the Save button and returns the Announcements class.
-  def save
-    frm.button(:value=>"Save").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Save button and goes to the Announcements class.
+  action(:save) { |b| b.frm.button(:value=>"Save").click }
 
 end
 
@@ -95,65 +85,46 @@ class PreviewAnnouncements < BasePage
 
   frame_element
 
-  # Clicks the Return to list button and returns the Announcements class.
-  def return_to_list
-    frm.button(:value=>"Return to List").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Return to list button and goes to the Announcements class.
+  action(:return_to_list){ |b| b.frm.button(:value=>"Return to List").click }
 
-  # Clicks the Save changes button and returns the Announcements class.
-  def save_changes
-    frm.button(:value=>"Save Changes").click
-    Announcements.new(@browser)
-  end
+  # Clicks the Save changes button and goes to the Announcements class.
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
 
-  # Clicks the Edit button and returns the AddEditAnnouncements class.
-  def edit
-    frm.button(:value=>"Edit").click
-    AddEditAnnouncements.new(@browser)
-  end
+  # Clicks the Edit button and goes to the AddEditAnnouncements class.
+  action(:edit) { |b| b.frm.button(:value=>"Edit").click }
 
 end
 
 # The page where an announcement is created or edited.
 class AddEditAnnouncements < BasePage
 
+  include FCKEditor
   frame_element
 
-  # Clicks the Add Announcement button and then determines whether to return
-  # AddEditAnnouncements or Announcements class.
-  def add_announcement
-    frm.button(:value=>"Add Announcement").click
-    if frm.div(:class=>"portletBody").h3.text=~/Add Announcement/
-      AddEditAnnouncements.new(@browser)
-    else
-      Announcements.new(@browser)
-    end
-  end
+  expected_element :editor
 
-  # Clicks the Save changes button and returns the Announcements class.
-  def save_changes
-    frm.button(:value=>"Save Changes").click
-    Announcements.new(@browser)
-  end
+  element(:editor) { |b| b.frm.frame(:id, "body___Frame") }
 
-  # Clicks the Preview button and returns the PreviewAnnouncements class.
-  def preview
-    frm.button(:value=>"Preview").click
-    PreviewAnnouncements.new(@browser)
-  end
+  # Clicks the Add Announcement button. The next class is either
+  # AddEditAnnouncements or Announcements.
+  action(:add_announcement) { |b| b.frm.button(:value=>"Add Announcement").click }
+
+  # Clicks the Save changes button. Next is the Announcements class.
+  action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
+
+  # Clicks the Preview button. Next is the PreviewAnnouncements class.
+  action(:preview){ |b| b.frm.button(:value=>"Preview").click }
+
 
   # Sends the specified text block to the rich text editor
   # @param text [String] the text that you want to add to the editor.
   def body=(text)
-    frm.frame(:id, "body___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  # Clicks the Add attachments button and returns the Announcments Attach class.
-  def add_attachments
-    frm.button(:value=>"Add Attachments").click
-    AnnouncementsAttach.new(@browser)
-  end
+  # Clicks the Add attachments button. Next is the Announcments Attach class.
+  action(:add_attachments) { |b| b.frm.button(:value=>"Add Attachments").click }
 
   # Clicks the checkbox for the specified group name
   # when you've set the announcement access to display
@@ -170,50 +141,15 @@ class AddEditAnnouncements < BasePage
     frm.text_field(:id=>"subject").set(string)
   end
 
-  # Clicks the radio button for "Only members of this site can see this announcement"
-  def select_site_members
-    frm.radio(:id=>"site").set
-  end
-
-  # Clicks the radio button for "This announcement is publicly viewable"
-  def select_publicly_viewable
-    frm.radio(:id=>"pubview").set
-  end
-
-  # Clicks the radio button for "Displays this announcement to selected groups only."
-  def select_groups
-    frm.radio(:id=>"groups").set
-  end
-
-  # Clicks the radio button for "Show - (Post and display this announcement immediately)"
-  def select_show
-    frm.radio(:id=>"hidden_false").set
-  end
-
-  # Clicks the radio button for "Hide - (Draft mode - Do not display this announcement at this time)"
-  def select_hide
-    frm.radio(:id=>"hidden_true").set
-  end
-
-  # Clicks the radio button for "Specify Dates - (Choose when this announcement will be displayed)"
-  def select_specify_dates
-    frm.radio(:id=>"hidden_specify").set
-  end
-
-  # Checks the checkbox for "Beginning"
-  def check_beginning
-    frm.checkbox(:id=>"use_start_date").set
-  end
-
-  # Checks the checkbox for "Ending"
-  def check_ending
-    frm.checkbox(:id=>"use_end_date").set
-  end
-
-  # Checks the checkbox for selecting all Groups
-  def check_all
-    frm.checkbox(:id=>"selectall").set
-  end
+  element(:site_members) { |b| b.frm.radio(:id=>"site") }
+  element(:publicly_viewable) { |b| b.frm.radio(:id=>"pubview") }
+  element(:groups) { |b| b.frm.radio(:id=>"groups") }
+  element(:show) { |b| b.frm.radio(:id=>"hidden_false") }
+  element(:hide) { |b| b.frm.radio(:id=>"hidden_true") }
+  element(:specify_dates) { |b| b.frm.radio(:id=>"hidden_specify") }
+  element(:beginning) { |b| b.frm.checkbox(:id=>"use_start_date") }
+  element(:ending) { |b| b.frm.checkbox(:id=>"use_end_date") }
+  element(:all) { |b| b.frm.checkbox(:id=>"selectall") }
 
   # Sets the Beginning Month selection to the
   # specified string.
@@ -289,9 +225,7 @@ class AddEditAnnouncements < BasePage
 
   # Gets the text of the alert message when it appears on
   # the page
-  def alert_message
-    frm.div(:class=>"alertMessage").text
-  end
+  value(:alert_message) { |b| b.frm.div(:class=>"alertMessage").text }
 
 end
 

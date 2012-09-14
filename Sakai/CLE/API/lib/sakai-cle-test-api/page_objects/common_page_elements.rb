@@ -40,10 +40,8 @@ class EvaluationSystem < BasePage
     return frm.div(:class=>"summaryBox").table(:text=>/#{Regexp.escape(evaluation_name)}/)[1][1].text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
+
   end
-end
 
 # 
 class AddTemplateTitle < BasePage
@@ -55,11 +53,10 @@ class AddTemplateTitle < BasePage
     EditTemplate.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_area(:description, :id=>"description", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+  element(:description) { |b| b.frm.text_area(:id=>"description") }
   end
-end
+
 
 # 
 class EditTemplate < BasePage
@@ -87,10 +84,9 @@ class EditTemplate < BasePage
     EditTemplate.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    select_list(:item, :id=>"add-item-control::add-item-classification-selection", :frame=>frame)
+    element(:item) { |b| b.frm.select_list(:id=>"add-item-control::add-item-classification-selection").click }
   end
-end
+
 
 # 
 class NewEvaluation < BasePage
@@ -106,10 +102,9 @@ class NewEvaluation < BasePage
     frm.frame(:id, "instructions:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"title", :frame=>frame)
+    element(:title) { |b| b.frm.text_field(:id=>"title") }
   end
-end
+
 
 # 
 class EvaluationSettings < BasePage
@@ -121,10 +116,9 @@ class EvaluationSettings < BasePage
     EditEvaluationAssignment.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
+
   end
-end
+
 
 # 
 class EditEvaluationAssignment < BasePage
@@ -141,10 +135,9 @@ class EditEvaluationAssignment < BasePage
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(title)}/).checkbox(:name=>"selectedGroupIDs").set
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assign_to_evaluation_groups, :text=>"Assign to Evaluation Groups", :frame=>frame)
+    action(:assign_to_evaluation_groups) { |b| b.frm.link(:text=>"Assign to Evaluation Groups").click }
   end
-end
+
 
 #
 class ConfirmEvaluation < BasePage
@@ -163,10 +156,8 @@ class MyEvaluations < BasePage
 
   frame_element
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
+
   end
-end
 
 # 
 class TakeEvaluation < BasePage
@@ -178,10 +169,8 @@ class TakeEvaluation < BasePage
     EvaluationSystem.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    
+
   end
-end
 
 
 #================
@@ -202,21 +191,19 @@ class Home < BasePage
   # method for identifying them, but for now it's our
   # only option because both the <id> and <name>
   # tags are unique for every site.
-  in_frame(:index=>1) do |frame|
     # Site Information Display, Options button
-    link(:site_info_display_options, :text=>"Options", :frame=>frame)
+  action(:site_info_display_options) { |b| b.frm.link(:text=>"Options").click }
     
   end
   
-  in_frame(:index=>2) do |frame|
-    # Recent Announcements Options button
-    link(:recent_announcements_options, :text=>"Options", :frame=>frame)
-    # Link for New In Forms
-    link(:new_in_forums, :text=>"New Messages", :frame=>frame)
-    text_field(:number_of_announcements, :id=>"itemsEntryField", :frame=>frame)
-    button(:update_announcements, :name=>"eventSubmit_doUpdate", :frame=>frame)
-  end
-  
+  # Recent Announcements Options button
+  action(:recent_announcements_options) { |b| b.frm.link(:text=>"Options").click }
+  # Link for New In Forms
+  action(:new_in_forums) { |b| b.frm.link(:text=>"New Messages").click }
+  element(:number_of_announcements) { |b| b.frm.text_field(:id=>"itemsEntryField") }
+  action(:update_announcements) { |b| b.frm.button(:name=>"eventSubmit_doUpdate").click }
+
+
   # Gets the text of the displayed announcements, for
   # test case verification
   def announcements_list
@@ -227,7 +214,6 @@ class Home < BasePage
     return list
   end
   
-end
 
 # The Page that appears when you are not in a particular Site
 # Note that this page differs depending on what user is logged in.
@@ -246,27 +232,22 @@ class MyWorkspace < BasePage
   # method for identifying them, but for now it's our
   # only option because both the <id> and <name>
   # tags are unique for every site.
-  in_frame(:class=>"portletMainIframe") do |frame|
     # Calendar Options button
-    link(:calendar_options, :text=>"Options", :frame=>frame)
+  action(:calendar_options) { |b| b.frm.link(:text=>"Options").click }
   end
   
-  in_frame(:index=>1) do |frame|
-    # My Workspace Information Options
-    link(:my_workspace_information_options, :text=>"Options", :frame=>frame)
-     # Message of the Day, Options button
-    link(:message_of_the_day_options, :text=>"Options", :frame=>frame)
-    
-  end
-  
-  in_frame(:index=>0) do |frame|
-    select_list(:select_page_size, :id=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
-  end
-  
+  # My Workspace Information Options
+  action(:my_workspace_information_options) { |b| b.frm.link(:text=>"Options").click }
+   # Message of the Day, Options button
+  action(:message_of_the_day_options) { |b| b.frm.link(:text=>"Options").click }
+
+
+  element(:select_page_size) { |b| b.frm.select_list(:id=>"selectPageSize").click }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+
   # Returns an array of strings of the Calendar Events listed below
   # the Calendar
   def calendar_events
@@ -279,7 +260,6 @@ class MyWorkspace < BasePage
     return events
   end
   
-end
 
 
 
@@ -292,35 +272,32 @@ class Search < BasePage
 
   frame_element
   
-  in_frame(:index=>0) do |frame|
-    link(:admin, :text=>"Admin", :frame=>frame)
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    button(:search_button, :name=>"sb", :frame=>frame)
-    radio_button(:this_site, :id=>"searchSite", :frame=>frame)
-    radio_button(:all_my_sites, :id=>"searchMine", :frame=>frame)
+  action(:admin) { |b| b.frm.link(:text=>"Admin").click }
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
+  action(:search_button) { |b| b.frm.button(:name=>"sb").click }
+  element(:this_site) { |b| b.frm.radio(:id=>"searchSite") }
+  element(:all_my_sites) { |b| b.frm.radio(:id=>"searchMine") }
     
   end
 
-end
 
 # The Search Admin page within the Search page in the Admin workspace
 class SearchAdmin < BasePage
 
   frame_element
   
-  in_frame(:index=>0) do |frame|
-    link(:search, :text=>"Search", :frame=>frame)
-    link(:rebuild_site_index, :text=>"Rebuild Site Index", :frame=>frame)
-    link(:refresh_site_index, :text=>"Refresh Site Index", :frame=>frame)
-    link(:rebuild_whole_index, :text=>"Rebuild Whole Index", :frame=>frame)
-    link(:refresh_whole_index, :text=>"Refresh Whole Index", :frame=>frame)
-    link(:remove_lock, :text=>"Remove Lock", :frame=>frame)
-    link(:reload_index, :text=>"Reload Index", :frame=>frame)
-    link(:enable_diagnostics, :text=>"Enable Diagnostics", :frame=>frame)
-    link(:disable_diagnostics, :text=>"Disable Diagnostics", :frame=>frame)
+  action(:search) { |b| b.frm.link(:text=>"Search").click }
+  action(:rebuild_site_index) { |b| b.frm.link(:text=>"Rebuild Site Index").click }
+  action(:refresh_site_index) { |b| b.frm.link(:text=>"Refresh Site Index").click }
+  action(:rebuild_whole_index) { |b| b.frm.link(:text=>"Rebuild Whole Index").click }
+  action(:refresh_whole_index) { |b| b.frm.link(:text=>"Refresh Whole Index").click }
+  action(:remove_lock) { |b| b.frm.link(:text=>"Remove Lock").click }
+  action(:reload_index) { |b| b.frm.link(:text=>"Reload Index").click }
+  action(:enable_diagnostics) { |b| b.frm.link(:text=>"Enable Diagnostics").click }
+  action(:disable_diagnostics) { |b| b.frm.link(:text=>"Disable Diagnostics").click }
+
   end
 
-end
 
 #================
 # Site Setup/Site Editor Pages
@@ -417,18 +394,17 @@ class SiteSetup < BasePage
     return titles
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame| #FIXME!
-    select_list(:view, :id=>"view", :frame=>frame)
-    button(:clear_search, :value=>"Clear Search", :frame=>frame)
-    select_list(:select_page_size, :id=>"selectPageSize", :frame=>frame)
-    link(:sort_by_title, :text=>"Worksite Title", :frame=>frame)
-    link(:sort_by_type, :text=>"Type", :frame=>frame)
-    link(:sort_by_creator, :text=>"Creator", :frame=>frame)
-    link(:sort_by_status, :text=>"Status", :frame=>frame)
-    link(:sort_by_creation_date, :text=>"Creation Date", :frame=>frame)
+  element(:view) { |b| b.frm.select_list(:id=>"view").click }
+  action(:clear_search) { |b| b.frm.button(:value=>"Clear Search").click }
+  element(:select_page_size) { |b| b.frm.select_list(:id=>"selectPageSize").click }
+  action(:sort_by_title) { |b| b.frm.link(:text=>"Worksite Title").click }
+  action(:sort_by_type) { |b| b.frm.link(:text=>"Type").click }
+  action(:sort_by_creator) { |b| b.frm.link(:text=>"Creator").click }
+  action(:sort_by_status) { |b| b.frm.link(:text=>"Status").click }
+  action(:sort_by_creation_date) { |b| b.frm.link(:text=>"Creation Date").click }
+
   end
 
-end
 
 # The topmost "Site Editor" page,
 # found in SITE MANAGEMENT
@@ -464,17 +440,16 @@ class SiteEditor < BasePage
     return_button.click
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:previous, :name=>"previous", :frame=>frame)
-    link(:printable_version, :text=>"Printable Version", :frame=>frame)
-    select_list(:select_page_size, :name=>"selectPageSize", :frame=>frame)
-    button(:next, :name=>"eventSubmit_doList_next", :frame=>frame)
-    button(:last, :name=>"eventSubmit_doList_last", :frame=>frame)
-    button(:previous, :name=>"eventSubmit_doList_prev", :frame=>frame)
-    button(:first, :name=>"eventSubmit_doList_first", :frame=>frame)
+  action(:previous) { |b| b.frm.button(:name=>"previous").click }
+  action(:printable_version) { |b| b.frm.link(:text=>"Printable Version").click }
+  element(:select_page_size) { |b| b.frm.select_list(:name=>"selectPageSize").click }
+  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+
   end
 
-end
 
 # Groups page inside the Site Editor
 class Groups < BasePage
@@ -491,13 +466,12 @@ class Groups < BasePage
     CreateNewGroup.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:create_new_group_link, :text=>"Create New Group", :frame=>frame)
-    link(:auto_groups, :text=>"Auto Groups", :frame=>frame)
-    button(:remove_checked, :id=>"delete-groups", :frame=>frame)
-    button(:cancel, :id=>"cancel", :frame=>frame)
+  action(:create_new_group_link) { |b| b.frm.link(:text=>"Create New Group").click }
+  action(:auto_groups) { |b| b.frm.link(:text=>"Auto Groups").click }
+  action(:remove_checked) { |b| b.frm.button(:id=>"delete-groups").click }
+  action(:cancel) { |b| b.frm.button(:id=>"cancel").click }
+
   end
-end
 
 # The Create New Group page inside the Site Editor
 class CreateNewGroup < BasePage
@@ -510,18 +484,17 @@ class CreateNewGroup < BasePage
     Groups.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"group_title", :frame=>frame)
-    text_field(:description, :id=>"group_description", :frame=>frame)
-    select_list(:site_member_list, :name=>"siteMembers-selection", :frame=>frame)
-    select_list(:group_member_list, :name=>"groupMembers-selection", :frame=>frame)
-    button(:right, :name=>"right", :index=>0, :frame=>frame)
-    button(:left, :name=>"left", :index=>0, :frame=>frame)
-    button(:all_right, :name=>"right", :index=>1, :frame=>frame)
-    button(:all_left, :name=>"left",:index=>1, :frame=>frame)
-    button(:cancel, :id=>"cancel", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"group_title") }
+  element(:description) { |b| b.frm.text_field(:id=>"group_description") }
+  element(:site_member_list) { |b| b.frm.select_list(:name=>"siteMembers-selection").click }
+  element(:group_member_list) { |b| b.frm.select_list(:name=>"groupMembers-selection").click }
+  action(:right) { |b| b.frm.button(:name=>"right", :index=>0,).click }
+  action(:left) { |b| b.frm.button(:name=>"left", :index=>0).click }
+  action(:all_right) { |b| b.frm.button(:name=>"right", :index=>1).click }
+  action(:all_left) { |b| b.frm.button(:name=>"left",:index=>1).click }
+  action(:cancel) { |b| b.frm.button(:id=>"cancel").click }
+
   end
-end
 
 # The first page of the Duplicate Site pages in the Site Editor.
 class DuplicateSite < BasePage
@@ -539,11 +512,10 @@ class DuplicateSite < BasePage
     frm.div(:class=>"portletBody").h3.span(:class=>"highlight").text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:site_title, :id=>"title", :frame=>frame)
-    select_list(:academic_term, :id=>"selectTerm", :frame=>frame)
+    element(:site_title) { |b| b.frm.text_field(:id=>"title") }
+    element(:academic_term) { |b| b.frm.select_list(:id=>"selectTerm").click }
   end
-end
+
 
 
 # Page for Adding Participants to a Site in Site Setup
@@ -556,18 +528,16 @@ class SiteSetupAddParticipants < BasePage
     SiteSetupChooseRole.new @browser
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_area(:official_participants, :id=>"content::officialAccountParticipant", :frame=>frame)
-    text_area(:non_official_participants, :id=>"content::nonOfficialAccountParticipant", :frame=>frame)
-    radio_button(:assign_all_to_same_role, :id=>"content::role-row:0:role-select", :frame=>frame)
-    radio_button(:assign_each_individually, :id=>"content::role-row:1:role-select", :frame=>frame)
-    radio_button(:active_status, :id=>"content::status-row:0:status-select", :frame=>frame)
-    radio_button(:inactive_status, :id=>"content::status-row:1:status-select", :frame=>frame)
-    button(:cancel, :id=>"content::cancel", :frame=>frame)
+  element(:official_participants) { |b| b.frm.text_area(:id=>"content::officialAccountParticipant") }
+  element(:non_official_participants) { |b| b.frm.text_area(:id=>"content::nonOfficialAccountParticipant") }
+  element(:assign_all_to_same_role) { |b| b.frm.radio(:id=>"content::role-row:0:role-select") }
+  element(:assign_each_individually) { |b| b.frm.radio(:id=>"content::role-row:1:role-select") }
+  element(:active_status) { |b| b.frm.radio(:id=>"content::status-row:0:status-select") }
+  element(:inactive_status) { |b| b.frm.radio(:id=>"content::status-row:1:status-select") }
+  action(:cancel) { |b| b.frm.button(:id=>"content::cancel").click }
     
   end
 
-end
 
 # Page for selecting Participant roles individually
 class SiteSetupChooseRolesIndiv < BasePage
@@ -579,13 +549,12 @@ class SiteSetupChooseRolesIndiv < BasePage
     #SiteSetupParticipantEmail.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:back, :name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processDifferentRoleBack", :frame=>frame)
-    button(:cancel, :name=>"command link parameters&Submitting%20control=content%3A%3Acancel&Fast%20track%20action=siteAddParticipantHandler.processCancel", :frame=>frame)
-    select_list(:user_role, :id=>"content::user-row:0:role-select-selection", :frame=>frame)
+  action(:back) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processDifferentRoleBack").click }
+  action(:cancel) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Acancel&Fast%20track%20action=siteAddParticipantHandler.processCancel").click }
+  element(:user_role) { |b| b.frm.select_list(:id=>"content::user-row:0:role-select-selection").click }
+
   end
 
-end
 
 # Page for selecting the same role for All. This class is used for
 # both Course and Portfolio sites.
@@ -598,20 +567,19 @@ class SiteSetupChooseRole < BasePage
     SiteSetupParticipantEmail.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:back, :name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processSameRoleBack", :frame=>frame)
-    button(:cancel, :name=>"command link parameters&Submitting%20control=content%3A%3Acancel&Fast%20track%20action=siteAddParticipantHandler.processCancel", :frame=>frame)
-    radio_button(:guest, :value=>"Guest", :frame=>frame)
-    radio_button(:instructor, :value=>"Instructor", :frame=>frame)
-    radio_button(:student, :value=>"Student", :frame=>frame)
-    radio_button(:evaluator, :value=>"Evaluator", :frame=>frame)
-    radio_button(:organizer, :value=>"Organizer", :frame=>frame)
-    radio_button(:participant, :value=>"Participant", :frame=>frame)
-    radio_button(:reviewer, :value=>"Reviewer", :frame=>frame)
-    radio_button(:teaching_assistant, :id=>"content::role-row:3:role-select", :frame=>frame)
+  action(:back) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processSameRoleBack").click }
+  action(:cancel) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Acancel&Fast%20track%20action=siteAddParticipantHandler.processCancel").click }
+  element(:guest) { |b| b.frm.radio(:value=>"Guest") }
+  element(:instructor) { |b| b.frm.radio(:value=>"Instructor") }
+  element(:student) { |b| b.frm.radio(:value=>"Student") }
+  element(:evaluator) { |b| b.frm.radio(:value=>"Evaluator") }
+  element(:organizer) { |b| b.frm.radio(:value=>"Organizer") }
+  element(:participant) { |b| b.frm.radio(:value=>"Participant") }
+  element(:reviewer) { |b| b.frm.radio(:value=>"Reviewer") }
+  element(:teaching_assistant) { |b| b.frm.radio(:id=>"content::role-row:3:role-select") }
+
   end
 
-end
 
 # Page for specifying whether to send an email
 # notification to the newly added Site participants
@@ -624,15 +592,13 @@ class SiteSetupParticipantEmail < BasePage
     SiteSetupParticipantConfirmation.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:back, :name=>"command link parameters&Submitting%20control=content%3A%3Acontinue&Fast%20track%20action=siteAddParticipantHandler.processEmailNotiBack", :frame=>frame)
-    button(:cancel, :name=>"command link parameters&Submitting%20control=content%3A%3Acontinue&Fast%20track%20action=siteAddParticipantHandler.processEmailNotiCancel", :frame=>frame)
-    radio_button(:send_now, :id=>"content::noti-row:0:noti-select", :frame=>frame)
-    radio_button(:dont_send, :id=>"content::noti-row:1:noti-select", :frame=>frame)
+  action(:back) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Acontinue&Fast%20track%20action=siteAddParticipantHandler.processEmailNotiBack").click }
+  action(:cancel) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Acontinue&Fast%20track%20action=siteAddParticipantHandler.processEmailNotiCancel").click }
+  element(:send_now) { |b| b.frm.radio(:id=>"content::noti-row:0:noti-select") }
+  element(:dont_send) { |b| b.frm.radio(:id=>"content::noti-row:1:noti-select") }
     
   end
 
-end
 
 # The confirmation page showing site participants and their set roles
 class SiteSetupParticipantConfirm < BasePage
@@ -654,11 +620,10 @@ class SiteSetupParticipantConfirm < BasePage
     frm.table(:class=>"listHier").row(:text=>/#{Regexp.escape(name)}/)[2].text
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:back, :name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processConfirmBack", :frame=>frame)
-    button(:cancel, :name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processConfirmCancel", :frame=>frame)
+  action(:back) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processConfirmBack").click }
+  action(:cancel) { |b| b.frm.button(:name=>"command link parameters&Submitting%20control=content%3A%3Aback&Fast%20track%20action=siteAddParticipantHandler.processConfirmCancel").click }
+
   end
-end
 
 # The Edit Tools page (click on "Edit Tools" when editing a site
 # in Site Setup in the Admin Workspace)
@@ -669,68 +634,66 @@ class EditSiteTools < BasePage
   # Clicks the Continue button.
   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    # This is a comprehensive list of all checkboxes and
-    # radio buttons for this page, 
-    # though not all will appear at one time.
-    # The list will depend on the type of site being
-    # created/edited.
-    checkbox(:all_tools, :id=>"all", :frame=>frame)
-    checkbox(:home, :id=>"home", :frame=>frame)
-    checkbox(:announcements, :id=>"sakai.announcements", :frame=>frame)
-    checkbox(:assignments, :id=>"sakai.assignment.grades", :frame=>frame)
-    checkbox(:basic_lti, :id=>"sakai.basiclti", :frame=>frame)
-    checkbox(:calendar, :id=>"sakai.schedule", :frame=>frame)
-    checkbox(:email_archive, :id=>"sakai.mailbox", :frame=>frame)
-    checkbox(:evaluations, :id=>"osp.evaluation", :frame=>frame)
-    checkbox(:forms, :id=>"sakai.metaobj", :frame=>frame)
-    checkbox(:glossary, :id=>"osp.glossary", :frame=>frame)
-    checkbox(:matrices, :id=>"osp.matrix", :frame=>frame)
-    checkbox(:news, :id=>"sakai.news", :frame=>frame)
-    checkbox(:portfolio_layouts, :id=>"osp.presLayout", :frame=>frame)
-    checkbox(:portfolio_showcase, :id=>"sakai.rsn.osp.iframe", :frame=>frame)
-    checkbox(:portfolio_templates, :id=>"osp.presTemplate", :frame=>frame)
-    checkbox(:portfolios, :id=>"osp.presentation", :frame=>frame)
-    checkbox(:resources, :id=>"sakai.resources", :frame=>frame)
-    checkbox(:roster, :id=>"sakai.site.roster", :frame=>frame)
-    checkbox(:search, :id=>"sakai.search", :frame=>frame)
-    checkbox(:styles, :id=>"osp.style", :frame=>frame)
-    checkbox(:web_content, :id=>"sakai.iframe", :frame=>frame)
-    checkbox(:wizards, :id=>"osp.wizard", :frame=>frame)
-    checkbox(:blogger, :id=>"blogger", :frame=>frame)
-    checkbox(:blogs, :id=>"sakai.blogwow", :frame=>frame)
-    checkbox(:chat_room, :id=>"sakai.chat", :frame=>frame)
-    checkbox(:discussion_forums, :id=>"sakai.jforum.tool", :frame=>frame)
-    checkbox(:drop_box, :id=>"sakai.dropbox", :frame=>frame)
-    checkbox(:email, :id=>"sakai.mailtool", :frame=>frame)
-    checkbox(:forums, :id=>"sakai.forums", :frame=>frame)
-    checkbox(:certification, :id=>"com.rsmart.certification", :frame=>frame)
-    checkbox(:feedback, :id=>"sakai.postem", :frame=>frame)
-    checkbox(:gradebook, :id=>"sakai.gradebook.tool", :frame=>frame)
-    checkbox(:gradebook2, :id=>"sakai.gradebook.gwt.rpc", :frame=>frame)
-    checkbox(:lesson_builder, :id=>"sakai.lessonbuildertool", :frame=>frame)
-    checkbox(:lessons, :id=>"sakai.melete", :frame=>frame)
-    checkbox(:live_virtual_classroom, :id=>"rsmart.virtual_classroom.tool", :frame=>frame)
-    checkbox(:media_gallery, :id=>"sakai.kaltura", :frame=>frame)
-    checkbox(:messages, :id=>"sakai.messages", :frame=>frame)
-    checkbox(:news, :id=>"sakai.news", :frame=>frame)
-    checkbox(:opensyllabus, :id=>"sakai.opensyllabus.tool", :frame=>frame)
-    checkbox(:podcasts, :id=>"sakai.podcasts", :frame=>frame)
-    checkbox(:polls, :id=>"sakai.poll", :frame=>frame)
-    checkbox(:sections, :id=>"sakai.sections", :frame=>frame)
-    checkbox(:site_editor, :id=>"sakai.siteinfo", :frame=>frame)
-    checkbox(:site_statistics, :id=>"sakai.sitestats", :frame=>frame)
-    checkbox(:syllabus, :id=>"sakai.syllabus", :frame=>frame)
-    checkbox(:tests_and_quizzes_cb, :id=>"sakai.samigo", :frame=>frame)
-    checkbox(:wiki, :id=>"sakai.rwiki", :frame=>frame)
-    radio_button(:no_thanks, :id=>"import_no", :frame=>frame)
-    radio_button(:yes, :id=>"import_yes", :frame=>frame)
-    select_list(:import_sites, :id=>"importSites", :frame=>frame)
-    button(:back, :name=>"Back", :frame=>frame)
-    button(:cancel, :name=>"Cancel", :frame=>frame)
+  # This is a comprehensive list of all checkboxes and
+  # radio buttons for this page,
+  # though not all will appear at one time.
+  # The list will depend on the type of site being
+  # created/edited.
+  checkbox(:all_tools) { |b| b.frm.checkbox(:id=>"all") }
+  checkbox(:home) { |b| b.frm.checkbox(:id=>"home") }
+  checkbox(:announcements) { |b| b.frm.checkbox(:id=>"sakai.announcements") }
+  checkbox(:assignments,) { |b| b.frm.checkbox(:id=>"sakai.assignment.grades") }
+  checkbox(:basic_lti) { |b| b.frm.checkbox(:id=>"sakai.basiclti") }
+  checkbox(:calendar) { |b| b.frm.checkbox(:id=>"sakai.schedule") }
+  checkbox(:email_archive) { |b| b.frm.checkbox(:id=>"sakai.mailbox") }
+  checkbox(:evaluations) { |b| b.frm.checkbox(:id=>"osp.evaluation") }
+  checkbox(:forms) { |b| b.frm.checkbox(:id=>"sakai.metaobj") }
+  checkbox(:glossary) { |b| b.frm.checkbox(:id=>"osp.glossary") }
+  checkbox(:matrices) { |b| b.frm.checkbox(:id=>"osp.matrix") }
+  checkbox(:news) { |b| b.frm.checkbox(:id=>"sakai.news") }
+  checkbox(:portfolio_layouts) { |b| b.frm.checkbox(:id=>"osp.presLayout") }
+  checkbox(:portfolio_showcase) { |b| b.frm.checkbox(:id=>"sakai.rsn.osp.iframe") }
+  checkbox(:portfolio_templates) { |b| b.frm.checkbox(:id=>"osp.presTemplate") }
+  checkbox(:portfolios) { |b| b.frm.checkbox(:id=>"osp.presentation") }
+  checkbox(:resources) { |b| b.frm.checkbox(:id=>"sakai.resources") }
+  checkbox(:roster) { |b| b.frm.checkbox(:id=>"sakai.site.roster") }
+  checkbox(:search) { |b| b.frm.checkbox(:id=>"sakai.search") }
+  checkbox(:styles) { |b| b.frm.checkbox(:id=>"osp.style") }
+  checkbox(:web_content) { |b| b.frm.checkbox(:id=>"sakai.iframe") }
+  checkbox(:wizards) { |b| b.frm.checkbox(:id=>"osp.wizard") }
+  checkbox(:blogger) { |b| b.frm.checkbox(:id=>"blogger") }
+  checkbox(:blogs) { |b| b.frm.checkbox(:id=>"sakai.blogwow") }
+  checkbox(:chat_room) { |b| b.frm.checkbox(:id=>"sakai.chat") }
+  checkbox(:discussion_forums) { |b| b.frm.checkbox(:id=>"sakai.jforum.tool") }
+  checkbox(:drop_box) { |b| b.frm.checkbox(:id=>"sakai.dropbox") }
+  checkbox(:email) { |b| b.frm.checkbox(:id=>"sakai.mailtool") }
+  checkbox(:forums) { |b| b.frm.checkbox(:id=>"sakai.forums") }
+  checkbox(:certification) { |b| b.frm.checkbox(:id=>"com.rsmart.certification") }
+  checkbox(:feedback) { |b| b.frm.checkbox(:id=>"sakai.postem") }
+  checkbox(:gradebook) { |b| b.frm.checkbox(:id=>"sakai.gradebook.tool") }
+  checkbox(:gradebook2) { |b| b.frm.checkbox(:id=>"sakai.gradebook.gwt.rpc") }
+  checkbox(:lesson_builder) { |b| b.frm.checkbox(:id=>"sakai.lessonbuildertool") }
+  checkbox(:lessons) { |b| b.frm.checkbox(:id=>"sakai.melete") }
+  checkbox(:live_virtual_classroom) { |b| b.frm.checkbox(:id=>"rsmart.virtual_classroom.tool") }
+  checkbox(:media_gallery) { |b| b.frm.checkbox(:id=>"sakai.kaltura") }
+  checkbox(:messages) { |b| b.frm.checkbox(:id=>"sakai.messages") }
+  checkbox(:news) { |b| b.frm.checkbox(:id=>"sakai.news") }
+  checkbox(:opensyllabus) { |b| b.frm.checkbox(:id=>"sakai.opensyllabus.tool") }
+  checkbox(:podcasts) { |b| b.frm.checkbox(:id=>"sakai.podcasts") }
+  checkbox(:polls) { |b| b.frm.checkbox(:id=>"sakai.poll") }
+  checkbox(:sections) { |b| b.frm.checkbox(:id=>"sakai.sections") }
+  checkbox(:site_editor) { |b| b.frm.checkbox(:id=>"sakai.siteinfo") }
+  checkbox(:site_statistics) { |b| b.frm.checkbox(:id=>"sakai.sitestats") }
+  checkbox(:syllabus) { |b| b.frm.checkbox(:id=>"sakai.syllabus") }
+  checkbox(:tests_and_quizzes_cb) { |b| b.frm.checkbox(:id=>"sakai.samigo") }
+  checkbox(:wiki) { |b| b.frm.checkbox(:id=>"sakai.rwiki") }
+  element(:no_thanks) { |b| b.frm.radio(:id=>"import_no") }
+  element(:yes) { |b| b.frm.radio(:id=>"import_yes") }
+  element(:import_sites) { |b| b.frm.select_list(:id=>"importSites").click }
+  action(:back) { |b| b.frm.button(:name=>"Back").click }
+  action(:cancel) { |b| b.frm.button(:name=>"Cancel").click }
   end
   
-end
 
 class ReUseMaterial < BasePage
 
@@ -812,20 +775,18 @@ class SiteType < BasePage
 
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    radio_button(:course_site, :id=>"course", :frame=>frame)
-    radio_button(:project_site, :id=>"project", :frame=>frame)
-    radio_button(:portfolio_site, :id=>"portfolio", :frame=>frame)
-    radio_button(:create_site_from_template, :id=>"copy", :frame=>frame)
-    select_list(:academic_term, :id=>"selectTerm", :frame=>frame)
-    select_list(:select_template, :id=>"templateSiteId", :frame=>frame)
-    select_list(:select_term, :id=>"selectTermTemplate", :frame=>frame)
-    button(:cancel, :id=>"cancelCreate", :frame=>frame)
-    checkbox(:copy_users, :id=>"copyUsers", :frame=>frame)
-    checkbox(:copy_content, :id=>"copyContent", :frame=>frame)
+  element(:course_site) { |b| b.frm.radio(:id=>"course") }
+  element(:project_site) { |b| b.frm.radio(:id=>"project") }
+  element(:portfolio_site) { |b| b.frm.radio(:id=>"portfolio") }
+  element(:create_site_from_template) { |b| b.frm.radio(:id=>"copy") }
+  element(:academic_term) { |b| b.frm.select_list(:id=>"selectTerm").click }
+  element(:select_template) { |b| b.frm.select_list(:id=>"templateSiteId").click }
+  element(:select_term) { |b| b.frm.select_list(:id=>"selectTermTemplate").click }
+  action(:cancel) { |b| b.frm.button(:id=>"cancelCreate").click }
+  checkbox(:copy_users) { |b| b.frm.checkbox(:id=>"copyUsers") }
+  checkbox(:copy_content) { |b| b.frm.checkbox(:id=>"copyContent") }
   end
   
-end
 
 # The Add Multiple Tool Instances page that appears during Site creation
 # after the Course Site Tools page
@@ -836,7 +797,6 @@ class AddMultipleTools < BasePage
   # Clicks the Continue button.
   action(:continue) { |b| b.frm.button(:value=>"Continue").click }
 
-  in_frame(:class=>"portletMainIframe") do |frame|
     # Note that the text field definitions included here
     # for the Tools definitions are ONLY for the first
     # instances of each. Since the UI allows for
@@ -844,23 +804,22 @@ class AddMultipleTools < BasePage
     # that add more then you're going to have to explicitly
     # reference them or define them in the test case script
     # itself--for now, anyway.
-    text_field(:site_email_address, :id=>"emailId", :frame=>frame)
-    text_field(:basic_lti_title, :id=>"title_sakai.basiclti", :frame=>frame)
-    select_list(:more_basic_lti_tools, :id=>"num_sakai.basiclti", :frame=>frame)
-    text_field(:lesson_builder_title, :id=>"title_sakai.lessonbuildertool", :frame=>frame)
-    select_list(:more_lesson_builder_tools, :id=>"num_sakai.lessonbuildertool", :frame=>frame)
-    text_field(:news_title, :id=>"title_sakai.news", :frame=>frame)
-    text_field(:news_url_channel, :name=>"channel-url_sakai.news", :frame=>frame)
-    select_list(:more_news_tools, :id=>"num_sakai.news", :frame=>frame)
-    text_field(:web_content_title, :id=>"title_sakai.iframe", :frame=>frame)
-    text_field(:web_content_source, :id=>"source_sakai.iframe", :frame=>frame)
-    select_list(:more_web_content_tools, :id=>"num_sakai.iframe", :frame=>frame)
-    button(:back, :name=>"Back", :frame=>frame)
-    button(:cancel, :name=>"Cancel", :frame=>frame)
+  element(:site_email_address) { |b| b.frm.text_field(:id=>"emailId") }
+  element(:basic_lti_title) { |b| b.frm.text_field(:id=>"title_sakai.basiclti") }
+  element(:more_basic_lti_tools) { |b| b.frm.select_list(:id=>"num_sakai.basiclti").click }
+  element(:lesson_builder_title) { |b| b.frm.text_field(:id=>"title_sakai.lessonbuildertool") }
+  element(:more_lesson_builder_tools) { |b| b.frm.select_list(:id=>"num_sakai.lessonbuildertool").click }
+  element(:news_title) { |b| b.frm.text_field(:id=>"title_sakai.news") }
+  element(:news_url_channel) { |b| b.frm.text_field(:name=>"channel-url_sakai.news") }
+  element(:more_news_tools) { |b| b.frm.select_list(:id=>"num_sakai.news").click }
+  element(:web_content_title) { |b| b.frm.text_field(:id=>"title_sakai.iframe") }
+  element(:web_content_source) { |b| b.frm.text_field(:id=>"source_sakai.iframe") }
+  element(:more_web_content_tools) { |b| b.frm.select_list(:id=>"num_sakai.iframe").click }
+  action(:back) { |b| b.frm.button(:name=>"Back").click }
+  action(:cancel) { |b| b.frm.button(:name=>"Cancel").click }
     
   end
   
-end
 
 # The Course/Section Information page that appears when creating a new Site
 class CourseSectionInfo < BasePage
@@ -883,7 +842,6 @@ class CourseSectionInfo < BasePage
     SiteSetup.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
     # Note that ONLY THE FIRST instances of the
     # subject, course, and section fields
     # are included in the page elements definitions here,
@@ -893,17 +851,16 @@ class CourseSectionInfo < BasePage
     # or subsequent of these elements, you'll need to
     # explicitly identify/define them in the test case
     # itself.
-    text_field(:subject, :name=>/Subject:/, :frame=>frame)
-    text_field(:course, :name=>/Course:/, :frame=>frame)
-    text_field(:section, :name=>/Section:/, :frame=>frame)
-    text_field(:authorizers_username, :id=>"uniqname", :frame=>frame)
-    text_field(:special_instructions, :id=>"additional", :frame=>frame)
-    select_list(:add_more_rosters, :id=>"number", :frame=>frame)
-    button(:back, :name=>"Back", :frame=>frame)
-    button(:cancel, :name=>"Cancel", :frame=>frame)
+  element(:subject) { |b| b.frm.text_field(:name=>/Subject:/) }
+  element(:course) { |b| b.frm.text_field(:name=>/Course:/) }
+  element(:section) { |b| b.frm.text_field(:name=>/Section:/) }
+  element(:authorizers_username) { |b| b.frm.text_field(:id=>"uniqname") }
+  element(:special_instructions) { |b| b.frm.text_field(:id=>"additional") }
+  element(:add_more_rosters) { |b| b.frm.select_list(:id=>"number").click }
+  action(:back,) { |b| b.frm.button(:name=>"Back").click }
+  action(:cancel) { |b| b.frm.button(:name=>"Cancel").click }
   end
   
-end
 
 # The Site Access Page that appears during Site creation
 # immediately following the Add Multiple Tools Options page.
@@ -927,17 +884,15 @@ class SiteAccess < BasePage
     ConfirmSiteSetup.new(@browser)
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    radio_button(:publish_site, :id=>"publish", :frame=>frame)
-    radio_button(:leave_as_draft, :id=>"unpublish", :frame=>frame)
-    radio_button(:limited, :id=>"unjoinable", :frame=>frame)
-    radio_button(:allow, :id=>"joinable", :frame=>frame)
-    button(:back, :name=>"eventSubmit_doBack", :frame=>frame)
-    button(:cancel, :name=>"eventSubmit_doCancel_create", :frame=>frame)
-    select_list(:joiner_role, :id=>"joinerRole", :frame=>frame)
+  element(:publish_site) { |b| b.frm.radio(:id=>"publish") }
+  element(:leave_as_draft) { |b| b.frm.radio(:id=>"unpublish") }
+  element(:limited) { |b| b.frm.radio(:id=>"unjoinable") }
+  element(:allow) { |b| b.frm.radio(:id=>"joinable") }
+  action(:back) { |b| b.frm.button(:name=>"eventSubmit_doBack").click }
+  action(:cancel) { |b| b.frm.button(:name=>"eventSubmit_doCancel_create").click }
+  element(:joiner_role) { |b| b.frm.select_list(:id=>"joinerRole").click }
   end
 
-end
 
 # The Confirmation page at the end of a Course Site Setup
 class ConfirmSiteSetup < BasePage
@@ -993,16 +948,14 @@ class CourseSiteInfo < BasePage
     frm.div(:class=>"portletBody").div(:class=>"alertMessage").text
   end
   
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:short_description, :id=>"short_description", :frame=>frame)
-    text_field(:special_instructions, :id=>"additional", :frame=>frame)
-    text_field(:site_contact_name, :id=>"siteContactName", :frame=>frame)
-    text_field(:site_contact_email, :id=>"siteContactEmail", :frame=>frame)
-    button(:back, :name=>"Back", :frame=>frame)
-    button(:cancel, :name=>"Cancel", :frame=>frame)
+  element(:short_description) { |b| b.frm.text_field(:id=>"short_description") }
+  element(:special_instructions) { |b| b.frm.text_field(:id=>"additional") }
+  element(:site_contact_name) { |b| b.frm.text_field(:id=>"siteContactName") }
+  element(:site_contact_email) { |b| b.frm.text_field(:id=>"siteContactEmail") }
+  action(:back) { |b| b.frm.button(:name=>"Back").click }
+  action(:cancel) { |b| b.frm.button(:name=>"Cancel").click }
   end
   
-end
 
 # 
 class PortfolioSiteInfo < BasePage
@@ -1018,15 +971,13 @@ class PortfolioSiteInfo < BasePage
     PortfolioSiteTools.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"title", :frame=>frame)
-    text_field(:url_alias, :id=>"alias_0", :frame=>frame)
-    text_area(:short_description, :id=>"short_description", :frame=>frame)
-    text_field(:icon_url, :id=>"iconUrl", :frame=>frame)
-    text_field(:site_contact_name, :id=>"siteContactName", :frame=>frame)
-    text_field(:site_contact_email, :id=>"siteContactEmail", :frame=>frame)
+  element(:title) { |b| b.frm.text_field(:id=>"title") }
+  element(:url_alias) { |b| b.frm.text_field(:id=>"alias_0") }
+  element(:short_description) { |b| b.frm.text_area(:id=>"short_description") }
+  element(:icon_url) { |b| b.frm.text_field(:id=>"iconUrl") }
+  element(:site_contact_name) { |b| b.frm.text_field(:id=>"siteContactName") }
+  element(:site_contact_email) { |b| b.frm.text_field(:id=>"siteContactEmail") }
   end
-end
 
 # 
 class PortfolioSiteTools < BasePage
@@ -1038,11 +989,9 @@ class PortfolioSiteTools < BasePage
     PortfolioConfigureToolOptions.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    checkbox(:all_tools, :id=>"all", :frame=>frame)
+  checkbox(:all_tools) { |b| b.frm.checkbox(:id=>"all") }
     
   end
-end
 
 # 
 class PortfolioConfigureToolOptions < BasePage
@@ -1054,9 +1003,7 @@ class PortfolioConfigureToolOptions < BasePage
     SiteAccess.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:email, :id=>"emailId", :frame=>frame)
+  element(:email) { |b| b.frm.text_field(:id=>"emailId") }
   end
-end
 
 

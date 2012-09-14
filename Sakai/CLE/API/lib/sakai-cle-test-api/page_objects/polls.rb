@@ -35,7 +35,7 @@ class AddEditPoll < BasePage
   frame_element
   include FCKEditor
 
-  expected_element editor
+  expected_element :editor
 
   element(:editor) { |b| b.frm.frame(:id, "newpolldescr::input___Frame") }
 
@@ -55,7 +55,7 @@ class AddAnOption < BasePage
   frame_element
   include FCKEditor
 
-  expected_element editor
+  expected_element :editor
 
   element(:editor) { |b| b.frm.frame(:id, "optText::input___Frame") }
 

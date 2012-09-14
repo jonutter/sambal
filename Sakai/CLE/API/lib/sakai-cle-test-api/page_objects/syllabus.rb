@@ -104,7 +104,7 @@ class AddEditSyllabusItem < BasePage
   frame_element
   include FCKEditor
 
-  expected_element editor
+  expected_element :editor
 
   # Clicks the "Post" button and instantiates
   # the Syllabus Class.
