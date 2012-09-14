@@ -12,12 +12,14 @@ module QuestionHelpers
   # should be called after this.
   action(:save) { |b| b.frm.button(:value=>"Save").click }
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assessments, :text=>"Assessments", :frame=>frame)
-    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
-    link(:question_pools, :text=>"Question Pools", :frame=>frame)
-    link(:questions, :text=>/Questions:/, :frame=>frame)
-  end
+  action(:assessments) { |b| b.frm.link(:text=>"Assessments").click }
+  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
+  action(:question_pools) { |b| b.frm.link(:text=>"Question Pools").click }
+  action(:questions) { |b| b.frm.link(:text=>/Questions:/).click }
+
+  element(:assign_to_part) { |b| b.frm.select(:id=>"itemForm:assignToPart") }
+  element(:assign_to_pool) { |b| b.frm.select(:id=>"itemForm:assignToPool") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
 
 end
 
@@ -93,17 +95,13 @@ class AssessmentsList < BasePage
     AssessmentTotalScores.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
-    text_field(:title, :id=>"authorIndexForm:title", :frame=>frame)
-    radio_button(:create_using_builder) { |page| page.radio_button_element(:name=>"authorIndexForm:_id29", index=>0, :frame=>frame) }
-    radio_button(:create_using_text) { |page| page.radio_button_element(:name=>"authorIndexForm:_id29", :index=>$frame_index, :frame=>frame) }
-    select_list(:select_assessment_type, :id=>"authorIndexForm:assessmentTemplate", :frame=>frame)
-    button(:import, :id=>"authorIndexForm:import", :frame=>frame)
-    #(:, :=>"", :frame=>frame)
-    #(:, :=>"", :frame=>frame)
-
-  end
+  
+  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
+  element(:title) { |b| b.frm.text_field(:id=>"authorIndexForm:title") }
+  element(:create_using_builder) { |b| b.frm.radio(:name=>"authorIndexForm:_id29", :index=>0) }
+  element(:create_using_text) { |b| b.frm.radio(:name=>"authorIndexForm:_id29") }
+  element(:select_assessment_type) { |b| b.frm.select(:id=>"authorIndexForm:assessmentTemplate") }
+  action(:import) { |b| b.frm.button(:id=>"authorIndexForm:import").click }
 
 end
 
@@ -140,10 +138,8 @@ class PreviewOverview < BasePage
     EditAssessment.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:begin_assessment, :id=>"takeAssessmentForm:beginAssessment3", :frame=>frame)
-
-  end
+  
+  action(:begin_assessment) { |b| b.frm.button(:id=>"takeAssessmentForm:beginAssessment3").click }
 
 end
 
@@ -174,75 +170,73 @@ class AssessmentSettings < BasePage
     PublishAssessment.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:open, :text=>"Open", :frame=>frame)
-    link(:close, :text=>"Close", :frame=>frame)
-    text_field(:title, :id=>"assessmentSettingsAction:intro:assessment_title", :frame=>frame)
-    text_field(:authors, :id=>"assessmentSettingsAction:intro:assessment_author", :frame=>frame)
-    text_area(:description, :id=>"assessmentSettingsAction:intro:_id44_textinput", :frame=>frame)
-    button(:add_attachments_to_intro, :name=>"assessmentSettingsAction:intro:_id90", :frame=>frame)
-    text_field(:available_date, :id=>"assessmentSettingsAction:startDate", :frame=>frame)
-    text_field(:due_date, :id=>"assessmentSettingsAction:endDate", :frame=>frame)
-    text_field(:retract_date, :id=>"assessmentSettingsAction:retractDate", :frame=>frame)
-    radio_button(:released_to_anonymous) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:_id117", :index=>$frame_index, :frame=>frame) }
-    radio_button(:released_to_site) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:_id117", :index=>$frame_index, :frame=>frame) }
-    text_area(:specified_ips, :name=>"assessmentSettingsAction:_id132", :frame=>frame)
-    text_field(:secondary_id, :id=>"assessmentSettingsAction:username", :frame=>frame)
-    text_field(:secondary_pw, :id=>"assessmentSettingsAction:password", :frame=>frame)
-    checkbox(:timed_assessment, :id=>"assessmentSettingsAction:selTimeAssess", :frame=>frame)
-    select_list(:limit_hour, :id=>"assessmentSettingsAction:timedHours", :frame=>frame)
-    select_list(:limit_mins, :id=>"assessmentSettingsAction:timedMinutes", :frame=>frame)
-    radio_button(:linear_access) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:itemNavigation", :index=>$frame_index, :frame=>frame) }
-    radio_button(:random_access) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:itemNavigation", :index=>$frame_index, :frame=>frame) }
-    radio_button(:question_per_page) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:assessmentFormat", :index=>$frame_index, :frame=>frame) }
-    radio_button(:part_per_page) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:assessmentFormat", :index=>$frame_index, :frame=>frame) }
-    radio_button(:assessment_per_page) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:assessmentFormat", :index=>2, :frame=>frame) }
-    radio_button(:continuous_numbering) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:itemNumbering", :index=>$frame_index, :frame=>frame) }
-    radio_button(:restart_per_part) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:itemNumbering", :index=>$frame_index, :frame=>frame) }
-    checkbox(:add_mark_for_review, :id=>"assessmentSettingsAction:markForReview1", :frame=>frame)
-    radio_button(:unlimited_submissions) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:unlimitedSubmissions", :index=>$frame_index, :frame=>frame) }
-    radio_button(:only_x_submissions) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:unlimitedSubmissions", :index=>$frame_index, :frame=>frame) }
-    text_field(:allowed_submissions, :id=>"assessmentSettingsAction:submissions_Allowed", :frame=>frame)
-    radio_button(:late_submissions_not_accepted) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:lateHandling", :index=>$frame_index, :frame=>frame) }
-    radio_button(:late_submissions_accepted) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:lateHandling", :index=>$frame_index, :frame=>frame) }
-    text_area(:submission_message, :id=>"assessmentSettingsAction:_id245_textinput", :frame=>frame)
-    text_field(:final_page_url, :id=>"assessmentSettingsAction:finalPageUrl", :frame=>frame)
-    radio_button(:question_level_feedback) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackAuthoring", :index=>$frame_index, :frame=>frame) }
-    radio_button(:selection_level_feedback) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackAuthoring", :index=>$frame_index, :frame=>frame) }
-    radio_button(:both_feedback_levels) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackAuthoring", :index=>2, :frame=>frame) }
-    radio_button(:immediate_feedback) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackDelivery", :index=>$frame_index, :frame=>frame) }
-    radio_button(:feedback_on_submission) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackDelivery", :index=>$frame_index, :frame=>frame) }
-    radio_button(:no_feedback) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackDelivery", :index=>2, :frame=>frame) }
-    radio_button(:feedback_on_date) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackDelivery", :index=>3, :frame=>frame) }
-    text_field(:feedback_date, :id=>"assessmentSettingsAction:feedbackDate", :frame=>frame)
-    radio_button(:only_release_scores) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackComponentOption", :index=>$frame_index, :frame=>frame) }
-    radio_button(:release_questions_and) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:feedbackComponentOption", :index=>$frame_index, :frame=>frame) }
-    checkbox(:release_student_response, :id=>"assessmentSettingsAction:feedbackCheckbox1", :frame=>frame)
-    checkbox(:release_correct_response, :id=>"assessmentSettingsAction:feedbackCheckbox3", :frame=>frame)
-    checkbox(:release_students_assessment_scores, :id=>"assessmentSettingsAction:feedbackCheckbox5", :frame=>frame)
-    checkbox(:release_students_question_and_part_scores, :id=>"assessmentSettingsAction:feedbackCheckbox7", :frame=>frame)
-    checkbox(:release_question_level_feedback, :id=>"assessmentSettingsAction:feedbackCheckbox2", :frame=>frame)
-    checkbox(:release_selection_level_feedback, :id=>"assessmentSettingsAction:feedbackCheckbox4", :frame=>frame)
-    checkbox(:release_graders_comments, :id=>"assessmentSettingsAction:feedbackCheckbox6", :frame=>frame)
-    checkbox(:release_statistics, :id=>"assessmentSettingsAction:feedbackCheckbox8", :frame=>frame)
-    radio_button(:student_ids_seen) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:anonymousGrading1", :index=>$frame_index, :frame=>frame) }
-    radio_button(:anonymous_grading) { |page| page.radio_button_element( :name=>"assessmentSettingsAction:anonymousGrading1", :index=>$frame_index, :frame=>frame) }
-    #radio_button(:no_gradebook_options) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #radio_button(:grades_sent_to_gradebook) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #radio_button(:record_highest_score) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #radio_button(:record_last_score) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #radio_button(:background_color) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #text_field(:color_value, :id=>"", :frame=>frame)
-    #radio_button(:background_image) { |page| page.radio_button_element( :name=>"", :index=>$frame_index, :frame=>frame) }
-    #text_field(:image_name, :=>"", :frame=>frame)
-    #text_field(:keywords, :=>"", :frame=>frame)
-    #text_field(:objectives, :=>"", :frame=>frame)
-    #text_field(:rubrics, :=>"", :frame=>frame)
-    #checkbox(:record_metadata_for_questions, :=>"", :frame=>frame)
-    button(:save, :name=>"assessmentSettingsAction:_id383", :frame=>frame)
-    button(:cancel, :name=>"assessmentSettingsAction:_id385", :frame=>frame)
-
-  end
+  
+  action(:open) { |b| b.frm.link(:text=>"Open") }
+  action(:close) { |b| b.frm.link(:text=>"Close") }
+  element(:title) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:intro:assessment_title") }
+  element(:authors) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:intro:assessment_author") }
+  element(:description) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:intro:_id44_textinput") }
+  action(:add_attachments_to_intro) { |b| b.frm.button(:name=>"assessmentSettingsAction:intro:_id90").click }
+  element(:available_date) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:startDate") }
+  element(:due_date) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:endDate") }
+  element(:retract_date) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:retractDate") }
+  element(:released_to_anonymous) { |b| b.frm.radio(:name=>"assessmentSettingsAction:_id117") }
+  element(:released_to_site) { |b| b.frm.radio(:name=>"assessmentSettingsAction:_id117") }
+  element(:specified_ips) { |b| b.frm.text_field(:name=>"assessmentSettingsAction:_id132") }
+  element(:secondary_id) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:username") }
+  element(:secondary_pw) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:password") }
+  element(:timed_assessment) { |b| b.frm.checkbox(:id=>"assessmentSettingsAction:selTimeAssess") }
+  element(:limit_hour) { |b| b.frm.select(:id=>"assessmentSettingsAction:timedHours") }
+  element(:limit_mins) { |b| b.frm.select(:id=>"assessmentSettingsAction:timedMinutes") }
+  element(:linear_access) { |b| b.frm.radio(:name=>"assessmentSettingsAction:itemNavigation") }
+  element(:random_access) { |b| b.frm.radio(:name=>"assessmentSettingsAction:itemNavigation") }
+  element(:question_per_page) { |b| b.frm.radio(:name=>"assessmentSettingsAction:assessmentFormat") }
+  element(:part_per_page) { |b| b.frm.radio(:name=>"assessmentSettingsAction:assessmentFormat") }
+  element(:assessment_per_page) { |b| b.frm.radio(:name=>"assessmentSettingsAction:assessmentFormat") }
+  element(:continuous_numbering) { |b| b.frm.radio(:name=>"assessmentSettingsAction:itemNumbering") }
+  element(:restart_per_part) { |b| b.frm.radio(:name=>"assessmentSettingsAction:itemNumbering") }
+  element(:add_mark_for_review) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:markForReview1") }
+  element(:unlimited_submissions) { |b| b.frm.radio(:name=>"assessmentSettingsAction:unlimitedSubmissions") }
+  element(:only_x_submissions) { |b| b.frm.radio(:name=>"assessmentSettingsAction:unlimitedSubmissions") }
+  element(:allowed_submissions) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:submissions_Allowed") }
+  element(:late_submissions_not_accepted) { |b| b.frm.radio(:name=>"assessmentSettingsAction:lateHandling") }
+  element(:late_submissions_accepted) { |b| b.frm.radio(:name=>"assessmentSettingsAction:lateHandling") }
+  element(:submission_message) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:_id245_textinput") }
+  element(:final_page_url) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:finalPageUrl") }
+  element(:question_level_feedback) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackAuthoring") }
+  element(:selection_level_feedback) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackAuthoring") }
+  element(:both_feedback_levels) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackAuthoring") }
+  element(:immediate_feedback) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackDelivery") }
+  element(:feedback_on_submission) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackDelivery") }
+  element(:no_feedback) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackDelivery") }
+  element(:feedback_on_date) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackDelivery") }
+  element(:feedback_date) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackDate") }
+  element(:only_release_scores) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackComponentOption") }
+  element(:release_questions_and) { |b| b.frm.radio(:name=>"assessmentSettingsAction:feedbackComponentOption") }
+  element(:release_student_response) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox1") }
+  element(:release_correct_response) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox3") }
+  element(:release_students_assessment_scores) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox5") }
+  element(:release_students_question_and_part_scores) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox7") }
+  element(:release_question_level_feedback) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox2") }
+  element(:release_selection_level_feedback) { |b| b.frm.text_field(:id=>"assessmentSettingsAction:feedbackCheckbox4") }
+  element(:release_graders_comments) { |b| b.frm.checkbox(:id=>"assessmentSettingsAction:feedbackCheckbox6") }
+  element(:release_statistics) { |b| b.frm.checkbox(:id=>"assessmentSettingsAction:feedbackCheckbox8") }
+  element(:student_ids_seen) { |b| b.frm.radio(:name=>"assessmentSettingsAction:anonymousGrading1") }
+  element(:anonymous_grading) { |b| b.frm.radio(:name=>"assessmentSettingsAction:anonymousGrading1") }
+    #radio_button(:no_gradebook_options) { |b| b.frm.radio(:name=>"") }
+    #radio_button(:grades_sent_to_gradebook) { |b| b.frm.radio(:name=>"") }
+    #radio_button(:record_highest_score) { |b| b.frm.radio(:name=>"") }
+    #radio_button(:record_last_score) { |b| b.frm.radio(:name=>"") }
+    #radio_button(:background_color) { |b| b.frm.radio(:name=>"") }
+    #text_field(:color_value, :id=>"") }
+    #radio_button(:background_image) { |b| b.frm.radio(:name=>"") }
+    #text_field(:image_name, :=>"") }
+    #text_field(:keywords, :=>"") }
+    #text_field(:objectives, :=>"") }
+    #text_field(:rubrics, :=>"") }
+    #checkbox(:record_metadata_for_questions, :=>"") }
+  action(:save) { |b| b.frm.button(:name=>"assessmentSettingsAction:_id383").click }
+  action(:cancel) { |b| b.frm.button(:name=>"assessmentSettingsAction:_id385").click }
 
 end
 
@@ -442,13 +436,11 @@ class EditAssessment < BasePage
     frm.table(:id=>"assesssmentForm:parts:#{part_number.to_i-1}:parts").div(:class=>"tier3", :index=>question_number.to_i-1).text
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assessments, :text=>"Assessments", :frame=>frame)
-    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
-    link(:print, :text=>"Print", :frame=>frame)
-    button(:update_points, :id=>"assesssmentForm:pointsUpdate", :frame=>frame)
-
-  end
+  
+  action(:assessments) { |b| b.frm.button(:text=>"Assessments") }
+  action(:assessment_types) { |b| b.frm.button(:text=>"Assessment Types") }
+  action(:print) { |b| b.frm.button(:text=>"Print").click }
+  action(:update_points) { |b| b.frm.button(:id=>"assesssmentForm:pointsUpdate").click }
 
 end
 
@@ -464,25 +456,24 @@ class AddEditAssessmentPart < BasePage
     EditAssessment.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:title, :id=>"modifyPartForm:title", :frame=>frame)
-    text_area(:information, :id=>"modifyPartForm:_id10_textinput", :frame=>frame)
-    button(:add_attachments, :name=>"modifyPartForm:_id54", :frame=>frame)
-    radio_button(:questions_one_by_one) { |page| page.radio_button_element(:index=>0, :name=>"modifyPartForm:_id60", :frame=>frame)}
-    radio_button(:random_draw) { |page| page.radio_button_element(:index=>1, :name=>"modifyPartForm:_id60", :frame=>frame) }
-    select_list(:pool_name, :id=>"modifyPartForm:assignToPool", :frame=>frame)
-    text_field(:number_of_questions, :id=>"modifyPartForm:numSelected", :frame=>frame)
-    text_field(:point_value_of_questions, :id=>"modifyPartForm:numPointsRandom", :frame=>frame)
-    text_field(:negative_point_value, :id=>"modifyPartForm:numDiscountRandom", :frame=>frame)
-    radio_button(:randomized_each_time) { |page| page.radio_button_element(:index=>0, :name=>"modifyPartForm:randomizationType", :frame=>frame) }
-    radio_button(:randomized_once) { |page| page.radio_button_element(:index=>1, :name=>"modifyPartForm:randomizationType", :frame=>frame) }
-    radio_button(:order_as_listed) { |page| page.radio_button_element(:index=>0, :name=>"modifyPartForm:_id81", :frame=>frame) }
-    radio_button(:random_within_part) { |page| page.radio_button_element(:index=>1, :name=>"modifyPartForm:_id81", :frame=>frame) }
-    text_field(:objective, :id=>"modifyPartForm:obj", :frame=>frame)
-    text_field(:keyword, :id=>"modifyPartForm:keyword", :frame=>frame)
-    text_field(:rubric, :id=>"modifyPartForm:rubric", :frame=>frame)
-    button(:cancel, :name=>"modifyPartForm:_id90", :frame=>frame)
-  end
+  
+  element(:title) { |b| b.frm.text_field(:id=>"modifyPartForm:title") }
+  element(:information) { |b| b.frm.text_field(:id=>"modifyPartForm:_id10_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:name=>"modifyPartForm:_id54").click }
+  element(:questions_one_by_one) { |b| b.frm.radio(:index=>0, :name=>"modifyPartForm:_id60") }
+  element(:random_draw) { |b| b.frm.radio(:index=>1, :name=>"modifyPartForm:_id60") }
+  element(:pool_name) { |b| b.frm.select(:id=>"modifyPartForm:assignToPool") }
+  element(:number_of_questions) { |b| b.frm.text_field(:id=>"modifyPartForm:numSelected") }
+  element(:point_value_of_questions) { |b| b.frm.text_field(:id=>"modifyPartForm:numPointsRandom") }
+  element(:negative_point_value) { |b| b.frm.text_field(:id=>"modifyPartForm:numDiscountRandom") }
+  element(:randomized_each_time) { |b| b.frm.radio(:index=>0, :name=>"modifyPartForm:randomizationType") }
+  element(:randomized_once) { |b| b.frm.radio(:index=>1, :name=>"modifyPartForm:randomizationType") }
+  element(:order_as_listed) { |b| b.frm.radio(:index=>0, :name=>"modifyPartForm:_id81") }
+  element(:random_within_part) { |b| b.frm.radio(:index=>1, :name=>"modifyPartForm:_id81") }
+  element(:objective) { |b| b.frm.text_field(:id=>"modifyPartForm:obj") }
+  element(:keyword) { |b| b.frm.text_field(:id=>"modifyPartForm:keyword") }
+  element(:rubric) { |b| b.frm.text_field(:id=>"modifyPartForm:rubric") }
+  action(:cancel) { |b| b.frm.button(:name=>"modifyPartForm:_id90").click }
 
 end
 
@@ -498,12 +489,10 @@ class PublishAssessment < BasePage
     AssessmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :value=>"Cancel", :frame=>frame)
-    button(:edit, :name=>"publishAssessmentForm:_id23", :frame=>frame)
-    select_list(:notification, :id=>"publishAssessmentForm:number", :frame=>frame)
-
-  end
+  
+  action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
+  action(:edit) { |b| b.frm.button(:name=>"publishAssessmentForm:_id23").click }
+  element(:notification) { |b| b.frm.select(:id=>"publishAssessmentForm:number") }
 
 end
 
@@ -514,61 +503,57 @@ class MultipleChoice < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :value=>"Cancel", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    link(:whats_this, :text=>"(What's This?)", :frame=>frame)
-    radio_button(:single_correct) { |page| page.radio_button_element(:name=>"itemForm:chooseAnswerTypeForMC", :index=>0, :frame=>frame) }
-    radio_button(:enable_negative_marking) { |page| page.radio_button_element(:name=>"itemForm:partialCreadit_NegativeMarking", :index=>0, :frame=>frame) }
+  
+  action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  action(:whats_this) { |b| b.frm.link(:text=>"(What's This?)").click }
+  element(:single_correct) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>0) }
+  element(:enable_negative_marking) { |b| b.frm.radio(:name=>"itemForm:partialCreadit_NegativeMarking", :index=>0) }
 
     # Element present when negative marking selected:
-    text_field(:negative_point_value, :id=>"itemForm:answerdsc", :frame=>frame)
+  element(:negative_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerdsc") }
 
-    radio_button(:enable_partial_credit) { |page| page.radio_button_element(:name=>"itemForm:partialCreadit_NegativeMarking", :index=>1, :frame=>frame) }
-    link(:reset_to_default, :text=>"Reset to Default Grading Logic", :frame=>frame)
-    radio_button(:multi_single) {|page| page.radio_button_element(:name=>"itemForm:chooseAnswerTypeForMC", :index=>1, :frame=>frame) }
-    radio_button(:multi_multi) {|page| page.radio_button_element(:name=>"itemForm:chooseAnswerTypeForMC", :index=>2, :frame=>frame) }
-    text_area(:question_text, :id=>"itemForm:_id82_textinput", :frame=>frame)
-    button(:add_attachments, :name=>"itemForm:_id126", :frame=>frame)
+  element(:enable_partial_credit) { |b| b.frm.radio(:name=>"itemForm:partialCreadit_NegativeMarking", :index=>1) }
+  action(:reset_to_default) { |b| b.frm.link(:text=>"Reset to Default Grading Logic").click }
+  element(:multi_single) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>1) }
+  element(:multi_multi) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>2) }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id82_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:name=>"itemForm:_id126").click }
 
-    text_area(:answer_a, :id=>"itemForm:mcchoices:0:_id140_textinput", :frame=>frame)
-    link(:remove_a, :id=>"itemForm:mcchoices:0:removelinkSingle", :frame=>frame)
-    text_area(:answer_b, :id=>"itemForm:mcchoices:1:_id140_textinput", :frame=>frame)
-    link(:remove_b, :id=>"itemForm:mcchoices:1:removelinkSingle", :frame=>frame)
-    text_area(:answer_c, :id=>"itemForm:mcchoices:2:_id140_textinput", :frame=>frame)
-    link(:remove_c, :id=>"itemForm:mcchoices:2:removelinkSingle", :frame=>frame)
-    text_area(:answer_d, :id=>"itemForm:mcchoices:3:_id140_textinput", :frame=>frame)
-    link(:remove_d, :id=>"itemForm:mcchoices:3:removelinkSingle", :frame=>frame)
+  element(:answer_a) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:0:_id140_textinput") }
+  action(:remove_a) { |b| b.frm.link(:id=>"itemForm:mcchoices:0:removelinkSingle").click }
+  element(:answer_b) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:1:_id140_textinput") }
+  action(:remove_b) { |b| b.frm.link(:id=>"itemForm:mcchoices:1:removelinkSingle").click }
+  element(:answer_c) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:2:_id140_textinput") }
+  action(:remove_c) { |b| b.frm.link(:id=>"itemForm:mcchoices:2:removelinkSingle").click }
+  element(:answer_d) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:3:_id140_textinput") }
+  action(:remove_d) { |b| b.frm.link(:id=>"itemForm:mcchoices:3:removelinkSingle").click }
 
     # Radio buttons that appear when "single correct" is selected
-    radio_button(:a_correct, :name=>"itemForm:mcchoices:0:mcradiobtn", :frame=>frame)
-    radio_button(:b_correct, :name=>"itemForm:mcchoices:1:mcradiobtn", :frame=>frame)
-    radio_button(:c_correct, :name=>"itemForm:mcchoices:2:mcradiobtn", :frame=>frame)
-    radio_button(:d_correct, :name=>"itemForm:mcchoices:3:mcradiobtn", :frame=>frame)
+  element(:a_correct) { |b| b.frm.radio(:name=>"itemForm:mcchoices:0:mcradiobtn") }
+  element(:b_correct) { |b| b.frm.radio(:name=>"itemForm:mcchoices:1:mcradiobtn") }
+  element(:c_correct) { |b| b.frm.radio(:name=>"itemForm:mcchoices:2:mcradiobtn") }
+  element(:d_correct) { |b| b.frm.radio(:name=>"itemForm:mcchoices:3:mcradiobtn") }
 
     # % Value fields that appear when "single correct" and "partial credit" selected
-    text_field(:a_value, :id=>"itemForm:mcchoices:0:partialCredit", :frame=>frame)
-    text_field(:b_value, :id=>"itemForm:mcchoices:1:partialCredit", :frame=>frame)
-    text_field(:c_value, :id=>"itemForm:mcchoices:2:partialCredit", :frame=>frame)
-    text_field(:d_value, :id=>"itemForm:mcchoices:3:partialCredit", :frame=>frame)
+  element(:a_value) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:0:partialCredit") }
+  element(:b_value) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:1:partialCredit") }
+  element(:c_value) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:2:partialCredit") }
+  element(:d_value) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:3:partialCredit") }
 
-    link(:reset_score_values, :text=>"Reset Score Values", :frame=>frame)
+  action(:reset_score_values) { |b| b.frm.link(:text=>"Reset Score Values").click }
 
     # Checkboxes that appear when "multiple correct" is selected
-    checkbox(:a_correct, :name=>"itemForm:mcchoices:0:mccheckboxes", :frame=>frame)
-    checkbox(:b_correct, :name=>"itemForm:mcchoices:1:mccheckboxes", :frame=>frame)
-    checkbox(:c_correct, :name=>"itemForm:mcchoices:2:mccheckboxes", :frame=>frame)
-    checkbox(:d_correct, :name=>"itemForm:mcchoices:3:mccheckboxes", :frame=>frame)
+  element(:a_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:0:mccheckboxes") }
+  element(:b_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:1:mccheckboxes") }
+  element(:c_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:2:mccheckboxes") }
+  element(:d_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:3:mccheckboxes") }
 
-    select_list(:insert_additional_answers, :id=>"itemForm:insertAdditionalAnswerSelectMenu", :frame=>frame)
-    radio_button(:randomize_answers_yes) {|page| page.radio_button_element(:index=>0, :name=>"itemForm:_id162", :frame=>frame) }
-    radio_button(:randomize_answers_no) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:_id162", :frame=>frame) }
-    radio_button(:require_rationale_yes) {|page| page.radio_button_element(:index=>0, :name=>"itemForm:_id166", :frame=>frame) }
-    radio_button(:require_rationale_no) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:_id166", :frame=>frame) }
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-
-  end
+  element(:insert_additional_answers) { |b| b.frm.select(:id=>"itemForm:insertAdditionalAnswerSelectMenu") }
+  element(:randomize_answers_yes) { |b| b.frm.radio(:index=>0, :name=>"itemForm:_id162") }
+  element(:randomize_answers_no) { |b| b.frm.radio(:index=>1, :name=>"itemForm:_id162") }
+  element(:require_rationale_yes) { |b| b.frm.radio(:index=>0, :name=>"itemForm:_id166") }
+  element(:require_rationale_no) { |b| b.frm.radio(:index=>1, :name=>"itemForm:_id166") }
 
 end
 
@@ -578,21 +563,19 @@ class Survey < BasePage
   frame_element
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
-    radio_button(:yes_no) { |page| page.radio_button_element(:index=>0, :name=>"itemForm:selectscale", :frame=>frame) }
-    radio_button(:disagree_agree) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:selectscale", :frame=>frame) }
-    radio_button(:disagree_undecided) {|page| page.radio_button_element(:index=>2, :name=>"itemForm:selectscale", :frame=>frame) }
-    radio_button(:below_above) {|page| page.radio_button_element(:index=>3, :name=>"itemForm:selectscale", :frame=>frame)}
-    radio_button(:strongly_agree) {|page| page.radio_button_element(:index=>4, :name=>"itemForm:selectscale", :frame=>frame)}
-    radio_button(:unacceptable_excellent) {|page| page.radio_button_element(:index=>5, :name=>"itemForm:selectscale", :frame=>frame)}
-    radio_button(:one_to_five) {|page| page.radio_button_element(:index=>6, :name=>"itemForm:selectscale", :frame=>frame)}
-    radio_button(:one_to_ten) {|page| page.radio_button_element(:index=>7, :name=>"itemForm:selectscale", :frame=>frame)}
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-  end
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
+  element(:yes_no) { |b| b.frm.radio(:index=>0, :name=>"itemForm:selectscale") }
+  element(:disagree_agree) { |b| b.frm.radio(:index=>1, :name=>"itemForm:selectscale") }
+  element(:disagree_undecided) { |b| b.frm.radio(:index=>2, :name=>"itemForm:selectscale") }
+  element(:below_above) { |b| b.frm.radio(:index=>3, :name=>"itemForm:selectscale") }
+  element(:strongly_agree) { |b| b.frm.radio(:index=>4, :name=>"itemForm:selectscale") }
+  element(:unacceptable_excellent) { |b| b.frm.radio(:index=>5, :name=>"itemForm:selectscale") }
+  element(:one_to_five) { |b| b.frm.radio(:index=>6, :name=>"itemForm:selectscale") }
+  element(:one_to_ten) { |b| b.frm.radio(:index=>7, :name=>"itemForm:selectscale") }
+
 
 end
 
@@ -602,15 +585,13 @@ class ShortAnswer < BasePage
   frame_element
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
-    text_area(:model_short_answer, :id=>"itemForm:_id129_textinput", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-  end
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
+  element(:model_short_answer) { |b| b.frm.text_field(:id=>"itemForm:_id129_textinput") }
+
 
 end
 
@@ -621,17 +602,14 @@ class FillInBlank < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id75_textinput", :frame=>frame)
-    checkbox(:case_sensitive, :name=>"itemForm:_id76", :frame=>frame)
-    checkbox(:mutually_exclusive, :name=>"itemForm:_id78", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id126", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id75_textinput") }
+  element(:case_sensitive) { |b| b.frm.checkbox(:name=>"itemForm:_id76") }
+  element(:mutually_exclusive) { |b| b.frm.checkbox(:name=>"itemForm:_id78") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id126").click }
 
-  end
 
 end
 
@@ -642,15 +620,12 @@ class NumericResponse < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id73_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id117", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id73_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id117").click }
 
-  end
 
 end
 
@@ -661,18 +636,14 @@ class Matching < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id78_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id122", :frame=>frame)
-    text_area(:choice, :id=>"itemForm:_id147_textinput", :frame=>frame)
-    text_area(:match, :id=>"itemForm:_id151_textinput", :frame=>frame)
-    button(:save_pairing, :name=>"itemForm:_id164", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-
-  end
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id78_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id122").click }
+  element(:choice) { |b| b.frm.text_field(:id=>"itemForm:_id147_textinput") }
+  element(:match) { |b| b.frm.text_field(:id=>"itemForm:_id151_textinput") }
+  action(:save_pairing) { |b| b.frm.button(:name=>"itemForm:_id164").click }
 
 end
 
@@ -683,20 +654,17 @@ class TrueFalse < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id77_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id121", :frame=>frame)
-    text_field(:negative_point_value, :id=>"itemForm:answerdsc", :frame=>frame)
-    radio_button(:answer_true) {|page| page.radio_button_element(:index=>0, :name=>"itemForm:TF", :frame=>frame)}
-    radio_button(:answer_false) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:TF", :frame=>frame)}
-    radio_button(:required_rationale_yes) {|page| page.radio_button_element(:index=>0, :name=>"itemForm:rational", :frame=>frame)}
-    radio_button(:required_rationale_no) {|page| page.radio_button_element(:index=>1, :name=>"itemForm:rational", :frame=>frame)}
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
+  
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id77_textinput") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id121").click }
+  element(:negative_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerdsc") }
+  element(:answer_true) { |b| b.frm.radio(:index=>0, :name=>"itemForm:TF") }
+  element(:answer_false) { |b| b.frm.radio(:index=>1, :name=>"itemForm:TF") }
+  element(:required_rationale_yes) { |b| b.frm.radio(:index=>0, :name=>"itemForm:rational") }
+  element(:required_rationale_no) { |b| b.frm.radio(:index=>1, :name=>"itemForm:rational") }
 
-  end
 
 end
 
@@ -707,17 +675,12 @@ class AudioRecording < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
-    text_field(:time_allowed, :id=>"itemForm:timeallowed", :frame=>frame)
-    select_list(:number_of_attempts, :id=>"itemForm:noattempts", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
 
-  end
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
+  element(:time_allowed) { |b| b.frm.text_field(:id=>"itemForm:timeallowed") }
+  elementlist(:number_of_attempts) { |b| b.frm.select(:id=>"itemForm:noattempts") }
 
 end
 
@@ -729,15 +692,9 @@ class FileUpload < BasePage
 
   include QuestionHelpers
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :id=>"itemForm:_id63", :frame=>frame)
-    text_field(:answer_point_value, :id=>"itemForm:answerptr", :frame=>frame)
-    text_area(:question_text, :id=>"itemForm:_id69_textinput", :frame=>frame)
-    button(:add_attachments, :id=>"itemForm:_id113", :frame=>frame)
-    select_list(:assign_to_part, :id=>"itemForm:assignToPart", :frame=>frame)
-    select_list(:assign_to_pool, :id=>"itemForm:assignToPool", :frame=>frame)
-
-  end
+  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
 
 end
 
@@ -768,14 +725,13 @@ class AddQuestionPool < BasePage
     QuestionPoolsList.new @browser
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:pool_name, :id=>"questionpool:namefield", :frame=>frame)
-    text_field(:department_group, :id=>"questionpool:orgfield", :frame=>frame)
-    text_area(:description, :id=>"questionpool:descfield", :frame=>frame)
-    text_field(:objectives, :id=>"questionpool:objfield", :frame=>frame)
-    text_field(:keywords, :id=>"questionpool:keyfield", :frame=>frame)
+  
+  element(:pool_name) { |b| b.frm.text_field(:id=>"questionpool:namefield") }
+  element(:department_group) { |b| b.frm.text_field(:id=>"questionpool:orgfield") }
+  element(:description) { |b| b.frm.text_field(:id=>"questionpool:descfield") }
+  element(:objectives) { |b| b.frm.text_field(:id=>"questionpool:objfield") }
+  element(:keywords) { |b| b.frm.text_field(:id=>"questionpool:keyfield") }
 
-  end
 end
 
 # The Page that appears when editing an existing question pool
@@ -797,17 +753,16 @@ class EditQuestionPool < BasePage
     QuestionPoolsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:pool_name, :id=>"editform:namefield", :frame=>frame)
-    text_field(:department_group, :id=>"editform:orgfield", :frame=>frame)
-    text_area(:description, :id=>"editform:descfield", :frame=>frame)
-    text_field(:objectives, :id=>"editform:objfield", :frame=>frame)
-    text_field(:keywords, :id=>"editform:keyfield", :frame=>frame)
-    button(:update, :id=>"editform:Update", :frame=>frame)
-    button(:save, :id=>"questionpool:submit", :frame=>frame)
-    button(:cancel, :id=>"questionpool:_id11", :frame=>frame)
+  
+  element(:pool_name) { |b| b.frm.text_field(:id=>"editform:namefield") }
+  element(:department_group) { |b| b.frm.text_field(:id=>"editform:orgfield") }
+  element(:description) { |b| b.frm.text_field(:id=>"editform:descfield") }
+  element(:objectives) { |b| b.frm.text_field(:id=>"editform:objfield") }
+  element(:keywords) { |b| b.frm.text_field(:id=>"editform:keyfield") }
+  action(:update) { |b| b.frm.button(:id=>"editform:Update").click }
+  action(:save) { |b| b.frm.button(:id=>"questionpool:submit").click }
+  action(:cancel) { |b| b.frm.button(:id=>"questionpool:_id11").click }
 
-  end
 end
 
 # The page with the list of existing Question Pools
@@ -859,10 +814,9 @@ class QuestionPoolsList < BasePage
     AssessmentsList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    link(:assessment_types, :text=>"Assessment Types", :frame=>frame)
+  
+  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types") }
 
-  end
 end
 
 # The page that appears when you click to import
@@ -919,10 +873,8 @@ class SelectQuestionType < BasePage
 
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    button(:cancel, :value=>"Cancel", :frame=>frame)
+  action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
 
-  end
 end
 
 # Page of Assessments accessible to a student user
@@ -1068,11 +1020,9 @@ class ConfirmSubmission < BasePage
     frm.button(:value=>"Submit for Grading").click
     SubmissionSummary.new(@browser)
   end
+  
+  value(:validation) { |b| b.frm.span(:class=>"validation").text }
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    span(:validation, :class=>"validation", :frame=>frame)
-
-  end
 end
 
 # The summary page that appears when an Assessment has been submitted.
@@ -1087,8 +1037,6 @@ class SubmissionSummary < BasePage
     TakeAssessmentList.new(@browser)
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    div(:summary_info, :class=>"tier1", :frame=>frame)
+  value(:summary_info) { |b| b.frm.div(:class=>"tier1").text }
 
-  end
 end

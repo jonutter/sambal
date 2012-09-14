@@ -3,20 +3,16 @@ class EmailArchive < BasePage
 
   frame_element
 
-  def options
-    frm.link(:text=>"Options").click
-    EmailArchiveOptions.new(@browser)
-  end
+  # EmailArchiveOptions
+  action(:options){ |b| b.frm.link(:text=>"Options").click }
 
   # Returns an array containing the
   def email_list
   end
 
-  in_frame(:class=>"portletMainIframe") do |frame|
-    text_field(:search_field, :id=>"search", :frame=>frame)
-    button(:search_button, :value=>"Search", :frame=>frame)
+  element(:search_field) { |b| b.frm.text_field(:id=>"search") }
+  action(:search_button) { |b| b.frm.button(:value=>"Search").click }
 
-  end
 end
 
 class EmailArchiveOptions < BasePage
