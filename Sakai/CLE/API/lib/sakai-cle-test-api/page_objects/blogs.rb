@@ -25,28 +25,27 @@ class AddBlogEntry < BasePage
 
   frame_element
   include BlogsMenuButtons
+  include FCKEditor
+
+  expected_element :editor
+
+  element(:editor) { |b| b.frm.frame(:id, "blog-text-input:1:input___Frame") }
 
   def blog_text=(text)
-    frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).wait_until_present
-    frm.frame(:id, "blog-text-input:1:input___Frame").td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
+    editor.td(:id, "xEditingArea").frame(:index=>0).wait_until_present
+    editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
   end
 
-  def publish_entry
-    frm.button(:value=>"Publish entry").click
-    BlogsList.new @browser
-  end
+  # BlogsList
+  action(:publish_entry) { |b| b.frm.button(:value=>"Publish entry").click }
+  # BlogsList
+  action(:save_draft){ |b| b.frm.button(:value=>"Save Draft").click }
 
-  def save_draft
-    frm.button(:value=>"Save Draft").click
-    BlogsList.new @browser
-  end
+  element(:title) { |b| b.frm.text_field(:name=>"title-input") }
+  element(:only_site_admins) { |b| b.frm.radio(:id=>"instructors-only-radio") }
+  element(:all_members) { |b| b.frm.radio(:id=>"all-members-radio") }
+  element(:publicly_viewable) { |b| b.frm.radio(:id=>"public-viewable-radio") }
 
-  in_frame(:class=>"PortletMainIframe") do |frame|
-    text_field(:title, :name=>"title-input", :frame=>frame)
-    radio_button(:only_site_admins, :id=>"instructors-only-radio", :frame=>frame)
-    radio_button(:all_members, :id=>"all-members-radio", :frame=>frame)
-    radio_button(:publicly_viewable, :id=>"public-viewable-radio", :frame=>frame)
-  end
 end
 
 class BlogsList < BasePage
