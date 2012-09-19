@@ -365,11 +365,7 @@ class ImportStepOne < BasePage
 
   frame_element
 
-  def continue
-    frm.button(:value=>"Continue").click
-    ImportStepTwo.new(@browser)
-  end
-
+  action(:continue) { |b| bfrm.button(:value=>"Continue").click }
   element(:microsoft_outlook) { |b| b.frm.radio(:id=>"importType_Outlook") }
   element(:meeting_maker) { |b| b.frm.radio(:id=>"importType_MeetingMaker") }
   element(:generic_calendar_import) { |b| b.frm.radio(:id=>"importType_Generic") }
