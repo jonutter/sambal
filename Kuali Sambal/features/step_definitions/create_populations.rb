@@ -1,4 +1,4 @@
-When /^I create a population that is (.*)$/ do |type|
+When /^I (?:create|have created) a population that is (.*)$/ do |type|
   @population = make Population, :type=>type
   @population.create
 end

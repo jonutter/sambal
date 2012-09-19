@@ -25,12 +25,7 @@ class PopulationsBase < BasePage
 
       action(:lookup_population) { |b| b.frm.link(id: "lookup_searchPopulation_add").click; b.loading.wait_while_present } 
       action(:lookup_ref_population) { |b| b.frm.link(id: "lookup_searchRefPopulation").click; b.loading.wait_while_present }
-<<<<<<< HEAD
       action(:add) { |b| b.frm.button(id: "addPop_button_add").click; b.loading.wait_while_present; sleep 1.5 }
-=======
-      action(:add) { |b| b.frm.div(id: "populations_table").button(text: "add").click; b.loading.wait_while_present; sleep 1.5 } #TODO - right now, this button has a different name in edit vs create screens
-      
->>>>>>> 5c474216542f55152465b4207dbd83bb5880a2da
     end
 
   end
