@@ -44,10 +44,8 @@ class AddTemplateTitle < BasePage
 
   frame_element
   
-  def save
-    frm.button(:value=>"Save").click
+  action(:save) { |b|  b.frm.button(:value=>"Save").click }
     EditTemplate.new(@browser)
-  end
 
   element(:title) { |b| b.frm.text_field(:id=>"title") }
   element(:description) { |b| b.frm.text_area(:id=>"description") }
@@ -66,13 +64,11 @@ class EditTemplate < BasePage
 
   action(:new_evaluation) { |b| b.frm.link(:text=>"New evaluation").click }
 
-  def add
-    frm.button(:value=>"Add").click
+  action(:add) { |b| b.frm.button(:value=>"Add").click }
     frm.frame(:id, "item-text___Frame").td(:id, "xEditingArea").wait_until_present
   end
   
-  def save_item
-    frm.button(:value=>"Save item").click
+  action(:save_item) { |b| b.frm.button(:value=>"Save item").click }
     frm.link(:text=>"New evaluation").wait_until_present
     EditTemplate.new @browser
   end
