@@ -128,13 +128,6 @@ class AddFiles < BasePage
   # Clicks the Add Menu for the specified
   # folder, then selects the Upload Files
   # command in the menu that appears.
-  def upload_file_to_folder(folder_name)
-    upload_files_to_folder(folder_name)
-  end
-
-  # Clicks the Add Menu for the specified
-  # folder, then selects the Upload Files
-  # command in the menu that appears.
   def upload_files_to_folder(folder_name)
     if frm.li(:text=>/A/, :class=>"menuOpen").exist?
       files_table.row(:text=>/#{Regexp.escape(folder_name)}/).li(:text=>/A/, :class=>"menuOpen").fire_event("onclick")
@@ -143,6 +136,7 @@ class AddFiles < BasePage
     end
     files_table.row(:text=>/#{Regexp.escape(folder_name)}/).link(:text=>"Upload Files").click
   end
+  alias upload_file_to_folder upload_files_to_folder
 
   # Clicks the "Attach a copy" link for the specified
   # file, then reinstantiates the Class.

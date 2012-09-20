@@ -53,6 +53,9 @@ class TestImportSite < Test::Unit::TestCase
 
     @source_site_string << "<br />HTML Page: <a href=\"#{@htmlpage.url}\">#{@htmlpage.name}</a><br />"
 
+    @file = make FileObject, :site=>@site1.name, :name=>"flower02.jpg", :source_path=>@file_path+"images/"
+    @file.create
+
     @folder = make FolderObject, :site=>@site1.name, :parent_folder=>"#{@site1.name} Resources"
     @folder.create
 
@@ -87,6 +90,9 @@ class TestImportSite < Test::Unit::TestCase
     @section4 = make ContentSectionObject, :site=>@site1.name, :module=>@module.title, :content_type=>"Upload or link to a file in Resources",
         :file_name=>@nestedhtmlpage.name, :file_folder=>@nestedhtmlpage.folder
     @section4.create
+
+    @wiki = make WikiObject, :site=>@site1.name, :content=>"{image:worksite:/#{@file.name}}\n\n{worksiteinfo}\n\n{sakai-sections}"
+    @wiki.create
 
     @site2 = make SiteObject
     @site2.create_and_reuse_site @site1.name
