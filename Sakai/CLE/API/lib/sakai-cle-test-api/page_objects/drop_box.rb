@@ -3,7 +3,7 @@
 #================
 
 # TODO: See what is needed in this class (and if it's needed at all)
-class DropBox < AddFiles
+#class DropBox < ResourcesBase
 
 
-end
+#end

@@ -41,7 +41,7 @@ class AddStyle < BasePage
 end
 
 # TODO Dry this up because there can be a superclass here
-class StylesUploadFiles < AddFiles
+class StylesUploadFiles < ResourcesBase
   
   @@filex=0
   

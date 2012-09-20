@@ -256,7 +256,7 @@ class AddEditContentSection < LessonsBase
   # next is the ConfirmSectionAdd class.
   action(:add) { |b| b.frm.link(:id=>/SectionForm:submitsave/).click }
 
-  # Pointer to the Edit Text box of the FCKEditor
+  # Pointer to the frame of the FCKEditor
   # on the page.
   element(:content_editor) { |b| b.frm.frame(:id, /SectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame/) }
 

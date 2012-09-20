@@ -116,8 +116,7 @@ class ContentSectionObject
                                        # WeakReference error, given the partial page reload.
       case @content_type
         when "Compose content with editor"
-          page.source(page.content_editor)
-          page.source=@editor_content
+          page.enter_source_text page.content_editor, @editor_content
         when "Upload or link to a file"
           page.select_a_file
           on_page LessonAddAttachment do |add|
@@ -135,7 +134,7 @@ class ContentSectionObject
           page.url_description.set @url_description
         when "Upload or link to a file in Resources"
           page.select_or_upload_file
-          on_page AddFiles do |add|
+          on_page ResourcesBase do |add|
             add.open_folder @file_folder unless @file_folder == nil
             add.select_file @file_name
             add.continue

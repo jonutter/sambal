@@ -52,8 +52,7 @@ class AssignmentObject
     on AssignmentAdd do |edit|
       edit.title.set opts[:title] unless opts[:title] == nil
       unless opts[:instructions] == nil
-        edit.source(edit.editor)
-        edit.source=opts[:instructions]
+        edit.enter_source_text edit.editor, opts[:instructions]
       end
       edit.post
     end

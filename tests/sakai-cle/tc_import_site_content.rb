@@ -104,7 +104,11 @@ class TestImportSite < Test::Unit::TestCase
 
     @assignment.edit :instructions=>@source_site_string
 
-    @announcment.edit :body=>@source_site_string
+    @announcement.edit :body=>@source_site_string
+
+    @htmlpage.edit_content @source_site_string
+
+    @nestedhtmlpage.edit_content @source_site_string
 
     #@site2 = make SiteObject
     #@site2.create_and_reuse_site @site1.name

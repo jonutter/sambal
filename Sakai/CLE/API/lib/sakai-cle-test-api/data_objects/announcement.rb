@@ -30,7 +30,7 @@ class AnnouncementObject
     end
     on_page AddEditAnnouncements do |page|
       page.title.set @title
-      page.body=@body
+      page.enter_source_text page.editor, @body
       page.add_announcement
     end
     on_page Announcements do |page|
@@ -47,9 +47,11 @@ class AnnouncementObject
     on AddEditAnnouncements do |edit|
       edit.title.set opts[:title] unless opts[:title]==nil
       unless opts[:body]==nil
-        edit.source(:editor)
-
+        edit.enter_source_text edit.editor, opts[:body]
       end
+      edit.save_changes
     end
+    @title=opts[:title] unless opts[:title]==nil
+    @body=opts[:body] unless opts[:body]==nil
   end
 end
