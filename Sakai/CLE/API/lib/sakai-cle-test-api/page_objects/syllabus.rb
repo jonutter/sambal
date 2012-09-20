@@ -116,7 +116,7 @@ class AddEditSyllabusItem < BasePage
   # Defines the text area of the FCKEditor that appears on the page for
   # the Syllabus content.
   def editor
-    frm.frame(:id, /_textarea___Frame/).td(:id, "xEditingArea").frame(:index=>0)
+    frm.frame(:id, /_textarea___Frame/)
   end
 
   # Sends the specified string to the FCKEditor text area on the page.

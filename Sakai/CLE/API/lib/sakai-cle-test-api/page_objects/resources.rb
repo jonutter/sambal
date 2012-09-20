@@ -111,10 +111,6 @@ class CreateHTMLPageContent < BasePage
   thing(:editor) { |b| b.frm.frame(:id=>"content___Frame") }
   action(:continue) { |b| b.frm.button(id: "saveChanges").click }
 
-  def source=(text)
-    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
-  end
-
 end
 
 class CreateHTMLPageProperties < BasePage

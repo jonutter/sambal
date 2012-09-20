@@ -20,6 +20,8 @@ class AnnouncementObject
     raise "You must specify a Site for the announcement" if @site==nil
   end
 
+  alias :name :title
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     announcements unless @browser.title=~/Announcements$/
@@ -33,6 +35,21 @@ class AnnouncementObject
     end
     on_page Announcements do |page|
       @link = page.href(@title)
+    end
+  end
+
+  def edit opts={}
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    announcements unless @browser.title=~/Announcements$/
+    on_page Announcements do |list|
+      list.edit @title
+    end
+    on AddEditAnnouncements do |edit|
+      edit.title.set opts[:title] unless opts[:title]==nil
+      unless opts[:body]==nil
+        edit.source(:editor)
+
+      end
     end
   end
 end

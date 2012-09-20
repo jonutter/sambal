@@ -4,7 +4,7 @@ class ModuleObject
   include Utilities
   include Workflows
 
-  attr_accessor :title, :description, :keywords, :start_date, :end_date, :site
+  attr_accessor :title, :description, :keywords, :start_date, :end_date, :site, :href
 
   def initialize(browser, opts={})
     @browser = browser
@@ -22,6 +22,8 @@ class ModuleObject
     @site=options[:site]
     raise "You must specify a Site name for your lesson" if @site==nil
   end
+
+  alias :name :title
 
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
@@ -41,6 +43,9 @@ class ModuleObject
     on_page ConfirmModule do |page|
       page.return_to_modules
     end
+    on_page Lessons do |list|
+      @href = list.href @title
+    end
   end
 
 end
@@ -53,7 +58,7 @@ class ContentSectionObject
 
   attr_accessor :site, :module, :title, :instructions, :modality, :content_type,
                 :copyright_status, :editor_content, :file_folder, :file_name, :file_path,
-                :url, :url_title, :file_description, :url_description
+                :url, :url_title, :file_description, :url_description, :href
 
   def initialize(browser, opts={})
     @browser = browser
@@ -85,6 +90,8 @@ class ContentSectionObject
     raise "You must specify a Module for your Section" if @module==nil
   end
 
+  alias :name :title
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     lessons unless @browser.title=~/Lessons$/
@@ -106,7 +113,7 @@ class ContentSectionObject
 
     on AddEditContentSection do |page| # Note we are reinstantiating the class here because of
                                        # an issue with Selenium Webdriver throwing a
-                                       # WeakReference error given the partial page reload.
+                                       # WeakReference error, given the partial page reload.
       case @content_type
         when "Compose content with editor"
           page.source(page.content_editor)
@@ -138,6 +145,12 @@ class ContentSectionObject
       end
       page.copyright_status.select @copyright_status
       page.add
+    end
+    on ConfirmSectionAdd do |confirm|
+      confirm.finish
+    end
+    on Lessons do |list|
+      @href = list.href @title
     end
   end
 end

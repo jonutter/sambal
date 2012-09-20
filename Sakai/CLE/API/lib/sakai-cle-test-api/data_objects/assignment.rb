@@ -21,6 +21,8 @@ class AssignmentObject
     raise "You must specify a Site for your Assignment" if @site==nil
   end
 
+  alias :name :title
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
 

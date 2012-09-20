@@ -64,10 +64,6 @@ class AssignmentAdd < AssignmentsBase
     editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(instructions)
   end
 
-  def source=(text)
-    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
-  end
-
   # Clicks the Preview button, next is
   # the AssignmentsPreview page class.
   action(:preview) { |b| b.frm.button(:value=>"Preview").click }

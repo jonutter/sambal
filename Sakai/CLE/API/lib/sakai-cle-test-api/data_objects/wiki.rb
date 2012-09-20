@@ -4,7 +4,7 @@ class WikiObject
   include Utilities
   include Workflows
 
-  attr_accessor :title, :content, :site
+  attr_accessor :title, :content, :site, :href
 
   def initialize(browser, opts={})
     @browser = browser
@@ -21,6 +21,8 @@ class WikiObject
     raise "You need to specify a site for your wiki" if @site==nil
   end
 
+  alias :name :title
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     wiki unless @browser.title=~/Wiki$/
@@ -30,6 +32,7 @@ class WikiObject
       @updated_content = "[#{@title}]\n\n"+@current_content
       home.content.set @updated_content
       home.save
+      @href = home.wiki_href "#{@title}?"
       home.open_wiki "#{@title}?"
       home.edit
       home.content.set @content

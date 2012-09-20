@@ -50,6 +50,10 @@ class Lessons < LessonsBase
     frm.link(:text=>name).click
   end
 
+  def href(name)
+    frm.link(:text=>name).href
+  end
+
   # Returns an array of the Module titles displayed on the page.
   def lessons_list
     list = []
@@ -258,10 +262,6 @@ class AddEditContentSection < LessonsBase
 
   def add_content=(text)
     content_editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
-  end
-
-  def source=(text)
-    content_editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
   end
 
   def clear_content  # FIXME - This is an extra method now that we have the FCKEditor module

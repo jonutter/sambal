@@ -12,4 +12,9 @@ module FCKEditor
     editor.div(:title=>"Select All").click
   end
 
+  def source=(text)
+    editor.text_field(:class=>"SourceField").wait_until_present
+    editor.text_field(:class=>"SourceField").set text
+  end
+
 end
