@@ -102,6 +102,8 @@ class TestImportSite < Test::Unit::TestCase
 
     @source_site_string << "<br />Wiki: <a href=\"#{@wiki.href}\">#{@wiki.title}</a><br />"
 
+    @syllabus = make SyllabusObject, @content=>@source_site_string, :site=>@site1.name
+
     @assignment.edit :instructions=>@source_site_string
 
     @announcement.edit :body=>@source_site_string
