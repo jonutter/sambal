@@ -112,8 +112,14 @@ class TestImportSite < Test::Unit::TestCase
 
     @nestedhtmlpage.edit_content @source_site_string
 
-    #@site2 = make SiteObject
-    #@site2.create_and_reuse_site @site1.name
+    @section1.edit :editor_content=>@source_site_string
+
+    @site2 = make SiteObject
+    @site2.create_and_reuse_site @site1.name
+
+    @new_assignment = make AssignmentObject, :site=>@site2.name, @status=>"Draft", :title=>@assignment.title
+
+
 
   end
   

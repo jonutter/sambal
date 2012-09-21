@@ -38,6 +38,13 @@ class Lessons < LessonsBase
   # Clicks the Add Module link, then
   # next is the AddModule class.
   action(:add_module) { |b| b.frm.link(:text=>"Add Module").click }
+  action(:add_content) { |b| b.frm.link(text: "Add Content").click }
+  action(:edit) { |b| b.frm.link(text: "Edit").click }
+  action(:left) { |b| b.frm.link(text: "Left").click }
+  action(:right) { |b| b.frm.link(text: "Right").click }
+  action(:delete) { |b| b.frm.link(text: "Delete").click }
+  action(:archive) { |b| b.frm.link(text: "Archive").click }
+  action(:move_sections) { |b| b.frm.link(text: "Move Section(s)").click }
 
   # Clicks on the link that matches the supplied
   # name value, next is the
@@ -52,6 +59,14 @@ class Lessons < LessonsBase
 
   def href(name)
     frm.link(:text=>name).href
+  end
+
+  def check_lesson(name)
+    frm.tr(text: /#{Regexp.escape(name)}/).td(class: "ModCheckClass").checkbox.set
+  end
+
+  def check_section(name)
+    frm.td(class: "SectionClass", text: /#{Regexp.escape(name)}/).checkbox.set
   end
 
   # Returns an array of the Module titles displayed on the page.
@@ -295,6 +310,10 @@ class AddEditContentSection < LessonsBase
   element(:url_title) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_name/) }
   element(:url_description) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
   element(:file_description) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
+
+  action(:add_another_section) { |b| frm.link(:id=>/:saveAddAnotherButton/).click }
+  action(:finish) { |b| b.frm.link(id: /FinishButton/).click }
+  action(:save) { |b| b.frm.link(id: /saveButton/).click }
 
 end
 

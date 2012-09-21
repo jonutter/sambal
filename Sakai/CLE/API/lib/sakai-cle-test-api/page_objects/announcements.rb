@@ -10,7 +10,10 @@ class Announcements < BasePage
   # @param subject [String] the text of the announcement listing link.
   def edit(subject)
     frm.table(:class=>"listHier").row(:text=>/#{Regexp.escape(subject)}/).link(:text=>"Edit").click
-    AddEditAnnouncements.new(@browser)
+  end
+
+  def view(title)
+    frm.link(:text=>title).click
   end
 
   # Returns an array of the subject strings of the announcements
@@ -81,18 +84,25 @@ end
 
 # This Class does double-duty. It's for the Preview page when editing an
 # Announcement, plus for when you just click an Announcement to view it.
-class PreviewAnnouncements < BasePage
+class ViewAnnouncement < BasePage
 
   frame_element
 
   # Clicks the Return to list button and goes to the Announcements class.
-  action(:return_to_list){ |b| b.frm.button(:value=>"Return to List").click }
+  action(:return_to_list) { |b| b.frm.button(:value=>"Return to List").click }
 
   # Clicks the Save changes button and goes to the Announcements class.
   action(:save_changes) { |b| b.frm.button(:value=>"Save Changes").click }
 
   # Clicks the Edit button and goes to the AddEditAnnouncements class.
   action(:edit) { |b| b.frm.button(:value=>"Edit").click }
+
+  value(:subject) { |b| b.frm.table(class: "itemSummary")[0][1].text }
+  value(:saved_by) { |b| b.frm.table(class: "itemSummary")[1][1].text }
+  value(:date) { |b| b.frm.table(class: "itemSummary")[2][1].text }
+  value(:groups) { |b| b.frm.table(class: "itemSummary")[3][1].text }
+  value(:message) { |b| b.frm.div(class: "portletBody").p.text }
+  value(:message_html) { |b| b.frm.div(class: "portletBody").p.html }
 
 end
 

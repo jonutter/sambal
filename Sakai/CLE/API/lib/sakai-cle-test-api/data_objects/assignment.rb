@@ -4,7 +4,7 @@ class AssignmentObject
   include Utilities
   include Workflows
 
-  attr_accessor :title, :site, :instructions, :id, :link
+  attr_accessor :title, :site, :instructions, :id, :link, :status
 
   def initialize(browser, opts={})
     @browser = browser
@@ -40,6 +40,7 @@ class AssignmentObject
     on_page AssignmentsList do |list|
       @id = list.get_assignment_id @title
       @link = list.assignment_href @title
+      @status = list.status_of @title
     end
   end
 
@@ -47,7 +48,11 @@ class AssignmentObject
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     assignments unless @browser.title=~/Assignments$/
     on AssignmentsList do |list|
-     list.edit_assignment @title
+      if @status=="Draft"
+        list.edit_assignment "Draft - #{@title}"
+      else
+        list.edit_assignment @title
+      end
     end
     on AssignmentAdd do |edit|
       edit.title.set opts[:title] unless opts[:title] == nil
@@ -59,6 +64,10 @@ class AssignmentObject
 
     @title=opts[:title] unless opts[:title] == nil
     @instructions=opts[:instructions] unless opts[:instructions] == nil
+
+    on AssignmentsList do |list|
+      @status=list.status_of @title
+    end
 
   end
 

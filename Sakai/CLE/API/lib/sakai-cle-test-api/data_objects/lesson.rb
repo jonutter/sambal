@@ -152,4 +152,34 @@ class ContentSectionObject
       @href = list.href @title
     end
   end
+
+  def edit opts={}
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    lessons unless @browser.title=~/Lessons$/
+    reset
+    on Lessons do |list|
+      list.check_section @title
+      list.edit
+    end
+    on AddEditContentSection do |edit|
+      edit.title.set opts[:title] unless opts[:title]==nil
+      edit.instructions.set opts[:instructions] unless opts[:instructions]==nil
+      if opts[:modality].class==Array
+        opts[:modality].each do |item|
+          edit.send(item)
+        end
+      end
+
+      # TODO: Add code here for updating attached resources
+
+      edit.enter_source_text(edit.content_editor, opts[:editor_content]) unless opts[:editor_content]==nil
+
+      # TODO: Add code here for updating remaining variables
+
+      edit.finish
+    end
+    @title=opts[:title] unless opts[:title]==nil
+    @instructions=opts[:instructions] unless opts[:instructions]==nil
+    @modality=opts[:modality] unless opts[:modality]==nil
+  end
 end
