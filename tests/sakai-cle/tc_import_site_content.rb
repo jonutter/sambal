@@ -42,7 +42,7 @@ class TestImportSite < Test::Unit::TestCase
     @assignment.create
 
     @source_site_string << "<br />Assignment ID: #{@assignment.id}<br />Assignment link: <a href=\"#{@assignment.link}\">#{@assignment.title}</a><br />"
-
+=begin
     @announcement = make AnnouncementObject, :site=>@site1.name, :body=>@assignment.link
     @announcement.create
 
@@ -103,22 +103,31 @@ class TestImportSite < Test::Unit::TestCase
     @source_site_string << "<br />Wiki: <a href=\"#{@wiki.href}\">#{@wiki.title}</a><br />"
 
     @syllabus = make SyllabusObject, @content=>@source_site_string, :site=>@site1.name
-
+=end
     @assignment.edit :instructions=>@source_site_string
 
-    @announcement.edit :body=>@source_site_string
+    #@announcement.edit :body=>@source_site_string
 
-    @htmlpage.edit_content @source_site_string
+    #@htmlpage.edit_content @source_site_string
 
-    @nestedhtmlpage.edit_content @source_site_string
+    #@nestedhtmlpage.edit_content @source_site_string
 
-    @section1.edit :editor_content=>@source_site_string
+    #@section1.edit :editor_content=>@source_site_string
 
     @site2 = make SiteObject
     @site2.create_and_reuse_site @site1.name
 
     @new_assignment = make AssignmentObject, :site=>@site2.name, @status=>"Draft", :title=>@assignment.title
+    @new_assignment.get_assignment_info
 
+    puts "Original Assignment ID: #{@assignment.id}\n\n"
+    puts "Original Assignment instructions:\n\n"
+    puts @assignment.instructions
+    puts "\n\n"
+
+    puts "new_assignment ID: " + @new_assignment.id + "\n\n"
+    puts "New Assignment instructions:\n\n"
+    puts @new_assignment.instructions
 
 
   end

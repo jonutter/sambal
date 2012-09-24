@@ -18,4 +18,10 @@ module FCKEditor
     editor.text_field(:class=>"SourceField").set text
   end
 
+  def get_source_text(editor)
+    source(editor)
+    editor.text_field(:class=>"SourceField").wait_until_present
+    editor.text_field(:class=>"SourceField").value
+  end
+
 end

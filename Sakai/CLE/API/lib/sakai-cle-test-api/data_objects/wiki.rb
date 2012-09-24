@@ -46,7 +46,7 @@ class WikiObject
     on Rwiki do |edit|
       edit.open_wiki @title
       edit.edit
-      # more here
+      # TODO more here
     end
   end
 

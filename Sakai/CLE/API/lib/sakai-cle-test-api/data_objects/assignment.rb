@@ -11,7 +11,7 @@ class AssignmentObject
 
     defaults = {
         :title=>random_alphanums,
-        :instructions=>random_multiline(500, 10, :string)
+        :instructions=>random_multiline(250, 10, :string)
     }
     options = defaults.merge(opts)
 
@@ -61,14 +61,30 @@ class AssignmentObject
       end
       edit.post
     end
-
     @title=opts[:title] unless opts[:title] == nil
     @instructions=opts[:instructions] unless opts[:instructions] == nil
-
     on AssignmentsList do |list|
       @status=list.status_of @title
     end
+  end
 
+  def get_assignment_info
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    assignments unless @browser.title=~/Assignments$/
+    on AssignmentsList do |list|
+      @id = list.get_assignment_id @title
+      @status=list.status_of @title
+      @link=list.assignment_href @title
+      if @status=="Draft"
+        list.open_assignment "Draft - #{@title}"
+      else
+        list.open_assignment @title
+      end
+    end
+    on AssignmentAdd do |edit|
+      # TODO: Need to add more stuff here as needed...
+      @instructions=edit.get_source_text edit.editor
+    end
   end
 
 end

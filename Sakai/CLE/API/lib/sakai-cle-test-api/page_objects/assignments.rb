@@ -241,21 +241,8 @@ class AssignmentsList < AssignmentsBase
   end
 
   # Opens the specified assignment for viewing
-  #
-  # Instantiates the student view or instructor/admin
-  # view based on the landing page attributes
   def open_assignment(assignment_name)
     frm.link(:text=>assignment_name).click
-    if frm.div(:class=>"portletBody").p(:class=>"instruction").exist? && frm.div(:class=>"portletBody").p(:class=>"instruction").text == "Add attachment(s), then choose the appropriate button at the bottom."
-      AssignmentStudent.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Assignment - In progress"
-      AssignmentStudent.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Viewing assignment..." || frm.div(:class=>"portletBody").h3.text.include?("Submitted") || frm.button(:value=>"Back to list").exist?
-      AssignmentsPreview.new(@browser)
-    else
-      frm.frame(:id, "Assignment.view_submission_text___Frame").td(:id, "xEditingArea").wait_until_present
-      AssignmentStudent.new(@browser)
-    end
   end
 
   # Gets the contents of the status column
