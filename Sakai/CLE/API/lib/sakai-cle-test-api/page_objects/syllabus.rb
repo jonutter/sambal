@@ -2,26 +2,30 @@
 # Syllabus pages in a Site
 #================
 
+class SyllabusBase < BasePage
+
+  frame_element
+  basic_page_elements
+
+  class << self
+
+    def menu_elements
+      action(:create_edit) { |b| b.frm.link(:text=>"Create/Edit").click }
+      action(:add) { |b| b.frm.link(:text=>"Add").click }
+      action(:redirect) { |b| b.frm.link(:text=>"Redirect").click }
+      action(:preview) { |b| b.frm.link(text: "Preview").click }
+    end
+
+  end
+
+end
+
 # The topmost page in the Syllabus feature.
 # If there are no syllabus items it will appear
 # differently than if there are.
-class Syllabus < BasePage
+class Syllabus < SyllabusBase
 
-  frame_element
-
-  # Clicks the "Create/Edit" button on the page,
-  # then instantiates the SyllabusEdit class.
-  def create_edit
-    frm.link(:text=>"Create/Edit").click
-    SyllabusEdit.new(@browser)
-  end
-
-  # Clicks the "Add" button, then
-  # instantiates the AddEditSyllabusItem Class.
-  def add
-    frm.link(:text=>"Add").click
-    AddEditSyllabusItem.new(@browser)
-  end
+  menu_elements
 
   def attachments_list
     list = []
@@ -34,26 +38,9 @@ end
 # This is the page that lists Syllabus sections, allows for
 # moving them up or down in the list, and allows for removing
 # items from the syllabus.
-class SyllabusEdit < BasePage
+class SyllabusEdit < SyllabusBase
 
-  frame_element
-
-  # Clicks the "Add" button, then
-  # instantiates the AddEditSyllabusItem Class.
-  def add
-    frm.link(:text=>"Add").click
-    AddEditSyllabusItem.new(@browser)
-  end
-
-  def redirect
-    frm.link(:text=>"Redirect").click
-    SyllabusRedirect.new(@browser)
-  end
-
-  # Returns the text of the page header
-  def header
-    frm.div(:class=>"portletBody").h3.text
-  end
+  menu_elements
 
   # Clicks the checkbox for the item with the
   # specified title.
@@ -72,17 +59,11 @@ class SyllabusEdit < BasePage
     #FIXME
   end
 
-  # Clicks the "Update" button and instantiates
-  # the DeleteSyllabusItems Class.
-  def update
-    frm.button(:value=>"Update").click
-    DeleteSyllabusItems.new(@browser)
-  end
+  action(:update) { |b| b.frm.button(:value=>"Update").click }
 
   # Opens the specified item and instantiates the XXXX Class.
   def open_item(title)
     frm.link(:text=>title).click
-    Class.new(@browser)
   end
 
   # Returns an array containing the titles of the syllabus items
@@ -99,24 +80,21 @@ class SyllabusEdit < BasePage
 end
 
 #
-class AddEditSyllabusItem < BasePage
+class AddEditSyllabusItem < SyllabusBase
 
-  frame_element
+  menu_elements
   include FCKEditor
 
   expected_element :editor
 
   # Clicks the "Post" button and instantiates
   # the Syllabus Class.
-  def post
-    frm.button(:value=>"Post").click
-    SyllabusEdit.new(@browser)
-  end
+  action(:post) { |b| b.frm.button(:value=>"Post").click }
 
   # Defines the text area of the FCKEditor that appears on the page for
   # the Syllabus content.
   def editor
-    frm.frame(:id, /_textarea___Frame/).td(:id, "xEditingArea").frame(:index=>0)
+    frm.frame(:id=>/_textarea___Frame/)
   end
 
   # Sends the specified string to the FCKEditor text area on the page.
@@ -126,10 +104,7 @@ class AddEditSyllabusItem < BasePage
 
   # Clicks the Add attachments button and instantiates the
   # SyllabusAttach class.
-  def add_attachments
-    frm.button(:value=>"Add attachments").click
-    SyllabusAttach.new(@browser)
-  end
+  action(:add_attachments) { |b| frm.button(:value=>"Add attachments").click }
 
   # Returns an array of the filenames in the attachments
   # table
@@ -150,25 +125,25 @@ class AddEditSyllabusItem < BasePage
     SyllabusPreview.new(@browser)
   end
 
-  element(:title)  { |b| b.frm.text_field(:id=>"_id4:title") }
+  element(:title) { |b| b.frm.text_field(:id=>"_id4:title") }
   element(:only_members_of_this_site) { |b| b.frm.radio_button(:name=>/_id\d+:_id\d+/, :value=>"no") }
   element(:publicly_viewable) { |b| b.frm.radio_button(:name=>/_id\d+:_id\d+/, :value=>"yes") }
 
 end
 
 # The page for previewing a syllabus.
-class SyllabusPreview < BasePage
+class SyllabusPreview < SyllabusBase
 
-  frame_element
+  menu_elements
 
   action(:edit) { |b| b.frm.button(:value=>"Edit").click }
 
 end
 
 #
-class SyllabusRedirect < BasePage
+class SyllabusRedirect < SyllabusBase
 
-  frame_element
+  menu_elements
 
   action(:save) { |b| b.frm.button(:value=>"Save").click }
   element(:url) { |b| b.frm.text_field(:id=>"redirectForm:urlValue") }
@@ -176,16 +151,16 @@ class SyllabusRedirect < BasePage
 end
 
 # The page where Syllabus Items can be deleted.
-class DeleteSyllabusItems < BasePage
+class DeleteSyllabusItems < SyllabusBase
 
-  frame_element
+  menu_elements
 
   action(:delete) { |b| b.frm.button(:value=>"Delete").click }
 
 end
 
-class CreateEditSyllabus < BasePage
+class CreateEditSyllabus < SyllabusBase
 
-  frame_element
+  menu_elements
 
 end

@@ -615,10 +615,6 @@ class CourseSiteInfo < BasePage
     editor.td(:id, "xEditingArea").frame(:index=>0).send_keys text
   end
 
-  def source=(text)
-    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
-  end
-
   # Clicks the Continue button, next is the
   # EditSiteTools Class.
   def continue

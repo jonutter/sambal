@@ -74,8 +74,7 @@ class SiteObject
       page.short_description.set @short_description
       page.site_contact_name.set @site_contact_name
       page.site_contact_email.set @site_contact_email
-      page.source(page.editor)
-      page.source=@description
+      page.enter_source_text page.editor, @description
 
       # Click Continue
       page.continue
@@ -149,8 +148,7 @@ class SiteObject
       course_section.continue
     end
     on CourseSiteInfo do |course_site|
-      course_site.source(course_site.editor)
-      course_site.source=@description
+      course_site.enter_source_text course_site.editor, @description
       course_site.short_description.set @short_description
       # Click Continue
       course_site.continue

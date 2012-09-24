@@ -4,7 +4,7 @@ class ModuleObject
   include Utilities
   include Workflows
 
-  attr_accessor :title, :description, :keywords, :start_date, :end_date, :site
+  attr_accessor :title, :description, :keywords, :start_date, :end_date, :site, :href
 
   def initialize(browser, opts={})
     @browser = browser
@@ -22,6 +22,8 @@ class ModuleObject
     @site=options[:site]
     raise "You must specify a Site name for your lesson" if @site==nil
   end
+
+  alias :name :title
 
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
@@ -41,6 +43,9 @@ class ModuleObject
     on_page ConfirmModule do |page|
       page.return_to_modules
     end
+    on_page Lessons do |list|
+      @href = list.href @title
+    end
   end
 
 end
@@ -53,7 +58,7 @@ class ContentSectionObject
 
   attr_accessor :site, :module, :title, :instructions, :modality, :content_type,
                 :copyright_status, :editor_content, :file_folder, :file_name, :file_path,
-                :url, :url_title, :file_description, :url_description
+                :url, :url_title, :file_description, :url_description, :href
 
   def initialize(browser, opts={})
     @browser = browser
@@ -85,6 +90,8 @@ class ContentSectionObject
     raise "You must specify a Module for your Section" if @module==nil
   end
 
+  alias :name :title
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     lessons unless @browser.title=~/Lessons$/
@@ -106,11 +113,10 @@ class ContentSectionObject
 
     on AddEditContentSection do |page| # Note we are reinstantiating the class here because of
                                        # an issue with Selenium Webdriver throwing a
-                                       # WeakReference error given the partial page reload.
+                                       # WeakReference error, given the partial page reload.
       case @content_type
         when "Compose content with editor"
-          page.source(page.content_editor)
-          page.source=@editor_content
+          page.enter_source_text page.content_editor, @editor_content
         when "Upload or link to a file"
           page.select_a_file
           on_page LessonAddAttachment do |add|
@@ -128,7 +134,7 @@ class ContentSectionObject
           page.url_description.set @url_description
         when "Upload or link to a file in Resources"
           page.select_or_upload_file
-          on_page AddFiles do |add|
+          on_page ResourcesBase do |add|
             add.open_folder @file_folder unless @file_folder == nil
             add.select_file @file_name
             add.continue
@@ -139,5 +145,41 @@ class ContentSectionObject
       page.copyright_status.select @copyright_status
       page.add
     end
+    on ConfirmSectionAdd do |confirm|
+      confirm.finish
+    end
+    on Lessons do |list|
+      @href = list.href @title
+    end
+  end
+
+  def edit opts={}
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    lessons unless @browser.title=~/Lessons$/
+    reset
+    on Lessons do |list|
+      list.check_section @title
+      list.edit
+    end
+    on AddEditContentSection do |edit|
+      edit.title.set opts[:title] unless opts[:title]==nil
+      edit.instructions.set opts[:instructions] unless opts[:instructions]==nil
+      if opts[:modality].class==Array
+        opts[:modality].each do |item|
+          edit.send(item)
+        end
+      end
+
+      # TODO: Add code here for updating attached resources
+
+      edit.enter_source_text(edit.content_editor, opts[:editor_content]) unless opts[:editor_content]==nil
+
+      # TODO: Add code here for updating remaining variables
+
+      edit.finish
+    end
+    @title=opts[:title] unless opts[:title]==nil
+    @instructions=opts[:instructions] unless opts[:instructions]==nil
+    @modality=opts[:modality] unless opts[:modality]==nil
   end
 end

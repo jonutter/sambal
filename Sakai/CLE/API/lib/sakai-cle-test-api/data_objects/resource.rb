@@ -121,18 +121,21 @@ class HTMLPageObject
     raise "You must specify a Site for your HTML Page" if @site==nil
   end
 
+  alias :title :name
+  alias :href :url
+  alias :content :html
+
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     resources unless @browser.title=~/Resources$/
     on_page Resources do |page|
       page.create_html_page_in @folder
     end
-    on_page CreateHTMLPageContent do |page|
-      page.source(page.editor)
-      page.source=@html
+    on_page EditHTMLPageContent do |page|
+      page.enter_source_text page.editor, @html
       page.continue
     end
-    on_page CreateHTMLPageProperties do |page|
+    on_page EditHTMLPageProperties do |page|
       page.name.set @name
       page.description.set @description
       # Put more here as needed later
@@ -141,6 +144,20 @@ class HTMLPageObject
     on_page Resources do |page|
       @url = page.href(@name)
     end
+  end
+
+  def edit_content(html_source)
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
+    on Resources do |fileslist|
+      fileslist.open_folder @folder unless fileslist.item(@name).present? || @folder==nil
+      fileslist.edit_content @name
+    end
+    on EditHTMLPageContent do |edit|
+      edit.enter_source_text edit.editor, html_source
+      edit.continue
+    end
+    @html=html_source
   end
 
 end

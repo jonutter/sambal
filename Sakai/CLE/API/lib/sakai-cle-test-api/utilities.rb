@@ -87,13 +87,13 @@ module Utilities
   # the method does not allow the line count to be larger than
   # the word count and will "fix" it if it is).
   #
-  # If no arguments are provided, the method will return two alphanumeric
+  # If no parameters are provided, the method will return two alphanumeric
   # "words" on two lines.
   #
-  # The last argument the method takes will determine the character content
+  # The last parameter the method takes will determine the character content
   # of the string, viz.:
   #
-  # :alpha => Alphanumeric -> uses the random_alphanums method
+  # :alpha => "Alphanumeric" - Uses the random_alphanums method
   # :string => uses the random_string method, so chars 33 through 128 will be included
   # :ascii => All ASCII chars from 33 to 256 are fair game -> uses random_high_ascii
   def random_multiline(word_count=2, line_count=2, char_type=:alpha)
@@ -111,7 +111,7 @@ module Utilities
     non_words.shuffle! # Have to shuffle the line feeds around!
     array = words.zip(non_words)
     array.flatten!
-    return array.join("")
+    array.join("")
   end
 
   # Picks at random from the list of XSS test strings, using

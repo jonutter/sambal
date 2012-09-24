@@ -64,10 +64,6 @@ class AssignmentAdd < AssignmentsBase
     editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(instructions)
   end
 
-  def source=(text)
-    editor.td(:id, "xEditingArea").text_field(:class=>"SourceField").set text
-  end
-
   # Clicks the Preview button, next is
   # the AssignmentsPreview page class.
   action(:preview) { |b| b.frm.button(:value=>"Preview").click }
@@ -201,11 +197,10 @@ class AssignmentsList < AssignmentsBase
   end
 
   # Clicks the Edit link for the Assignment specified.
-  # Then it instantiates the AssignmentAdd page class.
+  # next is the AssignmentAdd page class.
   def edit_assignment(assignment_name)
     index = assignments_titles.index(assignment_name)
     frm.link(:text=>"Edit", :index=>index).click
-    AssignmentAdd.new(@browser)
   end
 
   # Checks the appropriate checkbox, based on the specified assignment_name
@@ -245,21 +240,8 @@ class AssignmentsList < AssignmentsBase
   end
 
   # Opens the specified assignment for viewing
-  #
-  # Instantiates the student view or instructor/admin
-  # view based on the landing page attributes
   def open_assignment(assignment_name)
     frm.link(:text=>assignment_name).click
-    if frm.div(:class=>"portletBody").p(:class=>"instruction").exist? && frm.div(:class=>"portletBody").p(:class=>"instruction").text == "Add attachment(s), then choose the appropriate button at the bottom."
-      AssignmentStudent.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Assignment - In progress"
-      AssignmentStudent.new(@browser)
-    elsif frm.div(:class=>"portletBody").h3.text=="Viewing assignment..." || frm.div(:class=>"portletBody").h3.text.include?("Submitted") || frm.button(:value=>"Back to list").exist?
-      AssignmentsPreview.new(@browser)
-    else
-      frm.frame(:id, "Assignment.view_submission_text___Frame").td(:id, "xEditingArea").wait_until_present
-      AssignmentStudent.new(@browser)
-    end
   end
 
   # Gets the contents of the status column
