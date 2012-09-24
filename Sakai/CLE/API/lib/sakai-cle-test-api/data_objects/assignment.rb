@@ -78,7 +78,7 @@ class AssignmentObject
       if @status=="Draft"
         list.open_assignment "Draft - #{@title}"
       else
-        list.open_assignment @title
+        list.edit_assignment @title
       end
     end
     on AssignmentAdd do |edit|

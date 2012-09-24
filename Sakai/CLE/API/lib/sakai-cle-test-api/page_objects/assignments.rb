@@ -197,11 +197,10 @@ class AssignmentsList < AssignmentsBase
   end
 
   # Clicks the Edit link for the Assignment specified.
-  # Then it instantiates the AssignmentAdd page class.
+  # next is the AssignmentAdd page class.
   def edit_assignment(assignment_name)
     index = assignments_titles.index(assignment_name)
     frm.link(:text=>"Edit", :index=>index).click
-    AssignmentAdd.new(@browser)
   end
 
   # Checks the appropriate checkbox, based on the specified assignment_name

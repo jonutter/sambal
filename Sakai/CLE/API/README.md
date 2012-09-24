@@ -13,7 +13,6 @@ Ruby and Watir-webdriver--but without needing to know either in detail.
 
 ### Ruby Gems:
 [Watir-Webdriver](http://www.watirwebdriver.com)
-[Page-Object](https://github.com/cheezy/page-object)
 
 If you're just going to use the API for testing, then simply install it as you would any other Ruby gem: `gem install sakai-cle-test-api`
 
@@ -33,7 +32,7 @@ sakai = SakaiCLE.new(:chrome, "https://cle-1.qa.rsmart.com/xsl-portal")
 workspace = sakai.login("username", "password")
 ````
 
-For much more extensive examples of using this API, please see the CLE Cucumber directory in this repo.
+For much more extensive examples of using this API, please see the CLE Cucumber directory in this repo. (Coming soon...)
 
 ## Contribute
 
