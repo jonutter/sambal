@@ -1,8 +1,8 @@
 class AssessmentObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :title, :site
 
@@ -23,7 +23,7 @@ class AssessmentObject
     my_workspace.open_my_site_by_name @site unless @browser.title=~/#{@site}/
     tests_and_quizzes unless @browser.title=~/Tests & Quizzes$/
     on_page AssessmentsList do |page|
-      page.title=@title
+      page.title.set @title
       page.create
     end
     # Do more here eventually...

@@ -4,33 +4,21 @@
 #================
 
 # Contains items common to most Lessons pages.
-module LessonsMenu
+class LessonsBase < BasePage
 
-  # Clicks on the Preferences link on the Lessons page,
-  # then instantiates the LessonPreferences class.
-  def preferences
-    frm.link(:text=>"Preferences").click
-    LessonPreferences.new(@browser)
-  end
+  frame_element
 
-  def view
-    frm.link(:text=>"View").click
-    if frm.div(:class=>"meletePortletToolBarMessage").text=="Viewing student side..."
-      ViewModuleList.new(@browser)
-    else
-      #FIXME
+  class << self
+    def menu_elements
+      # Clicks on the Preferences link on the Lessons page,
+      # next is the LessonPreferences class.
+      action(:preferences) { |b| b.frm.link(:text=>"Preferences").click }
+
+      action(:view) { |b| b.frm.link(:text=>"View").click }
+
+      action(:manage) { |b| b.frm.link(:text=>"Manage").click }
     end
   end
-
-  def manage
-    frm.link(:text=>"Manage").click
-    LessonManage.new(@browser)
-  end
-
-  def author
-    #FIXME
-  end
-
 end
 
 # The Lessons page in a site ("icon-sakai-melete")
@@ -39,23 +27,20 @@ end
 # Instructor/Admin and the Student views of this page
 # many methods will error out if used when in the
 # Student view.
-class Lessons < BasePage
+class Lessons < LessonsBase
 
-  frame_element
-  include LessonsMenu
+  menu_elements
+
+  expected_element :lessons_table
+
+  element(:lessons_table) { |b| b.frm.table(:id=>/lis.+module.+form:table/) }
 
   # Clicks the Add Module link, then
-  # instantiates the AddModule class.
-  #
-  # Assumes the Add Module link is present
-  # and will error out if it is not.
-  def add_module
-    frm.link(:text=>"Add Module").click
-    AddEditModule.new(@browser)
-  end
+  # next is the AddModule class.
+  action(:add_module) { |b| b.frm.link(:text=>"Add Module").click }
 
   # Clicks on the link that matches the supplied
-  # name value, then instantiates the
+  # name value, next is the
   # AddEditLesson, or ViewLesson class, depending
   # on which page loads.
   #
@@ -63,17 +48,12 @@ class Lessons < BasePage
   # matching link in the list.
   def open_lesson(name)
     frm.link(:text=>name).click
-    if frm.div(:class=>"meletePortletToolBarMessage").exist? && frm.div(:class=>"meletePortletToolBarMessage").text=="Editing module..."
-      AddEditModule.new(@browser)
-    else
-      ViewModule.new(@browser)
-    end
   end
 
   # Returns an array of the Module titles displayed on the page.
   def lessons_list
     list = []
-    frm.table(:id=>/lis.+module.+form:table/).links.each do |link|
+    lessons_table.links.each do |link|
       if link.id=~/lis.+module.+form:table:.+:(edit|view)Mod/
         list << link.text
       end
@@ -85,8 +65,8 @@ class Lessons < BasePage
   # specified module.
   def sections_list(module_name)
     list = []
-    if frm.table(:id=>/lis.+module.+form:table/).row(:text=>/#{Regexp.escape(module_name)}/).table(:id=>/tablesec/).exist?
-      frm.table(:id=>/lis.+module.+form:table/).row(:text=>/#{Regexp.escape(module_name)}/).table(:id=>/tablesec/).links.each do |link|
+    if lessons_table.row(:text=>/#{Regexp.escape(module_name)}/).table(:id=>/tablesec/).exist?
+      lessons_table.row(:text=>/#{Regexp.escape(module_name)}/).table(:id=>/tablesec/).links.each do |link|
         if link.id=~/Sec/
           list << link.text
         end
@@ -98,9 +78,9 @@ class Lessons < BasePage
 end
 
 # The student user's view of a Lesson Module or Section.
-class ViewModule < BasePage
+class ViewModule < LessonsBase
 
-  frame_element
+  menu_elements
 
   def sections_list
     list = []
@@ -108,20 +88,13 @@ class ViewModule < BasePage
     return list
   end
 
-  def next
-    frm.link(:text=>"Next").click
-    ViewModule.new(@browser)
-  end
+  action(:next) { |b| b.frm.link(:text=>"Next").click }
 
   # Returns the text of the Module title row
-  def module_title
-    frm.span(:id=>/modtitle/).text
-  end
+  value(:module_title) { |b| b.frm.span(:id=>/modtitle/).text }
 
   # Returns the text of the Section title row
-  def section_title
-    frm.span(:id=>/form:title/).text
-  end
+  value(:section_title) { |b| b.frm.span(:id=>/form:title/).text }
 
   def content_include?(content)
     frm.form(:id=>"viewsectionStudentform").text.include?(content)
@@ -131,76 +104,62 @@ end
 
 # This is the Instructor's preview of the Student's view
 # of the list of Lesson Modules.
-class ViewModuleList < BasePage
+class ViewModuleList < LessonsBase
 
-  frame_element
+  menu_elements
 
+  # LessonStudentSide
   def open_lesson(name)
     frm.link(:text=>name).click
-    LessonStudentSide.new(@browser)
   end
 
+  # SectionStudentSide
   def open_section(name)
     frm.link(:text=>name).click
-    SectionStudentSide.new(@browser)
   end
 
 end
 
 # The instructor's preview of the student view of the lesson.
-class LessonStudentSide < BasePage
+class LessonStudentSide < LessonsBase
 
-  frame_element
-  include LessonsMenu
+  menu_elements
 
 end
 
 # The instructor's preview of the student's view of the section.
-class SectionStudentSide < BasePage
+class SectionStudentSide < LessonsBase
 
-  frame_element
-  include LessonsMenu
+  menu_elements
 
 end
 
 # The Managing Options page for Lessons
-class LessonManage < BasePage
+class LessonManage < LessonsBase
 
-  frame_element
-  include LessonsMenu
+  menu_elements
 
-  def manage_content
-    frm.link(:text=>"Manage Content").click
-    LessonManageContent.new(@browser)
-  end
+  action(:manage_content) {|b| b.frm.link(:text=>"Manage Content").click }
 
-  def sort
-    frm.link(:text=>"Sort").click
-    LessonManageSort.new(@browser)
-  end
+  action(:sort) {|b| b.frm.link(:text=>"Sort").click }
 
   # Clicks the Import/Export button and
-  # instantiates the LessonImportExport class.
-  def import_export
-    frm.link(:text=>"Import/Export").click
-    LessonImportExport.new(@browser)
-  end
+  # next is the LessonImportExport class.
+  action(:import_export) {|b| b.frm.link(:text=>"Import/Export").click }
 
 end
 
+class LessonManageContent < LessonsBase
+
+  menu_elements
+
+end
+
+
 # The Sorting Modules and Sections page in Lessons
-class LessonManageSort < BasePage
+class LessonManageSort < LessonsBase
 
-  frame_element
-
-  def view
-    frm.link(:text=>"View").click
-    if frm.div(:class=>"meletePortletToolBarMessage").text=="Viewing student side..."
-      ViewModuleList.new(@browser)
-    else
-      #FIXME
-    end
-  end
+  menu_elements
 
   action(:sort_modules) { |b| b.frm.link(:id=>"SortSectionForm:sortmod").click }
   action(:sort_sections) { |b| b.frm.link(:id=>"SortModuleForm:sortsec").click }
@@ -208,10 +167,9 @@ class LessonManageSort < BasePage
 end
 
 # The Import/Export page in Manage Lessons for a Site
-class LessonImportExport < BasePage
+class LessonImportExport < LessonsBase
 
-  frame_element
-  include LessonsMenu
+  menu_elements
 
   # Uploads the file specified - meaning that it enters
   # the target file information, then clicks the import
@@ -225,9 +183,7 @@ class LessonImportExport < BasePage
   end
 
   # Returns the text of the alert box.
-  def alert_text
-    frm.span(:class=>"BlueClass").text
-  end
+  value(:alert_text) { |b| b.frm.span(:class=>"BlueClass").text }
 
 end
 
@@ -237,87 +193,68 @@ end
 # and Instructor views of the page. Thus,
 # not all methods in the class will work
 # at all times.
-class LessonPreferences < BasePage
+class LessonPreferences < LessonsBase
 
-  frame_element
+  menu_elements
 
-  # Clicks the View button
-  # then instantiates the Lessons class.
-  def view
-    frm.link(:text=>"View").click
-    Lessons.new(@browser)
-  end
-
-  element(:expanded) { |b| b.radio(:name=>"UserPreferenceForm:_id5", :index=>0) }
-  element(:collapsed) { |b| b.radio(:name=>"UserPreferenceForm:_id5", :index=>1) }
+  element(:expanded) { |b| b.frm.radio(:name=>"UserPreferenceForm:_id5", :index=>0) }
+  element(:collapsed) { |b| b.frm.radio(:name=>"UserPreferenceForm:_id5", :index=>1) }
   action(:set) { |b| b.frm.link(:id=>"UserPreferenceForm:SetButton").click }
   
 end
 
 # This Class encompasses methods for both the Add and the Edit pages for Lesson Modules.
-class AddEditModule < BasePage
+class AddEditModule < LessonsBase
 
-  frame_element
+  menu_elements
+
+  expected_element :title
 
   # Clicks the Add button for the Lesson Module
-  # then instantiates the ConfirmModule class.
-  def add
-    frm.link(:id=>/ModuleForm:submitsave/).click
-    ConfirmModule.new(@browser)
-  end
+  # next is the ConfirmModule class.
+  action(:add) { |b| b.frm.link(:id=>/ModuleForm:submitsave/).click }
 
-  def add_content_sections
-    frm.link(:id=>/ModuleForm:sectionButton/).click
-    AddEditContentSection.new(@browser)
-  end
+  # AddEditContentSection
+  action(:add_content_sections) { |b| b.frm.link(:id=>/ModuleForm:sectionButton/).click }
 
-  element(:title) { |b| b.text_field(:id=>/ModuleForm:title/) }
-  element(:description) { |b| b.text_field(:id=>/ModuleForm:description/) }
-  element(:keywords) { |b| b.text_field(:id=>/ModuleForm:keywords/) }
-  element(:start_date) { |b| b.text_field(:id=>/ModuleForm:startDate/) }
-  element(:end_date) { |b| b.text_field( :id=>/ModuleForm:endDate/) }
+  element(:title) { |b| b.frm.text_field(:name=>/ModuleForm:title/) }
+  element(:description) { |b| b.frm.text_field(:id=>/ModuleForm:description/) }
+  element(:keywords) { |b| b.frm.text_field(:id=>/ModuleForm:keywords/) }
+  element(:start_date) { |b| b.frm.text_field(:id=>/ModuleForm:startDate/) }
+  element(:end_date) { |b| b.frm.text_field( :id=>/ModuleForm:endDate/) }
 
 end
 
 # The confirmation page when you are saving a Lesson Module.
-class ConfirmModule < BasePage
+class ConfirmModule < LessonsBase
 
-  frame_element
+  menu_elements
 
   # Clicks the Add Content Sections button and
-  # instantiates the AddEditSection class.
-  def add_content_sections
-    frm.link(:id=>/ModuleConfirmForm:sectionButton/).click
-    AddEditSection.new(@browser)
-  end
+  # next is the AddEditSection class.
+  action(:add_content_sections) { |b| b.frm.link(:id=>/ModuleConfirmForm:sectionButton/).click }
 
   # Clicks the Return to Modules button, then
   # instantiates the AddEditModule class.
-  def return_to_modules
-    frm.link(:id=>/ModuleConfirmForm:returnButton/).click
-    AddEditModule.new(@browser)
-  end
+  action(:return_to_modules) { |b| b.frm.link(:id=>/ModuleConfirmForm:returnButton/).click }
 
 end
 
 # Page for adding a section to a Lesson.
-class AddEditContentSection < BasePage
+class AddEditContentSection < LessonsBase
 
-  frame_element
+  menu_elements
   include FCKEditor
 
+  #expected_element :instructions
+
   # Clicks the Add button on the page
-  # then instantiates the ConfirmSectionAdd class.
-  def add
-    frm.link(:id=>/SectionForm:submitsave/).click
-    ConfirmSectionAdd.new(@browser)
-  end
+  # next is the ConfirmSectionAdd class.
+  action(:add) { |b| b.frm.link(:id=>/SectionForm:submitsave/).click }
 
   # Pointer to the Edit Text box of the FCKEditor
   # on the page.
-  def content_editor
-    frm.frame(:id, /SectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame/)
-  end
+  element(:content_editor) { |b| b.frm.frame(:id, /SectionForm:fckEditorView:otherMeletecontentEditor_inputRichText___Frame/) }
 
   def add_content=(text)
     content_editor.td(:id, "xEditingArea").frame(:index=>0).send_keys(text)
@@ -332,81 +269,68 @@ class AddEditContentSection < BasePage
     content_editor.send_keys :backspace
   end
 
-  def select_url
-    frm.link(:id=>"AddSectionForm:ContentLinkView:serverViewButton").click
-    SelectingContent.new(@browser)
-  end
+  # SelectingContent
+  action(:select_url) { |b| b.frm.link(:id=>"AddSectionForm:ContentLinkView:serverViewButton").click }
 
   # This method clicks the Select button that appears on the page
-  # then calls the LessonAddAttachment class.
-  #
-  # It assumes that the Content Type selection box has
-  # already been updated to "Upload or link to a file in Resources".
-  def select_or_upload_file
-    frm.link(:id=>"AddSectionForm:ResourceHelperLinkView:serverViewButton").click
-    LessonAddAttachment.new(@browser)
-  end
+  # then call the LessonAddAttachment class.
+  action(:select_or_upload_file) { |b| b.frm.link(:id=>"AddSectionForm:ResourceHelperLinkView:serverViewButton").click }
 
   # Clicks the select button for "Upload or link to a file"
   # NOT for "Upload or link to a file in Resources"!
-  def select_a_file
-    frm.link(:id=>"AddSectionForm:ContentUploadView:serverViewButton").click
-  end
+  action(:select_a_file) { |b| b.frm.link(:id=>"AddSectionForm:ContentUploadView:serverViewButton").click }
 
-  element(:title) { |b| b.text_field(:id=>/SectionForm:title/) }
-  element(:instructions) { |b| b.text_field(:id=>/SectionForm:instr/) }
-  element(:content_type) { |b| b.select(:id=>/SectionForm:contentType/) }
-  element(:copyright_status) { |b| b.select(:id=>/SectionForm:ResourcePropertiesPanel:licenseCodes/) }
-  element(:auditory) { |b| b.checkbox(:id=>/SectionForm:contentaudio/) }
-  element(:textual) { |b| b.checkbox(:id=>/SectionForm:contentext/) }
-  element(:visual, ) { |b| b.checkbox(:id=>/SectionForm:contentaudio/) }
-  element(:url_title) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_name/) }
-  element(:url_description) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
-  element(:file_description) { |b| b.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
+  element(:title) { |b| b.frm.text_field(:id=>/SectionForm:title/) }
+  element(:instructions) { |b| b.frm.text_field(:id=>/SectionForm:instr/) }
+  element(:content_type) { |b| b.frm.select(:id=>/SectionForm:contentType/) }
+  element(:copyright_status) { |b| b.frm.select(:id=>/SectionForm:ResourcePropertiesPanel:licenseCodes/) }
+
+  action(:check_auditory) { |b| b.frm.checkbox(:id=>/SectionForm:contentaudio/).set }
+  action(:check_textual) { |b| b.frm.checkbox(:id=>/SectionForm:contentext/).set }
+  action(:check_visual) { |b| b.frm.checkbox(:id=>/SectionForm:contentaudio/).set }
+  action(:uncheck_auditory) { |b| b.frm.checkbox(:id=>/SectionForm:contentaudio/).clear }
+  action(:uncheck_textual) { |b| b.frm.checkbox(:id=>/SectionForm:contentext/).clear }
+  action(:uncheck_visual) { |b| b.frm.checkbox(:id=>/SectionForm:contentaudio/).clear }
+
+  element(:url_title) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_name/) }
+  element(:url_description) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
+  element(:file_description) { |b| b.frm.text_field(:id=>/SectionForm:ResourcePropertiesPanel:res_desc/) }
 
 end
 
 # Confirmation page for Adding (or Editing)
 # a Section to a Module in Lessons.
-class ConfirmSectionAdd < BasePage
+class ConfirmSectionAdd < LessonsBase
 
-  frame_element
+  menu_elements
 
   # Clicks the Add Another Section button
-  # then instantiates the AddSection class.
-  def add_another_section
-    frm.link(:id=>/SectionConfirmForm:saveAddAnotherbutton/).click
-    AddEditContentSection.new(@browser)
-  end
+  # next is the AddEditContentSection class.
+  action(:add_another_section) { |b| b.frm.link(:id=>/SectionConfirmForm:saveAddAnotherbutton/).click }
 
   # Clicks the Finish button
-  # then instantiates the Lessons class.
-  def finish
-    frm.link(:id=>/Form:FinishButton/).click
-    Lessons.new(@browser)
-  end
+  # next is the Lessons class.
+  action(:finish) { |b| b.frm.link(:id=>/Form:FinishButton/).click }
 
 end
 
 #
-class SelectingContent < BasePage
+class SelectingContent < LessonsBase
 
-  frame_element
+  menu_elements
 
-  def continue
-    frm.link(:id=>"ServerViewForm:addButton").click
-    AddEditContentSection.new(@browser)
-  end
+  # AddEditContentSection
+  action(:continue) { |b| b.frm.link(:id=>"ServerViewForm:addButton").click }
 
-  element(:new_url) { |b| b.text_field(:id=>"ServerViewForm:link") }
-  element(:url_title) { |b| b.text_field(:id=>"ServerViewForm:link_title") }
+  element(:new_url) { |b| b.frm.text_field(:id=>"ServerViewForm:link") }
+  element(:url_title) { |b| b.frm.text_field(:id=>"ServerViewForm:link_title") }
 
 end
 
 #
-class LessonAddAttachment < BasePage
+class LessonAddAttachment < LessonsBase # TODO: DRY up this class
 
-  frame_element
+  menu_elements
 
   action(:continue) { |b| b.frm.link(:id=>"UploadServerViewForm:addButton").click }
 

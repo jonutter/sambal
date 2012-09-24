@@ -1,12 +1,12 @@
 class SiteObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :name, :id, :subject, :course, :section, :term, :authorizer,
     :web_content_source, :email, :joiner_role, :creation_date, :web_content_title,
-    :description, :short_description
+    :description, :short_description, :site_contact_name, :site_contact_email
 
   def initialize(browser, opts={})
     @browser = browser
@@ -21,7 +21,8 @@ class SiteObject
       :email=>random_nicelink(32),
       :joiner_role => "Student",
       :description => random_alphanums(30),
-      :short_description => random_alphanums
+      :short_description => random_alphanums,
+      :site_contact_name => random_alphanums(5)+" "+random_alphanums(8)
     }
     options = defaults.merge(opts)
 
@@ -35,6 +36,8 @@ class SiteObject
     @web_content_title=options[:web_content_title]
     @description=options[:description]
     @short_description=options[:short_description]
+    @site_contact_name=options[:site_contact_name]
+    @site_contact_email=options[:site_contact_email]
   end
 
   def create
@@ -43,77 +46,71 @@ class SiteObject
     on_page SiteSetup do |page|
       page.new
     end
-    site_type = SiteType.new @browser
+    on SiteType do |page|
+      # Select the Course Site radio button
+      page.course_site.set
+      # Store the selected term value for use later
+      @term = page.academic_term.value
 
-    # Select the Course Site radio button
+      page.continue
+    end
+    on CourseSectionInfo do |page|
+      # Fill in those fields, storing the entered values for later verification steps
+      page.subject.set @subject
 
-    site_type.select_course_site
+      page.course.set @course
 
-    # Store the selected term value for use later
-    @term = site_type.academic_term_element.value
+      page.section.set @section
 
-    # Click continue
-    course_section = site_type.continue
+      # Store site name for ease of coding and readability later
+      @name = "#{@subject} #{@course} #{@section} #{@term}"
+      # Add a valid instructor id
+      page.authorizers_username.set @authorizer
 
-    # Fill in those fields, storing the entered values for later verification steps
-    course_section.subject = @subject
+      # Click continue button
+      page.continue
+    end
+    on CourseSiteInfo do |page|
+      page.short_description.set @short_description
+      page.site_contact_name.set @site_contact_name
+      page.site_contact_email.set @site_contact_email
+      page.source(page.editor)
+      page.source=@description
 
-    course_section.course = @course
+      # Click Continue
+      page.continue
+    end
+    on EditSiteTools do |page|
+      #Check All Tools
+      page.all_tools.set
+      page.continue
+    end
+    on AddMultipleTools do |add_tools|
+      add_tools.site_email_address.set @email
+      add_tools.web_content_title.set @web_content_title
+      add_tools.web_content_source.set @web_content_source
 
-    course_section.section = @section
-
-    # Store site name for ease of coding and readability later
-    @name = "#{@subject} #{@course} #{@section} #{@term}"
-
-    # Click continue button
-    course_section.continue
-
-    # Add a valid instructor id
-    course_section.authorizers_username=@authorizer
-
-    # Click continue button
-    course_site = course_section.continue
-    course_site.editor.wait_until_present
-    sleep 1 #FIXME
-    course_site.source(course_site.editor)
-    course_site.source=@description
-    course_site.short_description=@short_description
-
-    # Click Continue
-    course_tools = course_site.continue
-
-    #Check All Tools
-    course_tools.check_all_tools
-
-    course_tools.continue
-    add_tools = AddMultipleTools.new @browser
-    add_tools.site_email_address=@email
-    add_tools.web_content_title=@web_content_title
-    add_tools.web_content_source=@web_content_source
-
-    # Click the Continue button
-    # Note that I am calling this element directly rather than using its Class definition
-    # because of an inexplicable ObsoleteElementError occuring in Selenium-Webdriver
-    @browser.frame(:index=>0).button(:name, "Continue").click
-
-    access = SiteAccess.new(@browser)
-
-    access.select_allow
-    access.joiner_role=@joiner_role
-
-    review = access.continue
-
-    site_setup = review.request_site
+      add_tools.continue
+    end
+    on SiteAccess do |access|
+      access.allow.set
+      access.joiner_role.select @joiner_role
+      access.continue
+    end
+    on ConfirmSiteSetup do |review|
+      review.request_site
+    end
 
     # Create a string that will match the new Site's "creation date" string
     @creation_date = make_date(Time.now)
-    site_setup.search_field.wait_until_present
-    site_setup.search(Regexp.escape(@subject))
 
-    # Get the site id for storage
-    @browser.frame(:class=>"portletMainIframe").link(:href=>/xsl-portal.site/, :index=>0).href =~ /(?<=\/site\/).+/
-    @id = $~.to_s
+    on SiteSetup do |site_setup|
+      site_setup.search(Regexp.escape(@subject))
 
+      # Get the site id for storage
+      @browser.frame(:class=>"portletMainIframe").link(:href=>/xsl-portal.site/, :index=>0).href =~ /(?<=\/site\/).+/
+      @id = $~.to_s
+    end
   end
 
   def create_and_reuse_site(site_name)
@@ -122,48 +119,49 @@ class SiteObject
     on_page SiteSetup do |page|
       page.new
     end
-    site_type = SiteType.new @browser
+    on SiteType do |site_type|
 
-    # Select the Course Site radio button
+      # Select the Course Site radio button
 
-    site_type.select_course_site
+      site_type.course_site.set
 
-    # Store the selected term value for use later
-    @term = site_type.academic_term_element.value
+      # Store the selected term value for use later
+      @term = site_type.academic_term.value
 
-    # Click continue
-    course_section = site_type.continue
+      # Click continue
+      site_type.continue
+    end
+    on CourseSectionInfo do |course_section|
+      # Fill in those fields, storing the entered values for later verification steps
+      course_section.subject.set @subject
 
-    # Fill in those fields, storing the entered values for later verification steps
-    course_section.subject = @subject
+      course_section.course.set @course
 
-    course_section.course = @course
+      course_section.section.set @section
 
-    course_section.section = @section
+      # Store site name for ease of coding and readability later
+      @name = "#{@subject} #{@course} #{@section} #{@term}"
 
-    # Store site name for ease of coding and readability later
-    @name = "#{@subject} #{@course} #{@section} #{@term}"
+      # Add a valid instructor id
+      course_section.authorizers_username.set @authorizer
 
-    # Click continue button
-    course_section.continue
-
-    # Add a valid instructor id
-    course_section.authorizers_username=@authorizer
-
-    # Click continue button
-    course_site = course_section.continue
-    course_site.editor.wait_until_present
-    course_site.source(course_site.editor)
-    course_site.source=@description
-    course_site.short_description=@short_description
-    # Click Continue
-    course_tools = course_site.continue
-
-    #Check All Tools
-    course_tools.check_all_tools
-    course_tools.select_yes
-    course_tools.import_sites=site_name
-    course_tools.continue
+      # Click continue button
+      course_section.continue
+    end
+    on CourseSiteInfo do |course_site|
+      course_site.source(course_site.editor)
+      course_site.source=@description
+      course_site.short_description.set @short_description
+      # Click Continue
+      course_site.continue
+    end
+    on EditSiteTools do |course_tools|
+      #Check All Tools
+      course_tools.all_tools.set
+      course_tools.yes.set
+      course_tools.import_sites.select site_name
+      course_tools.continue
+    end
     on_page ReUseMaterial do |page|
       page.announcements_checkbox.set
       page.calendar_checkbox.set
@@ -185,14 +183,14 @@ class SiteObject
       page.continue
     end
     on_page AddMultipleTools do |page|
-      page.site_email_address=@email
-      page.web_content_title=@web_content_title
-      page.web_content_source=@web_content_source
+      page.site_email_address.set @email
+      page.web_content_title.set @web_content_title
+      page.web_content_source.set @web_content_source
       page.continue
     end
     on_page SiteAccess do |page|
-      page.select_allow
-      page.joiner_role=@joiner_role
+      page.allow.set
+      page.joiner_role.select @joiner_role
       page.continue
     end
     on_page ConfirmSiteSetup do |page|
@@ -201,7 +199,6 @@ class SiteObject
     # Create a string that will match the new Site's "creation date" string
     @creation_date = make_date(Time.now)
     on_page SiteSetup do |page|
-      page.search_field.wait_until_present
       page.search(Regexp.escape(@subject))
     end
     # Get the site id for storage

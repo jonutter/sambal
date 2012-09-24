@@ -3,41 +3,54 @@
 # Assessments pages - "Samigo", a.k.a., "Tests & Quizzes"
 #================
 
-# This is a module containing methods that are
-# common to all the question pages inside the
-# Assessment section of a Site.
-module QuestionHelpers
+# Base Class for building Assessments
+class AssessmentsBase <BasePage
 
-  # EditAssessment class or the EditQuestionPool class
-  # should be called after this.
-  action(:save) { |b| b.frm.button(:value=>"Save").click }
+  frame_element
+  class << self
+    def menu_bar_elements
+      action(:assessments) { |b| b.frm.link(:text=>"Assessments").click }
+      action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
+      # Clicks the Question Pools link, goes to
+      # the QuestionPoolsList class.
+      action(:question_pools) { |b| b.frm.link(:text=>"Question Pools").click }
+      action(:questions) { |b| b.frm.link(:text=>/Questions:/).click }
+    end
 
-  action(:assessments) { |b| b.frm.link(:text=>"Assessments").click }
-  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
-  action(:question_pools) { |b| b.frm.link(:text=>"Question Pools").click }
-  action(:questions) { |b| b.frm.link(:text=>/Questions:/).click }
+    def question_page_elements
+      element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
+      element(:assign_to_part) { |b| b.frm.select(:id=>"itemForm:assignToPart") }
+      element(:assign_to_pool) { |b| b.frm.select(:id=>"itemForm:assignToPool") }
+      element(:question_text) { |b| b.frm.text_field(:class=>"simple_text_area", :index=>0) }
+      action(:save) { |b| b.frm.button(:value=>"Save").click }
+      action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
+      action(:add_attachments) { |b| b.frm.button(:value=>"Add Attachments").click }
+    end
 
-  element(:assign_to_part) { |b| b.frm.select(:id=>"itemForm:assignToPart") }
-  element(:assign_to_pool) { |b| b.frm.select(:id=>"itemForm:assignToPool") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
-
+    def pool_page_elements
+      element(:pool_name) { |b| b.frm.text_field(:id=>/:namefield/) }
+      element(:department_group) { |b| b.frm.text_field(:id=>/:orgfield/) }
+      element(:description) { |b| b.frm.text_field(:id=>/:descfield/) }
+      element(:objectives) { |b| b.frm.text_field(:id=>/:objfield/) }
+      element(:keywords) { |b| b.frm.text_field(:id=>/:keyfield/) }
+      # QuestionPoolsList
+      action(:save) { |b| b.frm.button(:id=>"questionpool:submit").click }
+      action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
+    end
+  end
 end
 
 # The Course Tools "Tests and Quizzes" page for a given site.
 # (Instructor view)
-class AssessmentsList < BasePage
+class AssessmentsList < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
 
   expected_element :title
 
   # If the assessment is going to be made in the builder, then
   # use EditAssessment. There's no page class for markup text, yet.
   action(:create) { |b| b.frm.button(:value=>"Create").click }
-
-  # Clicks the Question Pools link, goes to
-  # the QuestionPoolsList class.
-  action(:question_pools) { |b| b.frm.link(:text=>"Question Pools").click }
 
   # Collects the titles of the Assessments listed as "Pending"
   # then returns them as an Array.
@@ -79,8 +92,7 @@ class AssessmentsList < BasePage
     frm.tbody(:id=>"authorIndexForm:_id88:tbody_element").row(:text=>/#{Regexp.escape(test_title)}/).link(:id=>/authorIndexToScore/).click
     AssessmentTotalScores.new(@browser)
   end
-  
-  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types").click }
+
   element(:title) { |b| b.frm.text_field(:id=>"authorIndexForm:title") }
   element(:create_using_builder) { |b| b.frm.radio(:name=>"authorIndexForm:_id29", :index=>0) }
   element(:create_using_text) { |b| b.frm.radio(:name=>"authorIndexForm:_id29") }
@@ -122,15 +134,14 @@ class PreviewOverview < BasePage
     EditAssessment.new(@browser)
   end
 
-  
   action(:begin_assessment) { |b| b.frm.button(:id=>"takeAssessmentForm:beginAssessment3").click }
 
 end
 
 # The Settings page for a particular Assessment
-class AssessmentSettings < BasePage
+class AssessmentSettings < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
 
   # Scrapes the Assessment Type from the page and returns it as a string.
   def assessment_type_title
@@ -153,7 +164,6 @@ class AssessmentSettings < BasePage
     frm.button(:value=>"Save Settings and Publish").click
     PublishAssessment.new(@browser)
   end
-
   
   action(:open) { |b| b.frm.link(:text=>"Open") }
   action(:close) { |b| b.frm.link(:text=>"Close") }
@@ -289,40 +299,21 @@ end
 
 # The page that appears when you're creating a new quiz
 # or editing an existing one
-class EditAssessment < BasePage
+class EditAssessment < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
 
   # Allows insertion of a question at a specified
   # point in the Assessment. Must include the
   # part number, the question number, and the type of
   # question. Question Type must match the Type
   # value in the drop down.
-  #
-  # The method will instantiate the page class
-  # based on the selected question type.
   def insert_question_after(part_num, question_num, qtype)
     if question_num.to_i == 0
       frm.select(:id=>"assesssmentForm:parts:#{part_num.to_i - 1}:changeQType").select(qtype)
     else
       frm.select(:id=>"assesssmentForm:parts:#{part_num.to_i - 1}:parts:#{question_num.to_i - 1}:changeQType").select(qtype)
     end
-
-    page = case(qtype)
-             when "Multiple Choice" then MultipleChoice.new(@browser)
-             when "True False" then TrueFalse.new(@browser)
-             when "Survey" then Survey.new(@browser)
-             when "Short Answer/Essay" then ShortAnswer.new(@browser)
-             when "Fill in the Blank" then FillInBlank.new(@browser)
-             when "Numeric Response" then NumericResponse.new(@browser)
-             when "Matching" then Matching.new(@browser)
-             when "Audio Recording" then AudioRecording.new(@browser)
-             when "File Upload" then FileUpload.new(@browser)
-             else puts "#{qtype} is not a valid question type"
-           end
-
-    return page
-
   end
 
   # Allows removal of question by part number and question number.
@@ -361,28 +352,8 @@ class EditAssessment < BasePage
   end
 
   # Selects the desired question type from the
-  # drop down list, then instantiates the appropriate
-  # page class.
-  # @param qtype [String] the text of the item you want to select from the list
-  def select_question_type(qtype)
-    frm.select(:id=>"assesssmentForm:changeQType").select(qtype)
-
-    page = case(qtype)
-             when "Multiple Choice" then MultipleChoice.new(@browser)
-             when "True False" then TrueFalse.new(@browser)
-             when "Survey" then Survey.new(@browser)
-             when "Short Answer/Essay" then ShortAnswer.new(@browser)
-             when "Fill in the Blank" then FillInBlank.new(@browser)
-             when "Numeric Response" then NumericResponse.new(@browser)
-             when "Matching" then Matching.new(@browser)
-             when "Audio Recording" then AudioRecording.new(@browser)
-             when "File Upload" then FileUpload.new(@browser)
-             else puts "#{qtype} is not a valid question type"
-           end
-
-    return page
-
-  end
+  # drop down list.
+  element(:question_type) { |b| b.frm.select(:id=>"assesssmentForm:changeQType").select(qtype) }
 
   # Clicks the Preview button,
   # then instantiates the PreviewOverview page class.
@@ -420,9 +391,6 @@ class EditAssessment < BasePage
     frm.table(:id=>"assesssmentForm:parts:#{part_number.to_i-1}:parts").div(:class=>"tier3", :index=>question_number.to_i-1).text
   end
 
-  
-  action(:assessments) { |b| b.frm.button(:text=>"Assessments") }
-  action(:assessment_types) { |b| b.frm.button(:text=>"Assessment Types") }
   action(:print) { |b| b.frm.button(:text=>"Print").click }
   action(:update_points) { |b| b.frm.button(:id=>"assesssmentForm:pointsUpdate").click }
 
@@ -440,7 +408,6 @@ class AddEditAssessmentPart < BasePage
     EditAssessment.new(@browser)
   end
 
-  
   element(:title) { |b| b.frm.text_field(:id=>"modifyPartForm:title") }
   element(:information) { |b| b.frm.text_field(:id=>"modifyPartForm:_id10_textinput") }
   action(:add_attachments) { |b| b.frm.button(:name=>"modifyPartForm:_id54").click }
@@ -473,7 +440,6 @@ class PublishAssessment < BasePage
     AssessmentsList.new(@browser)
   end
 
-  
   action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
   action(:edit) { |b| b.frm.button(:name=>"publishAssessmentForm:_id23").click }
   element(:notification) { |b| b.frm.select(:id=>"publishAssessmentForm:number") }
@@ -481,15 +447,11 @@ class PublishAssessment < BasePage
 end
 
 # The page for setting up a multiple choice question
-class MultipleChoice < BasePage
+class MultipleChoice < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
+  question_page_elements
 
-  include QuestionHelpers
-
-  
-  action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
   action(:whats_this) { |b| b.frm.link(:text=>"(What's This?)").click }
   element(:single_correct) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>0) }
   element(:enable_negative_marking) { |b| b.frm.radio(:name=>"itemForm:partialCreadit_NegativeMarking", :index=>0) }
@@ -501,8 +463,6 @@ class MultipleChoice < BasePage
   action(:reset_to_default) { |b| b.frm.link(:text=>"Reset to Default Grading Logic").click }
   element(:multi_single) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>1) }
   element(:multi_multi) { |b| b.frm.radio(:name=>"itemForm:chooseAnswerTypeForMC", :index=>2) }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id82_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:name=>"itemForm:_id126").click }
 
   element(:answer_a) { |b| b.frm.text_field(:id=>"itemForm:mcchoices:0:_id140_textinput") }
   action(:remove_a) { |b| b.frm.link(:id=>"itemForm:mcchoices:0:removelinkSingle").click }
@@ -528,10 +488,10 @@ class MultipleChoice < BasePage
   action(:reset_score_values) { |b| b.frm.link(:text=>"Reset Score Values").click }
 
     # Checkboxes that appear when "multiple correct" is selected
-  element(:a_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:0:mccheckboxes") }
-  element(:b_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:1:mccheckboxes") }
-  element(:c_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:2:mccheckboxes") }
-  element(:d_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:3:mccheckboxes") }
+  element(:check_a_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:0:mccheckboxes") }
+  element(:check_b_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:1:mccheckboxes") }
+  element(:check_c_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:2:mccheckboxes") }
+  element(:check_d_correct) { |b| b.frm.checkbox(:name=>"itemForm:mcchoices:3:mccheckboxes") }
 
   element(:insert_additional_answers) { |b| b.frm.select(:id=>"itemForm:insertAdditionalAnswerSelectMenu") }
   element(:randomize_answers_yes) { |b| b.frm.radio(:index=>0, :name=>"itemForm:_id162") }
@@ -542,15 +502,11 @@ class MultipleChoice < BasePage
 end
 
 # The page for setting up a Survey question
-class Survey < BasePage
+class Survey < AssessmentsBase
 
-  frame_element
-  include QuestionHelpers
+  menu_bar_elements
+  question_page_elements
 
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
   element(:yes_no) { |b| b.frm.radio(:index=>0, :name=>"itemForm:selectscale") }
   element(:disagree_agree) { |b| b.frm.radio(:index=>1, :name=>"itemForm:selectscale") }
   element(:disagree_undecided) { |b| b.frm.radio(:index=>2, :name=>"itemForm:selectscale") }
@@ -560,71 +516,43 @@ class Survey < BasePage
   element(:one_to_five) { |b| b.frm.radio(:index=>6, :name=>"itemForm:selectscale") }
   element(:one_to_ten) { |b| b.frm.radio(:index=>7, :name=>"itemForm:selectscale") }
 
-
 end
 
 #  The page for setting up a Short Answer/Essay question
-class ShortAnswer < BasePage
+class ShortAnswer < AssessmentsBase
 
-  frame_element
-  include QuestionHelpers
+  menu_bar_elements
+  question_page_elements
 
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id69_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
   element(:model_short_answer) { |b| b.frm.text_field(:id=>"itemForm:_id129_textinput") }
-
 
 end
 
 #  The page for setting up a Fill-in-the-blank question
-class FillInBlank < BasePage
+class FillInBlank < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
+  question_page_elements
 
-  include QuestionHelpers
-
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id75_textinput") }
   element(:case_sensitive) { |b| b.frm.checkbox(:name=>"itemForm:_id76") }
   element(:mutually_exclusive) { |b| b.frm.checkbox(:name=>"itemForm:_id78") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id126").click }
-
 
 end
 
 #  The page for setting up a numeric response question
-class NumericResponse < BasePage
+class NumericResponse < AssessmentsBase
 
-  frame_element
-
-  include QuestionHelpers
-
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id73_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id117").click }
-
+  menu_bar_elements
+  question_page_elements
 
 end
 
 #  The page for setting up a matching question
-class Matching < BasePage
+class Matching < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
+  question_page_elements
 
-  include QuestionHelpers
-
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id78_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id122").click }
   element(:choice) { |b| b.frm.text_field(:id=>"itemForm:_id147_textinput") }
   element(:match) { |b| b.frm.text_field(:id=>"itemForm:_id151_textinput") }
   action(:save_pairing) { |b| b.frm.button(:name=>"itemForm:_id164").click }
@@ -632,96 +560,56 @@ class Matching < BasePage
 end
 
 #  The page for setting up a True/False question
-class TrueFalse < BasePage
+class TrueFalse < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
+  question_page_elements
 
-  include QuestionHelpers
-
-  
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  element(:question_text) { |b| b.frm.text_field(:id=>"itemForm:_id77_textinput") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id121").click }
   element(:negative_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerdsc") }
   element(:answer_true) { |b| b.frm.radio(:index=>0, :name=>"itemForm:TF") }
   element(:answer_false) { |b| b.frm.radio(:index=>1, :name=>"itemForm:TF") }
   element(:required_rationale_yes) { |b| b.frm.radio(:index=>0, :name=>"itemForm:rational") }
   element(:required_rationale_no) { |b| b.frm.radio(:index=>1, :name=>"itemForm:rational") }
 
-
 end
 
 #  The page for setting up a question that requires an audio response
-class AudioRecording < BasePage
+class AudioRecording < AssessmentsBase
 
-  frame_element
+  menu_bar_elements
+  question_page_elements
 
-  include QuestionHelpers
-
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
   element(:time_allowed) { |b| b.frm.text_field(:id=>"itemForm:timeallowed") }
-  elementlist(:number_of_attempts) { |b| b.frm.select(:id=>"itemForm:noattempts") }
+  element(:number_of_attempts) { |b| b.frm.select(:id=>"itemForm:noattempts") }
 
 end
 
 # The page for setting up a question that requires
 # attaching a file
-class FileUpload < BasePage
+class FileUpload < AssessmentsBase
 
-  frame_element
-
-  include QuestionHelpers
-
-  action(:cancel) { |b| b.frm.button(:id=>"itemForm:_id63").click }
-  element(:answer_point_value) { |b| b.frm.text_field(:id=>"itemForm:answerptr") }
-  action(:add_attachments) { |b| b.frm.button(:id=>"itemForm:_id113").click }
+  menu_bar_elements
+  question_page_elements
 
 end
 
 # The page that appears when you are editing a type of assessment
-class EditAssessmentType < BasePage
+class EditAssessmentType < AssessmentsBase
 
-  frame_element
 
 end
 
 # The Page that appears when adding a new question pool
-class AddQuestionPool < BasePage
+class AddQuestionPool < AssessmentsBase
 
-  frame_element
-
-  # Clicks the Save button, then
-  # instantiates the QuestionPoolsList page class.
-  def save
-    #10.times {frm.button(:id=>"questionpool:submit").flash}
-    frm.button(:id=>"questionpool:submit").click
-    #sleep 180
-    #frm.button(:value=>"Create").wait_until_present(120)
-    QuestionPoolsList.new(@browser)
-  end
-
-  def cancel
-    frm.button(:value=>"Cancel").click
-    QuestionPoolsList.new @browser
-  end
-
-  
-  element(:pool_name) { |b| b.frm.text_field(:id=>"questionpool:namefield") }
-  element(:department_group) { |b| b.frm.text_field(:id=>"questionpool:orgfield") }
-  element(:description) { |b| b.frm.text_field(:id=>"questionpool:descfield") }
-  element(:objectives) { |b| b.frm.text_field(:id=>"questionpool:objfield") }
-  element(:keywords) { |b| b.frm.text_field(:id=>"questionpool:keyfield") }
+  pool_page_elements
 
 end
 
 # The Page that appears when editing an existing question pool
-class EditQuestionPool < BasePage
+class EditQuestionPool < AssessmentsBase
 
-  frame_element
+  pool_page_elements
 
   # Clicks the Add Question link, then
   # instantiates the SelectQuestionType class.
@@ -737,28 +625,18 @@ class EditQuestionPool < BasePage
     QuestionPoolsList.new(@browser)
   end
 
-  
-  element(:pool_name) { |b| b.frm.text_field(:id=>"editform:namefield") }
-  element(:department_group) { |b| b.frm.text_field(:id=>"editform:orgfield") }
-  element(:description) { |b| b.frm.text_field(:id=>"editform:descfield") }
-  element(:objectives) { |b| b.frm.text_field(:id=>"editform:objfield") }
-  element(:keywords) { |b| b.frm.text_field(:id=>"editform:keyfield") }
   action(:update) { |b| b.frm.button(:id=>"editform:Update").click }
-  action(:save) { |b| b.frm.button(:id=>"questionpool:submit").click }
-  action(:cancel) { |b| b.frm.button(:id=>"questionpool:_id11").click }
 
 end
 
 # The page with the list of existing Question Pools
-class QuestionPoolsList < BasePage
+class QuestionPoolsList < AssessmentsBase
 
-  frame_element
-  # Clicks the edit button, then instantiates
+  # Clicks the edit button, next is
   # the EditQuestionPool page class.
   # @param name [String] the name of the pool you want to edit
   def edit_pool(name)
     frm.span(:text=>name).fire_event("onclick")
-    EditQuestionPool.new(@browser)
   end
 
   # Clicks the Add New Pool link, then
@@ -798,16 +676,11 @@ class QuestionPoolsList < BasePage
     AssessmentsList.new(@browser)
   end
 
-  
-  action(:assessment_types) { |b| b.frm.link(:text=>"Assessment Types") }
-
 end
 
 # The page that appears when you click to import
 # a pool.
-class PoolImport < BasePage
-
-  frame_element
+class PoolImport < AssessmentsBase
 
   # Enters the target file into the Choose File
   # file field. Including the file path separately is optional.
@@ -828,9 +701,7 @@ class PoolImport < BasePage
 end
 
 # This page appears when adding a question to a pool
-class SelectQuestionType < BasePage
-
-  frame_element
+class SelectQuestionType < AssessmentsBase
 
   # Selects the specified question type from the
   # drop-down list, then instantiates the appropriate
@@ -839,22 +710,6 @@ class SelectQuestionType < BasePage
   def select_question_type(qtype)
     frm.select(:id=>"_id1:selType").select(qtype)
     frm.button(:value=>"Save").click
-
-    page = case(qtype)
-             when "Multiple Choice" then MultipleChoice.new(@browser)
-             when "True False" then TrueFalse.new(@browser)
-             when "Survey" then Survey.new(@browser)
-             when "Short Answer/Essay" then ShortAnswer.new(@browser)
-             when "Fill in the Blank" then FillInBlank.new(@browser)
-             when "Numeric Response" then NumericResponse.new(@browser)
-             when "Matching" then Matching.new(@browser)
-             when "Audio Recording" then AudioRecording.new(@browser)
-             when "File Upload" then FileUpload.new(@browser)
-             else puts "nothing selected"
-           end
-
-    return page
-
   end
 
   action(:cancel) { |b| b.frm.button(:value=>"Cancel").click }
@@ -865,9 +720,7 @@ end
 #
 # It may be that we want to deprecate this class and simply use
 # the AssessmentsList class alone.
-class TakeAssessmentList < BasePage
-
-  frame_element
+class TakeAssessmentList < AssessmentsBase
 
   # Returns an array containing the assessment names that appear on the page.
   def available_assessments
@@ -917,9 +770,7 @@ class TakeAssessmentList < BasePage
 end
 
 # The student view of the overview page of an Assessment
-class BeginAssessment < BasePage
-
-  frame_element
+class BeginAssessment < AssessmentsBase
 
   # Clicks the Begin Assessment button.
   def begin_assessment
@@ -933,6 +784,7 @@ class BeginAssessment < BasePage
 
   # Selects the specified radio button answer
   def multiple_choice_answer(letter)
+    # TODO: Convert this to a hash instead of case statement
     index = case(letter.upcase)
               when "A" then "0"
               when "B" then "1"
@@ -994,9 +846,7 @@ end
 
 # The confirmation page that appears when submitting an Assessment.
 # The last step before actually submitting the the Assessment.
-class ConfirmSubmission < BasePage
-
-  frame_element
+class ConfirmSubmission < AssessmentsBase
 
   # Clicks the Submit for Grading button and instantiates
   # the SubmissionSummary Class.
@@ -1010,9 +860,7 @@ class ConfirmSubmission < BasePage
 end
 
 # The summary page that appears when an Assessment has been submitted.
-class SubmissionSummary < BasePage
-
-  frame_element
+class SubmissionSummary < AssessmentsBase
 
   # Clicks the Continue button and instantiates
   # the TakeAssessmentList Class.

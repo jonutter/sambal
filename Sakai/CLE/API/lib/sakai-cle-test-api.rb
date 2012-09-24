@@ -1,5 +1,6 @@
 require 'cgi'
 require 'watir-webdriver'
+require 'sakai-cle-test-api/page_maker.rb'
 Dir["#{File.dirname(__FILE__)}/sakai-cle-test-api/*.rb"].each {|f| require f }
 Dir["#{File.dirname(__FILE__)}/sakai-cle-test-api/page_objects/*.rb"].each {|f| require f }
 Dir["#{File.dirname(__FILE__)}/sakai-cle-test-api/data_objects/*.rb"].each {|f| require f }

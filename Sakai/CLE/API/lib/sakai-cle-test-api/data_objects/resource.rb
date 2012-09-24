@@ -1,28 +1,46 @@
 class FileObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
-  attr_accessor
+  attr_accessor :name, :site, :source_path, :target_folder, :href
 
   def initialize(browser, opts={})
     @browser = browser
 
-    defaults = {}
+    defaults = {
+    }
     options = defaults.merge(opts)
+
+    @name = options[:name]
+    @source_path = options[:source_path]
+    @site = options[:site]
+    options[:target_folder] == nil ? @target_folder=@site : @target_folder=options[:target_folder]
+    raise "You must specify a Site for your Folder" if @site==nil
   end
 
   def create
-
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    resources unless @browser.title=~/Resources$/
+    on Resources do |file|
+      file.upload_file_to_folder @target_folder
+    end
+    on ResourcesUploadFiles do |upload|
+      upload.file_to_upload @name, @source_path
+      upload.upload_files_now
+    end
+    on Resources do |file|
+      @href = file.href @name
+    end
   end
 
 end
 
 class FolderObject
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :name, :parent_folder, :site
 
@@ -55,9 +73,9 @@ class FolderObject
 end
 
 class WebLinkObject
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor
 
@@ -78,9 +96,9 @@ end
 
 class HTMLPageObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :name, :description, :site, :folder, :html, :url
 
@@ -89,7 +107,7 @@ class HTMLPageObject
 
     defaults = {
         :name=>random_alphanums,
-        :description=>random_multiline(500, 10, :alpha),
+        :description=>random_multiline(100, 15, :alpha),
         :html=>"<body>Body</body>"
     }
     options = defaults.merge(opts)
@@ -128,9 +146,9 @@ class HTMLPageObject
 end
 
 class TextDocumentObject
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor
 
@@ -151,9 +169,9 @@ class TextDocumentObject
 end
 
 class CitationListObject
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor
 

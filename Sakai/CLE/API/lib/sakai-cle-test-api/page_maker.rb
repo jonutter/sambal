@@ -45,4 +45,4 @@ class PageMaker
 
   end
 
-end
+end # PageMaker

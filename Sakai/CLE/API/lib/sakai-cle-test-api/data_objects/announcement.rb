@@ -1,8 +1,8 @@
 class AnnouncementObject
 
-  include PageObject
   include Utilities
-  include ToolsMenu
+  include PageHelper
+  include Workflows
 
   attr_accessor :title, :body, :site, :link
 
@@ -21,13 +21,13 @@ class AnnouncementObject
   end
 
   def create
-    my_workspace.open_my_site_by_name @site unless @browser.title=~/#{@site}/
+    open_my_site_by_name @site unless @browser.title=~/#{@site}/
     announcements unless @browser.title=~/Announcements$/
     on_page Announcements do |page|
       page.add
     end
     on_page AddEditAnnouncements do |page|
-      page.title=@title
+      page.title.set @title
       page.body=@body
       page.add_announcement
     end

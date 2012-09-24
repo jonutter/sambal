@@ -1,8 +1,8 @@
 class WebContentObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :title, :source, :site
 
@@ -31,16 +31,15 @@ class WebContentObject
       page.edit_tools
     end
     on_page EditSiteTools do |page|
-      page.check_web_content
+      page.web_content.set
       page.continue
     end
     on_page AddMultipleTools do |page|
-      page.web_content_title=@title
-      page.web_content_source=@source
+      page.web_content_title.set @title
+      page.web_content_source.set @source
       page.continue
     end
     on_page ConfirmSiteToolsEdits do |page|
-      page.finish_button.wait_until_present
       page.finish
     end
     on_page SiteEditor do |page|

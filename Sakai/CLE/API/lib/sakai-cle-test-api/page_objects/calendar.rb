@@ -1,13 +1,20 @@
-module CalendarTools
+class CalendarBase < BasePage
 
-  # AddEditEvent
-  action(:add_event) { |b| b.frm.link(:text=>"Add").click }
+  frame_element
+  basic_page_elements
 
-  # AddEditFields
-  action(:fields) { |b| b.frm.link(:text=>"Fields").click }
+  class << self
+    def menu_elements
+      # AddEditEvent
+      action(:add_event) { |b| b.frm.link(:text=>"Add").click }
 
-  # ImportStepOne
-  action(:import) { |b| b.frm.link(:text=>"Import").click }
+      # AddEditFields
+      action(:fields) { |b| b.frm.link(:text=>"Fields").click }
+
+      # ImportStepOne
+      action(:import) { |b| b.frm.link(:text=>"Import").click }
+    end
+  end
 
 end
 
@@ -15,11 +22,9 @@ end
 # For now it includes all views, though that probably
 # means it will have to be re-instantiated every time
 # a new view is selected.
-class Calendar < BasePage
+class Calendar < CalendarBase
 
-  frame_element
-
-  include CalendarTools
+  menu_elements
 
   # Selects the specified item in the View select list,
   # then reinstantiates the Class.
@@ -40,15 +45,6 @@ class Calendar < BasePage
   def show=(item)
     frm.select(:id=>"timeFilterOption").select(item)
   end
-
-  # Returns the text of the Calendar's header.
-  value(:header) { |b| b.frm.div(:class=>"portletBody").h3.text }
-
-  # This is the alert box object. If you want to
-  # get the text contents of the alert box, use
-  # alert_box.text. That will get you a string object
-  # that is the text contents.
-  element(:alert_box) { |b| b.frm.div(:class=>"alertMessage") }
 
   # Clicks the link to the specified event, then
   # instantiates the EventDetail class.
@@ -189,10 +185,9 @@ class Calendar < BasePage
 end
 
 # The page that appears when you click on an event in the Calendar
-class EventDetail < BasePage
+class EventDetail < CalendarBase
 
-  frame_element
-  include CalendarTools
+  menu_elements
   # Clicks the Go to Today button, then instantiates
   # the Calendar class.
   def go_to_today
@@ -243,11 +238,11 @@ class EventDetail < BasePage
 end
 
 #
-class AddEditEvent < BasePage
+class AddEditEvent < CalendarBase
 
   include FCKEditor
 
-  frame_element
+  menu_elements
 
   expected_element :message_editor
 
@@ -312,9 +307,7 @@ end
 
 # The page that appears when the Frequency button is clicked on the Add/Edit
 # Event page.
-class EventFrequency < BasePage
-
-  frame_element
+class EventFrequency < CalendarBase
 
   def save_frequency
     frm.button(:value=>"Save Frequency").click
@@ -338,9 +331,8 @@ class EventFrequency < BasePage
 
 end
 
-class AddEditFields < BasePage
+class AddEditFields < CalendarBase
 
-  frame_element
   # Clicks the Save Field Changes buton and instantiates
   # The Calendar or EventDetail class--unless the Alert Message box appears,
   # in which case it re-instantiates the class.
@@ -353,11 +345,6 @@ class AddEditFields < BasePage
     else
       Calendar.new(@browser)
     end
-  end
-
-  # Returns a string of the contents of the Alert box.
-  def alert_box
-    frm.div(:class=>"alertMessage").text
   end
 
   def create_field
@@ -378,11 +365,7 @@ class ImportStepOne < BasePage
 
   frame_element
 
-  def continue
-    frm.button(:value=>"Continue").click
-    ImportStepTwo.new(@browser)
-  end
-
+  action(:continue) { |b| bfrm.button(:value=>"Continue").click }
   element(:microsoft_outlook) { |b| b.frm.radio(:id=>"importType_Outlook") }
   element(:meeting_maker) { |b| b.frm.radio(:id=>"importType_MeetingMaker") }
   element(:generic_calendar_import) { |b| b.frm.radio(:id=>"importType_Generic") }

@@ -1,7 +1,7 @@
 class SyllabusObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
 end

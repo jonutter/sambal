@@ -1,8 +1,8 @@
 class EventObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :title, :month, :day, :year, :start_hour, :start_minute,
                 :start_meridian, :duration_hours, :duration_minutes, :end_hour,
@@ -49,38 +49,41 @@ class EventObject
   def create
     open_my_site_by_name @site unless @browser.title=~/#{@site}/
     calendar unless @browser.title=~/Calendar$/
-    cal = Calendar.new @browser
-    add_event = cal.add
-    add_event.message=@message
-    add_event.title=@title
-    add_event.month=@month
-    add_event.day=@day
-    add_event.year=@year
-    add_event.start_hour=@start_hour
-    add_event.start_minute=@start_minute
-    add_event.start_meridian=@start_meridian
-    if @end_hour == nil && @duration_hours == nil
-      @duration_hours = add_event.hours
-      @duration_minutes = add_event.minutes
-      @end_hour = add_event.end_hour
-      @end_minute = add_event.end_minute
-      @end_meridian = add_event.end_meridian
-    elsif @end_hour == nil
-      add_event.hours=@duration_hours
-      add_event.minutes=@duration_minutes
-      @end_hour = add_event.end_hour
-      @end_minute = add_event.end_minute
-      @end_meridian = add_event.end_meridian
-    elsif @duration_hours == nil
-
-    else
-
+    on Calendar do |cal|
+      cal.add
     end
+    on AddEditEvent do |add_event|
+      add_event.message.set @message
+      add_event.title.set @title
+      add_event.month.select @month
+      add_event.day.select @day
+      add_event.year.select @year
+      add_event.start_hour.select @start_hour
+      add_event.start_minute.select @start_minute
+      add_event.start_meridian.select @start_meridian
+      if @end_hour == nil && @duration_hours == nil
+        @duration_hours = add_event.hours.value
+        @duration_minutes = add_event.minutes.value
+        @end_hour = add_event.end_hour.value
+        @end_minute = add_event.end_minute.value
+        @end_meridian = add_event.end_meridian.value
+      elsif @end_hour == nil
+        add_event.hours.select @duration_hours
+        add_event.minutes.select @duration_minutes
+        @end_hour = add_event.end_hour.value
+        @end_minute = add_event.end_minute.value
+        @end_meridian = add_event.end_meridian.value
+      elsif @duration_hours == nil
 
-    cal = add_event.save_event
+      else
 
-    @link = cal.event_href @title
+      end
 
+      add_event.save_event
+    end
+    on Calendar do |cal|
+      @link = cal.event_href @title
+    end
   end
 
 end

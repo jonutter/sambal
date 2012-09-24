@@ -1,8 +1,8 @@
 class ModuleObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :title, :description, :keywords, :start_date, :end_date, :site
 
@@ -31,11 +31,11 @@ class ModuleObject
       page.add_module
     end
     on_page AddEditModule do |page|
-      page.title=@title
-      page.description=@description
-      page.keywords=@keywords
-      page.start_date=@start_date
-      page.end_date=@end_date
+      page.title.set @title
+      page.description.set @description
+      page.keywords.set @keywords
+      page.start_date.set @start_date
+      page.end_date.set @end_date
       page.add
     end
     on_page ConfirmModule do |page|
@@ -47,13 +47,13 @@ end
 
 class ContentSectionObject
 
-  include PageObject
+  include PageHelper
   include Utilities
-  include ToolsMenu
+  include Workflows
 
   attr_accessor :site, :module, :title, :instructions, :modality, :content_type,
-                :copyright_status, :editor_content, :file_name, :file_path, :url, :url_title,
-                :file_description, :url_description
+                :copyright_status, :editor_content, :file_folder, :file_name, :file_path,
+                :url, :url_title, :file_description, :url_description
 
   def initialize(browser, opts={})
     @browser = browser
@@ -76,6 +76,7 @@ class ContentSectionObject
     @file_name=options[:file_name]
     @file_path=options[:file_path]
     @file_description=options[:file_description]
+    @file_folder=options[:file_folder]
     @url=options[:url]
     @url_title=options[:url_title]
     @url_description=options[:url_description]
@@ -95,42 +96,47 @@ class ContentSectionObject
       page.add_content_sections
     end
     on_page AddEditContentSection do |page|
-      page.title=@title
-      page.instructions=@instructions
+      page.title.set @title
+      page.instructions.set @instructions
       @modality.each do |content|
         page.send(content)
       end
-      page.content_type=@content_type unless @content_type==nil
-      sleep 3 # Need to wait for page refresh
+      page.content_type.select @content_type unless @content_type==nil
+    end
+
+    on AddEditContentSection do |page| # Note we are reinstantiating the class here because of
+                                       # an issue with Selenium Webdriver throwing a
+                                       # WeakReference error given the partial page reload.
       case @content_type
         when "Compose content with editor"
           page.source(page.content_editor)
           page.source=@editor_content
         when "Upload or link to a file"
           page.select_a_file
-          on_page LessonAddAttachment do |subpage|
-            subpage.upload_local_file @file_name, @file_path
-            subpage.continue
+          on_page LessonAddAttachment do |add|
+            add.upload_local_file @file_name, @file_path
+            add.continue
           end
-          page.file_description=@file_description
+          page.file_description.set @file_description
         when "Link to new or existing URL resource on server"
           page.select_url
-          on_page SelectingContent do |subpage|
-            subpage.new_url=@url
-            subpage.url_title=@url_title
-            subpage.continue
+          on_page SelectingContent do |select|
+            select.new_url.set @url
+            select.url_title.set @url_title
+            select.continue
           end
-          page.url_description=@url_description
+          page.url_description.set @url_description
         when "Upload or link to a file in Resources"
           page.select_or_upload_file
-          on_page AddFiles do |subpage|
-            subpage.select @file_name
-            subpage.continue
+          on_page AddFiles do |add|
+            add.open_folder @file_folder unless @file_folder == nil
+            add.select_file @file_name
+            add.continue
           end
         else
           raise "You have a typo in what you've specified for your Section's content type.\nIt must be one of the options contained in the dropdown."
       end
-      page.copyright_status=@copyright_status
+      page.copyright_status.select @copyright_status
       page.add
     end
   end

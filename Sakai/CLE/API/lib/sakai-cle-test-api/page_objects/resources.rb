@@ -4,12 +4,10 @@
 
 # Resources page for a given Site, in the Course Tools menu
 class Resources < AddFiles
-
-  frame_element
+# TODO: Is this class needed at all?
 
 end
 
-# New class template. For quick class creation...
 class ResourcesUploadFiles < BasePage
 
   frame_element
@@ -17,8 +15,7 @@ class ResourcesUploadFiles < BasePage
   @@filex=0 # TODO: This is almost certainly not going to work right.
 
   # Enters the specified folder/filename value into
-  # the file field on the page. Note that files are
-  # assumed to be in the relative path ../../data/sakai-cle-test-api
+  # the file field on the page.
   # The method will throw an error if the specified file
   # is not found.
   #
@@ -37,7 +34,7 @@ class ResourcesUploadFiles < BasePage
   def upload_files_now
     frm.button(:value=>"Upload Files Now").click
     @@filex=0
-    Resources.new(@browser)
+    # Resources.new(@browser)
   end
 
   # Clicks the Add Another File link.

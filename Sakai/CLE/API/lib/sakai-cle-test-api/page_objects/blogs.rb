@@ -1,13 +1,18 @@
-module BlogsMenuButtons
-
-  # AddBlogEntry
-  action(:add_blog_entry) { |b| b.frm.link(:text=>"Add blog entry").click }
-
-end
-
-class Blogs < BasePage
+class BlogsBase < BasePage
 
   frame_element
+
+  class << self
+    def menu_elements
+      # AddBlogEntry
+      action(:add_blog_entry) { |b| b.frm.link(:text=>"Add blog entry").click }
+    end
+  end
+end
+
+class Blogs < BlogsBase
+
+  menu_elements
 
   # Returns an array containing the list of Bloggers
   # in the "All the blogs" table.
@@ -21,10 +26,10 @@ class Blogs < BasePage
   end
 end
 
-class AddBlogEntry < BasePage
+class AddBlogEntry < BlogsBase
 
-  frame_element
-  include BlogsMenuButtons
+  menu_elements
+
   include FCKEditor
 
   expected_element :editor
@@ -48,10 +53,8 @@ class AddBlogEntry < BasePage
 
 end
 
-class BlogsList < BasePage
+class BlogsList < BlogsBase
 
-  frame_element
-
-  include BlogsMenuButtons
+  menu_elements
 
 end

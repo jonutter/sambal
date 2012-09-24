@@ -3,12 +3,38 @@
 # Assignments Pages
 #================
 
-# The page where you create a new assignment
-class AssignmentAdd < BasePage
-
-  include FCKEditor
+class AssignmentsBase < BasePage
 
   frame_element
+
+  class << self
+
+    def menu_elements
+      action(:add_assignment) { |b| b.frm.link(:text=>"Add").click }
+      action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
+      action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
+      action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
+      action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
+      action(:options) { |b| b.frm.link(:text=>"Options").click }
+    end
+
+    def listview_elements
+      element(:select_page_size) { |b| b.frm.select(:name=>"selectPageSize") }
+      action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
+      action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
+      action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
+      action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
+    end
+
+  end
+
+end
+
+# The page where you create a new assignment
+class AssignmentAdd < AssignmentsBase
+
+  include FCKEditor
+  menu_elements
 
   expected_element :editor
 
@@ -55,11 +81,7 @@ class AssignmentAdd < BasePage
   action(:add_attachments) { |b| b.frm.button(:value=>"Add Attachments").click }
 
   element(:assignment_id) { |b| b.frm.hidden(:name=>"assignmentId") }
-  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
-  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
-  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
-  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
-  action(:options) { |b| b.frm.link(:text=>"Options").click }
+
   element(:title) { |b| b.frm.text_field(:id=>"new_assignment_title") }
   element(:open_month) { |b| b.frm.select(:id=>"new_assignment_openmonth") }
   element(:open_day) { |b| b.frm.select(:id=>"new_assignment_openday") }
@@ -151,9 +173,11 @@ class AssignmentAdd < BasePage
 end
 
 # Page that appears when you first click the Assignments link
-class AssignmentsList < BasePage
+class AssignmentsList < AssignmentsBase
 
-  frame_element
+  menu_elements
+  listview_elements
+  alias :add :add_assignment
 
   # Returns an array of the displayed assignment titles.
   # Use for verification of test steps.
@@ -168,13 +192,6 @@ class AssignmentsList < BasePage
   alias assignment_titles assignments_titles
   alias assignment_list assignments_titles
   alias assignments_list assignments_titles
-
-  # Clicks the Add link, then instantiates
-  # the AssignmentAdd page class.
-  def add
-    frm.link(:text=>"Add").click
-    AssignmentAdd.new(@browser)
-  end
 
   # Clicks the Edit link for the assignment with the specified
   # id, then instantiates the AssignmentAdd page class.
@@ -221,24 +238,10 @@ class AssignmentsList < BasePage
     frm.link(:text=>/#{Regexp.escape(name)}/).href
   end
 
-  # Clicks the Permissions button, then
-  # instantiates the AssignmentsPermissions page class.
-  def permissions
-    frm.link(:text=>"Permissions").click
-    AssignmentsPermissions.new(@browser)
-  end
-
   # Checks the checkbox for the specified Assignment,
   # using the assignment id as the identifier.
   def check_assignment(id) #FIXME to use name instead of id.
     frm.checkbox(:value, /#{id}/).set
-  end
-
-  # Clicks the Reorder button, then instantiates
-  # the AssignmentsReorder page class.
-  def reorder
-    frm().link(:text=>"Reorder").click
-    AssignmentsReorder.new(@browser)
   end
 
   # Opens the specified assignment for viewing
@@ -280,9 +283,6 @@ class AssignmentsList < BasePage
     AssignmentSubmissionList.new(@browser)
   end
 
-  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
-  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
-  action(:options) { |b| b.frm.link(:text=>"Options").click }
   action(:sort_assignment_title) { |b| b.frm.link(:text=>"Assignment title").click }
   action(:sort_status) { |b| b.frm.link(:text=>"Status").click }
   action(:sort_open) { |b| b.frm.link(:text=>"Open").click }
@@ -291,20 +291,12 @@ class AssignmentsList < BasePage
   action(:sort_new) { |b| b.frm.link(:text=>"New").click }
   action(:sort_scale) { |b| b.frm.link(:text=>"Scale").click }
   element(:view) { |b| b.frm.select(:id=>"view") }
-  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
-  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
   action(:update) { |b| b.frm.button(:name=>"eventSubmit_doDelete_confirm_assignment").click }
 
 end
 
-
 # The Permissions Page in Assignments
-class AssignmentsPermissions < BasePage
-
-  frame_element
+class AssignmentsPermissions < AssignmentsBase
 
   # Clicks the Save button, next is
   # the AssignmentsList page class.
@@ -369,9 +361,9 @@ class AssignmentsPermissions < BasePage
 end
 
 # Page that appears when you click to preview an Assignment
-class AssignmentsPreview < BasePage
+class AssignmentsPreview < AssignmentsBase
 
-  frame_element
+  menu_elements
 
   # Returns the text content of the page header
   def header
@@ -419,9 +411,6 @@ class AssignmentsPreview < BasePage
   end
 
   element(:assignment_id) { |b| b.frm.hidden(:name=>"assignmentId") }
-  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
-  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
-  action(:options) { |b| b.frm.link(:text=>"Options").click }
   action(:hide_assignment) { |b| b.frm.link(:href=>/doHide_preview_assignment_assignment/).click }
   action(:show_assignment) { |b| b.frm.link(:href=>/doShow_preview_assignment_assignment/).click }
   action(:hide_student_view) { |b| b.frm.link(:href=>/doHide_preview_assignment_student_view/).click }
@@ -433,9 +422,9 @@ class AssignmentsPreview < BasePage
 end
 
 # The reorder page for Assignments
-class AssignmentsReorder < BasePage
+class AssignmentsReorder < AssignmentsBase
 
-  frame_element
+  menu_elements
 
   # Clicks the Save button, then instantiates
   # the AssignmentsList page class.
@@ -451,12 +440,6 @@ class AssignmentsReorder < BasePage
     AssignmentsList.new(@browser)
   end
 
-  action(:add) { |b| b.frm.link(:text=>"Add").click }
-  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
-  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
-  action(:student_view) { |b| b.frm.link(:text=>"Student View").click }
-  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
-  action(:options) { |b| b.frm.link(:text=>"Options").click }
   action(:sort_by_title) { |b| b.frm.link(:text=>"Sort by title").click }
   action(:sort_by_open_date) { |b| b.frm.link(:text=>"Sort by open date").click }
   action(:sort_by_due_date) { |b| b.frm.link(:text=>"Sort by due date").click }
@@ -466,7 +449,7 @@ class AssignmentsReorder < BasePage
 end
 
 # A Student user's page for editing/submitting/view an assignment.
-class AssignmentStudent < Base Page
+class AssignmentStudent < BasePage
 
   frame_element
 
@@ -661,9 +644,10 @@ end
 # The page that appears when you click on an assignment's "Grade" or "View Submission" link
 # as an instructor. Shows the list of students and their
 # assignment submission status.
-class AssignmentSubmissionList < BasePage
+class AssignmentSubmissionList < AssignmentsBase
 
-  frame_element
+  menu_elements
+  listview_elements
 
   # Clicks the Assignment List link and instantiates the AssignmentsList Class.
   def assignment_list
@@ -704,12 +688,6 @@ class AssignmentSubmissionList < BasePage
     frm.table(:class=>"listHier lines nolines").row(:text=>/#{Regexp.escape(student_name)}/)[4].text
   end
 
-  action(:add) { |b| b.frm.link(:text=>"Add") }
-  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report") }
-  action(:permissions) { |b| b.frm.link(:text=>"Permissions") }
-  action(:options) { |b| b.frm.link(:text=>"Options") }
-  action(:student_view) { |b| b.frm.link(:text=>"Student View") }
-  action(:reorder) { |b| b.frm.link(:text=>"Reorder").click }
   element(:search_input) { |b| b.frm.text_field(:id=>"search") }
   action(:find) { |b| b.frm.button(:value=>"Find").click }
   action(:clear) { |b| b.frm.button(:value=>"Clear").click }
@@ -731,12 +709,7 @@ class AssignmentSubmissionList < BasePage
   element(:accept_until_min) { |b| b.frm.select(:id=>"allow_resubmit_closeMin") }
   element(:accept_until_meridian) { |b| b.frm.select(:id=>"allow_resubmit_closeAMPM") }
   action(:update) { |b| b.frm.button(:id=>"eventSubmit_doSave_resubmission_option").click }
-  element(:select_page_size) { |b| b.frm.select(:id=>"selectPageSize") }
-  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
-  action(:update) { |b| b.frm.button(:name=>"eventSubmit_doDelete_confirm_assignment").click }
+  action(:delete) { |b| b.frm.button(:name=>"eventSubmit_doDelete_confirm_assignment").click }
 
 end
 
@@ -801,24 +774,15 @@ class GradeReport < BasePage
 end
 
 # The Student View page accessed from the Assignments page
-class StudentView < BasePage
+class StudentView < AssignmentsBase
 
-  frame_element
+  menu_elements
+  listview_elements
 
-  action(:add) { |b| b.frm.link(:text=>"Add").click }
-  action(:grade_report) { |b| b.frm.link(:text=>"Grade Report").click }
-  action(:assignment_list) { |b| b.frm.link(:text=>"Assignment List").click }
-  action(:permissions) { |b| b.frm.link(:text=>"Permissions").click }
-  action(:options) { |b| b.frm.link(:text=>"Options").click }
   action(:sort_assignment_title) { |b| b.frm.link(:text=>"Assignment title").click }
   action(:sort_status) { |b| b.frm.link(:text=>"Status").click }
   action(:sort_open) { |b| b.frm.link(:text=>"Open").click }
   action(:sort_due) { |b| b.frm.link(:text=>"Due").click }
   action(:sort_scale) { |b| b.frm.link(:text=>"Scale").click }
-  element(:select_page_size) { |b| b.frm.select(:name=>"selectPageSize") }
-  action(:next) { |b| b.frm.button(:name=>"eventSubmit_doList_next").click }
-  action(:last) { |b| b.frm.button(:name=>"eventSubmit_doList_last").click }
-  action(:previous) { |b| b.frm.button(:name=>"eventSubmit_doList_prev").click }
-  action(:first) { |b| b.frm.button(:name=>"eventSubmit_doList_first").click }
 
 end
